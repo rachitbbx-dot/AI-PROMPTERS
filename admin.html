@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Login</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+font-family:system-ui;
+}
+
+body{
+
+min-height:100vh;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+padding:20px;
+
+background:
+radial-gradient(circle at 20% 30%, #4f46e5, transparent 40%),
+radial-gradient(circle at 80% 70%, #06b6d4, transparent 40%),
+#0f0f0f;
+
+color:white;
+
+}
+
+/* glass card */
+
+.container{
+
+width:100%;
+max-width:380px;
+
+text-align:center;
+
+background:rgba(255,255,255,0.08);
+
+backdrop-filter:blur(40px);
+
+border:1px solid rgba(255,255,255,0.2);
+
+border-radius:32px;
+
+padding:40px 24px;
+
+box-shadow:
+0 30px 80px rgba(0,0,0,0.5),
+inset 0 1px 0 rgba(255,255,255,0.25);
+
+}
+
+h1{
+margin-bottom:20px;
+}
+
+/* input */
+
+input{
+
+width:100%;
+
+padding:16px;
+
+border-radius:20px;
+
+border:none;
+
+background:rgba(255,255,255,.15);
+
+color:white;
+
+margin-bottom:20px;
+
+font-size:16px;
+
+}
+
+/* button */
+
+button{
+
+width:100%;
+
+padding:16px;
+
+border-radius:40px;
+
+border:1px solid rgba(255,255,255,.35);
+
+background:rgba(255,255,255,.08);
+
+color:white;
+
+font-size:16px;
+
+cursor:pointer;
+
+transition:.2s;
+
+}
+
+button:active{
+
+transform:scale(.96);
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Admin Access</h1>
+
+<input type="password" id="pass" placeholder="Enter password">
+
+<button onclick="login()">Enter Dashboard</button>
+
+</div>
+
+<script>
+
+function login(){
+
+const password="prompt123"
+
+const input=document.getElementById("pass").value
+
+if(input===password){
+
+window.location.href="upload.html"
+
+}
+
+else{
+
+alert("Wrong password")
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
