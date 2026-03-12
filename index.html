@@ -305,7 +305,7 @@ opacity:.6;
 <div class="container">
 
 <div class="profile">
-<img src="manav.png">
+<img src="manav.png" id="secretAdmin">
 </div>
 
 <h1>Prompt Hub</h1>
@@ -318,9 +318,6 @@ THE BEST AI PROMPT PROVIDER
 <button class="glass"><span class="btntext">MALE PIC</span></button>
 <button class="glass"><span class="btntext">FEMALE PIC</span></button>
 <button class="glass"><span class="btntext">PFP MATERIAL</span></button>
-<button class="glass" onclick="window.location.href='admin.html'"><span class="btntext">ADMIN</span></button>
-<div class="footer">
-Made by Manav
 </div>
 
 </div>
@@ -347,7 +344,26 @@ setTimeout(()=>circle.remove(),600)
 })
 
 })
+/* secret admin unlock */
 
+let tapCount = 0;
+
+const secretImage = document.getElementById("secretAdmin");
+
+secretImage.addEventListener("click", () => {
+
+tapCount++;
+
+setTimeout(()=>{ tapCount = 0 },2000);
+
+if(tapCount >= 5){
+
+window.location.href = "admin.html";
+
+}
+
+});
+  
 </script>
 
 </body>
