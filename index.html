@@ -295,7 +295,9 @@ font-size:12px;
 opacity:.6;
 
 }
-
+#secretAdmin{
+touch-action: manipulation;
+}
 </style>
 
 </head>
@@ -344,21 +346,28 @@ setTimeout(()=>circle.remove(),600)
 })
 
 })
-/* secret admin unlock */
+/* secret admin unlock (mobile + haptic) */
 
 let tapCount = 0;
 
 const secretImage = document.getElementById("secretAdmin");
 
-secretImage.addEventListener("click", () => {
+secretImage.addEventListener("touchstart", () => {
 
 tapCount++;
 
-setTimeout(()=>{ tapCount = 0 },2000);
+setTimeout(()=>{
+tapCount = 0
+},2000);
 
 if(tapCount >= 5){
 
-window.location.href = "admin.html";
+/* phone vibration */
+if(navigator.vibrate){
+navigator.vibrate(60);
+}
+
+window.location.href="admin.html";
 
 }
 
