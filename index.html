@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Prompt Hub</title>
 
 <style>
-
 *{
 margin:0;
 padding:0;
@@ -17,301 +14,204 @@ font-family:system-ui;
 }
 
 body{
-
 min-height:100dvh;
-
 display:flex;
 justify-content:center;
 align-items:center;
-
 padding:20px;
-
-background:#0f0f0f;
-
 color:white;
-
 overflow-y:auto;
-
+background:#0f0f0f;
 }
 
-/* animated background */
-
+/* animated gradient background */
 body::before{
-
 content:"";
-
 position:fixed;
 inset:0;
-
 background:
 radial-gradient(circle at 20% 30%, #4f46e5, transparent 45%),
 radial-gradient(circle at 80% 70%, #06b6d4, transparent 45%),
-radial-gradient(circle at 40% 80%, #4f46e5, transparent 40%);
-
+radial-gradient(circle at 40% 80%, #4f46e5, transparent 40%),
+radial-gradient(circle at 60% 20%, #10b981, transparent 35%);
 filter:blur(120px);
 opacity:.9;
-
-animation:bgmove 16s infinite alternate ease-in-out;
-
 z-index:-1;
-
+animation: bg1 25s infinite alternate ease-in-out,
+           bg2 30s infinite alternate-reverse ease-in-out,
+           bg3 28s infinite alternate ease-in-out,
+           bg4 35s infinite alternate-reverse ease-in-out;
 }
 
-@keyframes bgmove{
-
-0%{
-transform:translateY(-40px) scale(1);
+@keyframes bg1 {
+0%{background-position: 20% 30%, 80% 70%, 40% 80%, 60% 20%;}
+25%{background-position: 25% 35%, 78% 68%, 42% 83%, 63% 22%;}
+50%{background-position: 18% 28%, 82% 72%, 38% 77%, 58% 18%;}
+75%{background-position: 22% 33%, 79% 69%, 41% 81%, 61% 25%;}
+100%{background-position: 20% 30%, 80% 70%, 40% 80%, 60% 20%;}
 }
-
-100%{
-transform:translateY(40px) scale(1.1);
+@keyframes bg2 {
+0%{background-position: 25% 25%, 75% 65%, 45% 75%, 55% 25%;}
+25%{background-position: 28% 30%, 77% 68%, 42% 78%, 57% 22%;}
+50%{background-position: 22% 20%, 73% 63%, 48% 72%, 53% 28%;}
+75%{background-position: 26% 27%, 76% 67%, 44% 76%, 56% 24%;}
+100%{background-position: 25% 25%, 75% 65%, 45% 75%, 55% 25%;}
 }
-
+@keyframes bg3 {
+0%{background-position: 30% 35%, 70% 60%, 50% 85%, 65% 30%;}
+25%{background-position: 33% 38%, 72% 63%, 48% 82%, 68% 33%;}
+50%{background-position: 28% 32%, 68% 58%, 52% 88%, 63% 28%;}
+75%{background-position: 31% 36%, 71% 61%, 49% 84%, 66% 31%;}
+100%{background-position: 30% 35%, 70% 60%, 50% 85%, 65% 30%;}
+}
+@keyframes bg4 {
+0%{background-position: 60% 20%, 40% 80%, 80% 40%, 20% 60%;}
+25%{background-position: 63% 22%, 42% 83%, 78% 42%, 23% 63%;}
+50%{background-position: 58% 18%, 38% 77%, 82% 38%, 18% 58%;}
+75%{background-position: 61% 25%, 41% 81%, 79% 41%, 21% 61%;}
+100%{background-position: 60% 20%, 40% 80%, 80% 40%, 20% 60%;}
 }
 
 /* container */
-
 .container{
-
 width:100%;
 max-width:380px;
-
 text-align:center;
-
 background:rgba(255,255,255,0.08);
-
 backdrop-filter:blur(50px);
 -webkit-backdrop-filter:blur(50px);
-
 border:1px solid rgba(255,255,255,0.2);
-
 border-radius:30px;
-
 padding:40px 26px;
-
 box-shadow:
 0 40px 100px rgba(0,0,0,.6),
 inset 0 1px 0 rgba(255,255,255,.25);
-
 }
 
 /* profile */
-
 .profile{
-
 width:110px;
 height:110px;
-
 border-radius:50%;
-
 overflow:hidden;
-
 margin:auto;
-
 border:2px solid rgba(255,255,255,.4);
-
 box-shadow:0 15px 50px rgba(0,0,0,.7);
-
 }
 
 .profile img{
-
 width:100%;
 height:100%;
 object-fit:cover;
-
 }
 
 /* title */
-
 h1{
-
 margin-top:18px;
-
 font-size:30px;
-
 font-weight:700;
-
 }
-
 .subtitle{
-
 opacity:.7;
 font-size:13px;
-
 margin-top:4px;
-
 margin-bottom:26px;
-
 letter-spacing:1px;
-
 }
 
 /* glass buttons */
-
 .glass{
-
 position:relative;
-
 display:block;
-
 margin:14px auto;
-
 padding:20px;
-
 width:100%;
-
 border-radius:60px;
-
 border:1px solid rgba(255,255,255,.35);
-
 background:rgba(255,255,255,.08);
-
 backdrop-filter:blur(30px);
-
 font-size:17px;
-
 color:white;
-
 cursor:pointer;
-
 transition:all .2s ease;
-
 overflow:hidden;
-
 box-shadow:
 0 12px 30px rgba(0,0,0,.6),
 inset 0 1px 0 rgba(255,255,255,.2);
-
 }
-
-/* hover only on desktop */
-
 @media (hover: hover) and (pointer: fine){
-
 .glass:hover{
-
 transform:translateY(-3px);
-
 box-shadow:
 0 20px 50px rgba(0,0,0,.8),
 0 0 25px rgba(79,70,229,.7);
-
 }
-
 .glass:hover::after{
-
 animation:sweep .9s;
-
 }
-
 }
-
-/* press animation */
-
 .glass:active{
-
 transform:scale(.95);
-
 box-shadow:0 4px 12px rgba(0,0,0,.5);
-
 }
-
 /* light sweep */
-
 .glass::after{
-
 content:"";
-
 position:absolute;
-
 top:0;
 left:-150%;
-
 width:60%;
 height:100%;
-
 background:linear-gradient(
 120deg,
 transparent,
 rgba(255,255,255,.6),
 transparent
 );
-
 transform:skewX(-25deg);
-
 }
-
 @keyframes sweep{
-
 0%{left:-150%}
 100%{left:180%}
-
 }
-
 /* ripple */
-
 .ripple{
-
 position:absolute;
-
 border-radius:50%;
-
 background:rgba(255,255,255,.5);
-
 transform:scale(0);
-
 animation:ripple .6s linear;
-
 pointer-events:none;
-
 }
-
 @keyframes ripple{
-
 to{
 transform:scale(4);
 opacity:0;
 }
-
 }
-
 .btntext{
-
 font-style:italic;
-
 letter-spacing:1px;
-
 }
-
 /* footer */
-
 .footer{
-
 margin-top:20px;
-
 font-size:12px;
-
 opacity:.6;
-
 }
 #secretAdmin{
 touch-action: manipulation;
 }
 </style>
-
 </head>
 
 <body>
-
 <div class="container">
-
 <div class="profile">
 <img src="manav.png" id="secretAdmin">
 </div>
 
 <h1>Prompt Hub</h1>
-
 <div class="subtitle">
 THE BEST AI PROMPT PROVIDER
 </div>
@@ -320,60 +220,34 @@ THE BEST AI PROMPT PROVIDER
 <button class="glass"><span class="btntext">MALE PIC</span></button>
 <button class="glass"><span class="btntext">FEMALE PIC</span></button>
 <button class="glass"><span class="btntext">PFP MATERIAL</span></button>
-</div>
 
 </div>
 
 <script>
-
+// ripple effect
 document.querySelectorAll(".glass").forEach(btn=>{
-
 btn.addEventListener("click",function(e){
-
 const circle=document.createElement("span")
-
 const rect=this.getBoundingClientRect()
-
 circle.style.left=e.clientX-rect.left+"px"
 circle.style.top=e.clientY-rect.top+"px"
-
 circle.classList.add("ripple")
-
 this.appendChild(circle)
-
 setTimeout(()=>circle.remove(),600)
-
+})
 })
 
-})
-/* secret admin unlock (mobile + haptic) */
-
+// secret admin unlock (mobile + haptic)
 let tapCount = 0;
-
 const secretImage = document.getElementById("secretAdmin");
-
 secretImage.addEventListener("touchstart", () => {
-
 tapCount++;
-
-setTimeout(()=>{
-tapCount = 0
-},2000);
-
-if(tapCount >= 5){
-
-/* phone vibration */
-if(navigator.vibrate){
-navigator.vibrate(60);
-}
-
+setTimeout(()=>{tapCount=0},2000);
+if(tapCount>=5){
+if(navigator.vibrate){navigator.vibrate(60);}
 window.location.href="admin.html";
-
 }
-
 });
-  
 </script>
-
 </body>
 </html>
