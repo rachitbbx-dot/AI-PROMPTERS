@@ -98,17 +98,17 @@ button:active { transform: scale(0.96); }
 
 .tick {
   width: 20px;
-  height: 20px;
-  border: 3px solid #10b981;
-  border-top: none;
-  border-right: none;
+  height: 10px;
+  border-left: 3px solid #10b981;
+  border-bottom: 3px solid #10b981;
   transform: rotate(-45deg);
+  opacity: 0;
   animation: tickAnim 0.5s forwards;
 }
 
 @keyframes tickAnim {
   0% { width: 0; height: 0; opacity: 0; }
-  100% { width: 20px; height: 20px; opacity: 1; }
+  100% { width: 20px; height: 10px; opacity: 1; }
 }
 </style>
 
@@ -122,8 +122,8 @@ button:active { transform: scale(0.96); }
   <form id="promptForm" action="https://docs.google.com/forms/d/e/1FAIpQLSe9pwQgcFEtfZZJGqzLo9nRGdzkIRduJ8fTN4MBk6EdRrJp4g/formResponse" method="POST" target="_blank">
 
     <label>Select Image</label>
-    <input type="file" id="localImage" accept="image/*">
-    <input type="hidden" name="entry.1477897166" id="imageURL">
+    <input type="file" id="localImage" accept="image/*" required>
+    <input type="hidden" name="entry.1477897166" id="imageURL" required>
 
     <label>Title</label>
     <input type="text" name="entry.817927340" placeholder="Prompt title" required>
@@ -133,25 +133,25 @@ button:active { transform: scale(0.96); }
 
     <label>Category</label>
     <select name="entry.1682741697" required>
+      <option value="" disabled selected>Select category</option>
       <option>couple</option>
       <option>male</option>
       <option>female</option>
       <option>pfp</option>
     </select>
 
-    <label>Tags (optional)</label>
-    <input type="text" name="entry.1428742015" placeholder="Comma-separated tags">
+    <label>Tags</label>
+    <input type="text" name="entry.1428742015" placeholder="Comma-separated tags" required>
 
-    <label>Author (optional)</label>
-    <input type="text" name="entry.1343475207" placeholder="Your name">
+    <label>Author</label>
+    <input type="text" name="entry.1343475207" placeholder="Your name" required>
 
-    <label>Notes (optional)</label>
-    <textarea name="entry.907377745" placeholder="Any extra notes"></textarea>
+    <label>Notes</label>
+    <textarea name="entry.907377745" placeholder="Any extra notes" required></textarea>
 
     <button type="submit">Create Prompt</button>
   </form>
 
-  <!-- Success message -->
   <div id="successMsg"><div class="tick"></div> Prompt submitted!</div>
 </div>
 
@@ -161,6 +161,7 @@ const hiddenURL = document.getElementById('imageURL');
 const form = document.getElementById('promptForm');
 const successMsg = document.getElementById('successMsg');
 
+// Image upload
 fileInput.addEventListener('change', async (e) => {
   const file = e.target.files[0];
   if (!file) return;
@@ -186,11 +187,7 @@ fileInput.addEventListener('change', async (e) => {
       const result = await response.json();
       if(result.url){
         hiddenURL.value = result.url;
-        submitBtn.textContent = 'Create Prompt';
-
-        // Show success message
-        successMsg.style.display = 'flex';
-        setTimeout(() => { successMsg.style.display = 'none'; form.reset(); }, 2500);
+        alert('Image uploaded! Fill other fields and click Create Prompt.');
       } else {
         alert('Upload failed: ' + (result.error || 'Unknown'));
       }
@@ -199,8 +196,23 @@ fileInput.addEventListener('change', async (e) => {
     }
 
     submitBtn.disabled = false;
+    submitBtn.textContent = 'Create Prompt';
   };
   reader.readAsDataURL(file);
+});
+
+// Show tick after manual form submission
+form.addEventListener('submit', (e) => {
+  successMsg.style.display = 'flex';
+  const tick = successMsg.querySelector('.tick');
+  tick.style.opacity = 0;
+  tick.offsetWidth; // force reflow
+  tick.style.animation = 'tickAnim 0.5s forwards';
+
+  setTimeout(() => {
+    successMsg.style.display = 'none';
+    form.reset();
+  }, 2500);
 });
 </script>
 
