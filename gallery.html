@@ -42,7 +42,7 @@ z-index:-1;
 /* header */
 
 .header{
-max-width:900px;
+max-width:1000px;
 margin:auto;
 margin-bottom:25px;
 }
@@ -79,47 +79,63 @@ color:white;
 /* gallery */
 
 .gallery{
-max-width:900px;
+
+max-width:1000px;
 margin:auto;
 
-display:grid;
+column-count:3;
+column-gap:16px;
 
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-
-gap:18px;
 }
 
-/* card */
+@media(max-width:800px){
+
+.gallery{
+column-count:2;
+}
+
+}
 
 .card{
+
+break-inside:avoid;
+
+margin-bottom:16px;
+
 background:rgba(255,255,255,.08);
+
 border-radius:20px;
+
 overflow:hidden;
+
 border:1px solid rgba(255,255,255,.2);
+
 cursor:pointer;
+
 transition:.2s;
+
 }
 
 .card:hover{
 transform:translateY(-3px);
 }
 
-/* image */
-
 .card img{
 width:100%;
-height:200px;
-object-fit:cover;
+display:block;
 }
 
-/* text */
-
-.cardContent{
-padding:14px;
+.cardTitle{
+padding:10px;
+font-size:14px;
 }
 
-.title{
-font-size:15px;
+/* loading */
+
+.loader{
+text-align:center;
+margin:20px;
+opacity:.6;
 }
 
 </style>
@@ -158,7 +174,9 @@ placeholder="Search prompts..."
 
 </div>
 
-<div class="gallery" id="gallery"></div>
+<div id="gallery" class="gallery"></div>
+
+<div id="loader" class="loader">Loading...</div>
 
 <script>
 
@@ -167,7 +185,10 @@ const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2
 let prompts=[]
 let filtered=[]
 
-/* LOAD DATA */
+let loaded=0
+const batch=12
+
+/* load sheet */
 
 fetch(API)
 .then(res=>res.json())
@@ -177,19 +198,45 @@ prompts=data.reverse()
 
 filtered=[...prompts]
 
-render(filtered)
+renderMore()
 
 })
 
-/* RENDER */
+/* render batch */
 
-function render(list){
+function renderMore(){
 
 const gallery=document.getElementById("gallery")
 
-gallery.innerHTML=""
+const next=filtered.slice(loaded,loaded+batch)
 
-list.forEach((p,index)=>{
+next.forEach((p,index)=>{
+
+const realIndex=loaded+index
+
+/* ad slot placeholder every 8 posts */
+
+if(realIndex>0 && realIndex%8===0){
+
+const ad=document.createElement("div")
+
+ad.className="card"
+
+ad.innerHTML=`
+
+<div style="padding:40px;text-align:center;opacity:.7">
+
+Ad Space
+
+</div>
+
+`
+
+gallery.appendChild(ad)
+
+}
+
+/* prompt card */
 
 const card=document.createElement("div")
 
@@ -197,7 +244,7 @@ card.className="card"
 
 card.onclick=()=>{
 
-window.location.href=`prompt.html?id=${index}`
+window.location.href=`prompt.html?id=${realIndex}`
 
 }
 
@@ -205,11 +252,7 @@ card.innerHTML=`
 
 <img src="${p['Image File']}">
 
-<div class="cardContent">
-
-<div class="title">${p['Prompt Title']}</div>
-
-</div>
+<div class="cardTitle">${p['Prompt Title']}</div>
 
 `
 
@@ -217,7 +260,26 @@ gallery.appendChild(card)
 
 })
 
+loaded+=batch
+
 }
+
+/* infinite scroll */
+
+window.addEventListener("scroll",()=>{
+
+if(
+
+window.innerHeight+window.scrollY
+>=document.body.offsetHeight-500
+
+){
+
+renderMore()
+
+}
+
+})
 
 /* SEARCH */
 
@@ -232,27 +294,22 @@ p['Tags'].toLowerCase().includes(term)
 
 )
 
-applyFilters()
+resetGallery()
 
 })
 
-/* CATEGORY FILTER */
+/* FILTER */
 
 document.getElementById("category").addEventListener("change",applyFilters)
-
-/* SORT FILTER */
 
 document.getElementById("sort").addEventListener("change",applyFilters)
 
 function applyFilters(){
 
-let list=[...filtered]
+let list=[...prompts]
 
 const category=document.getElementById("category").value
-
 const sort=document.getElementById("sort").value
-
-/* CATEGORY */
 
 if(category!=="all"){
 
@@ -262,34 +319,29 @@ p['Category'].toLowerCase()===category
 
 }
 
-/* SORT */
-
-if(sort==="new"){
-
-list=list.reverse()
-
+if(sort==="random"){
+list=list.sort(()=>Math.random()-0.5)
 }
 
 if(sort==="old"){
+list=list.reverse()
+}
 
-list=list.sort((a,b)=>0)
+filtered=list
+
+resetGallery()
 
 }
 
-if(sort==="random"){
+/* reset */
 
-list=list.sort(()=>Math.random()-0.5)
+function resetGallery(){
 
-}
+document.getElementById("gallery").innerHTML=""
 
-if(sort==="popular"){
+loaded=0
 
-/* placeholder for later */
-list=list
-
-}
-
-render(list)
+renderMore()
 
 }
 
