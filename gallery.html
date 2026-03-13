@@ -158,21 +158,11 @@ let loaded=0
 const batch=12
 
 
-/* CLEAN VALUE HELPER (handles sheet spacing bugs) */
-
-function clean(val){
-if(!val) return ""
-return String(val).trim()
-}
-
-
-/* FIX GOOGLE DRIVE IMAGE LINKS */
+/* GOOGLE DRIVE IMAGE FIX */
 
 function formatImage(url){
 
 if(!url) return ""
-
-url=String(url)
 
 let id=""
 
@@ -184,23 +174,16 @@ else if(url.includes("/file/d/")){
 id=url.split("/file/d/")[1].split("/")[0]
 }
 
-else if(url.includes("uc?id=")){
-id=url.split("uc?id=")[1].split("&")[0]
-}
-
-else if(url.includes("uc?export=view")){
-return url
-}
-
 if(id){
-return "https://drive.google.com/uc?export=view&id="+id
+return "https://lh3.googleusercontent.com/d/"+id
 }
 
 return url
+
 }
 
 
-/* LOAD DATA */
+/* FETCH DATA */
 
 fetch(API)
 .then(res=>res.json())
@@ -223,6 +206,8 @@ next.forEach((p,index)=>{
 
 const realIndex=loaded+index
 
+const img=formatImage(p["Image File"])
+
 const card=document.createElement("div")
 
 card.className="card"
@@ -233,9 +218,9 @@ window.location.href=`prompt.html?id=${realIndex}`
 
 card.innerHTML=`
 
-<img src="${formatImage(p['Image File'])}" referrerpolicy="no-referrer">
+<img src="${img}">
 
-<div class="cardTitle">${clean(p['Prompt Title'])}</div>
+<div class="cardTitle">${p["Prompt Title"]}</div>
 
 `
 
@@ -253,7 +238,9 @@ loaded+=batch
 window.addEventListener("scroll",()=>{
 
 if(window.innerHeight+window.scrollY>=document.body.offsetHeight-400){
+
 renderMore()
+
 }
 
 })
@@ -267,8 +254,8 @@ const term=e.target.value.toLowerCase()
 
 filtered=prompts.filter(p=>
 
-clean(p['Prompt Title']).toLowerCase().includes(term) ||
-clean(p['Tags']).toLowerCase().includes(term)
+(p["Prompt Title"]||"").toLowerCase().includes(term) ||
+(p["Tags"]||"").toLowerCase().includes(term)
 
 )
 
@@ -277,11 +264,10 @@ reset()
 })
 
 
-/* FILTERS */
+/* FILTER + SORT */
 
 document.getElementById("category").addEventListener("change",applyFilters)
 document.getElementById("sort").addEventListener("change",applyFilters)
-
 
 function applyFilters(){
 
@@ -291,39 +277,25 @@ const category=document.getElementById("category").value
 const sort=document.getElementById("sort").value
 
 
-/* CATEGORY */
-
 if(category!=="all"){
 
 list=list.filter(p=>
-clean(p['Category']).toLowerCase()===category
+(p["Category"]||"").toLowerCase()===category
 )
 
 }
 
 
-/* SORT */
-
 if(sort==="new"){
-
-list=list.sort((a,b)=>
-new Date(b['Timestamp']) - new Date(a['Timestamp'])
-)
-
+list.sort((a,b)=>new Date(b.Timestamp)-new Date(a.Timestamp))
 }
 
 if(sort==="old"){
-
-list=list.sort((a,b)=>
-new Date(a['Timestamp']) - new Date(b['Timestamp'])
-)
-
+list.sort((a,b)=>new Date(a.Timestamp)-new Date(b.Timestamp))
 }
 
 if(sort==="random"){
-
-list=list.sort(()=>Math.random()-0.5)
-
+list.sort(()=>Math.random()-0.5)
 }
 
 filtered=list
