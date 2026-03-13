@@ -1,412 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Prompt</title>
-
+<title>Prompt Viewer</title>
 <style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:system-ui;
-}
-
 body{
-background:#0f0f0f;
-color:white;
-padding:20px;
+  background:#0f0f0f;
+  color:white;
+  font-family:system-ui;
+  padding:20px;
+  max-width:800px;
+  margin:auto;
 }
-
-/* background */
-
 body::before{
-content:"";
-position:fixed;
-inset:0;
-
-background:
-radial-gradient(circle at 20% 30%, #4f46e5, transparent 45%),
-radial-gradient(circle at 80% 70%, #06b6d4, transparent 45%);
-
-filter:blur(120px);
-opacity:.9;
-z-index:-1;
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(circle at 20% 30%, #4f46e5, transparent 45%),
+    radial-gradient(circle at 80% 70%, #06b6d4, transparent 45%),
+    radial-gradient(circle at 40% 80%, #4f46e5, transparent 40%);
+  filter:blur(120px);
+  opacity:.9;
+  z-index:-1;
 }
-
-.container{
-max-width:700px;
-margin:auto;
+img#promptImage{
+  width:100%;
+  border-radius:20px;
+  margin-bottom:15px;
+  object-fit:cover;
 }
-
-.back{
-margin-bottom:20px;
-cursor:pointer;
-opacity:.7;
+h1{
+  font-size:22px;
+  margin-bottom:10px;
 }
-
-/* card */
-
-.card{
-background:rgba(255,255,255,.08);
-border-radius:20px;
-overflow:hidden;
-border:1px solid rgba(255,255,255,.2);
-margin-bottom:30px;
+#content{
+  background:rgba(255,255,255,0.05);
+  padding:15px;
+  border-radius:10px;
+  white-space:pre-wrap;
+  margin-top:10px;
 }
-
-.card img{
-width:100%;
-display:block;
+button{
+  padding:10px 15px;
+  border:none;
+  border-radius:10px;
+  background:#4f46e5;
+  color:white;
+  cursor:pointer;
+  font-size:14px;
+  margin-bottom:10px;
 }
-
-.content{
-padding:18px;
+button:hover{
+  background:#6366f1;
 }
-
-.title{
-font-size:22px;
-font-weight:600;
-margin-bottom:10px;
+.loader{
+  text-align:center;
+  margin-top:50px;
+  opacity:.6;
 }
-
-.meta{
-opacity:.7;
-font-size:13px;
-margin-bottom:14px;
-}
-
-.notes{
-margin-bottom:20px;
-line-height:1.5;
-}
-
-/* premium prompt */
-
-.promptBox{
-background:rgba(0,0,0,.35);
-border-radius:14px;
-padding:20px;
-text-align:center;
-overflow:hidden;
-}
-
-.lockHeader{
-font-size:16px;
-margin-bottom:10px;
-opacity:.8;
-}
-
-.progressBar{
-width:100%;
-height:6px;
-background:rgba(255,255,255,.1);
-border-radius:20px;
-overflow:hidden;
-margin-bottom:10px;
-}
-
-.progressFill{
-height:100%;
-width:0%;
-background:linear-gradient(90deg,#4f46e5,#06b6d4);
-transition:width 1s linear;
-}
-
-.countdown{
-font-size:13px;
-opacity:.7;
-margin-bottom:10px;
-}
-
-.promptPreview{
-filter:blur(6px);
-opacity:.6;
-line-height:1.6;
-white-space:pre-wrap;
-text-align:left;
-}
-
-.promptText{
-display:none;
-line-height:1.6;
-white-space:pre-wrap;
-text-align:left;
-margin-top:10px;
-}
-
-.copyBtn{
-display:none;
-margin-top:15px;
-padding:10px 20px;
-border:none;
-border-radius:30px;
-background:#06b6d4;
-color:white;
-cursor:pointer;
-}
-
-/* related */
-
-.relatedTitle{
-margin:30px 0 14px;
-font-size:18px;
-}
-
-.relatedGrid{
-column-count:2;
-column-gap:14px;
-}
-
-.relatedCard{
-break-inside:avoid;
-margin-bottom:14px;
-background:rgba(255,255,255,.08);
-border-radius:16px;
-overflow:hidden;
-cursor:pointer;
-}
-
-.relatedCard img{
-width:100%;
-display:block;
-}
-
-.relatedCard div{
-padding:8px;
-font-size:13px;
-}
-
 </style>
-
 </head>
-
 <body>
 
-<div class="container">
-
-<div class="back" onclick="history.back()">← Back</div>
-
-<div class="card">
-
-<img id="image">
-
-<div class="content">
-
-<div class="title" id="title"></div>
-
-<div class="meta" id="meta"></div>
-
-<div class="notes" id="notes"></div>
-
-<div class="promptBox">
-
-<div class="lockHeader">
-🔒 Premium Prompt — Unlocking...
-</div>
-
-<div class="progressBar">
-<div class="progressFill" id="progressFill"></div>
-</div>
-
-<div class="countdown" id="countdown"></div>
-
-<div class="promptPreview" id="promptPreview">
-Loading preview...
-</div>
-
-<div class="promptText" id="promptText"></div>
-
-<button class="copyBtn" id="copyBtn" onclick="copyPrompt()">
-Copy Prompt
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="relatedTitle">Related Prompts</div>
-<div class="relatedGrid" id="related"></div>
-
-</div>
+<img id="promptImage" src="" alt="Prompt Image">
+<h1 id="title">Loading...</h1>
+<button id="copyBtn">Copy Prompt</button>
+<div id="content"></div>
+<div class="loader" id="loader">Loading...</div>
 
 <script>
+const API = "https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec";
 
-const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec"
+// Get the ID from URL
+const params = new URLSearchParams(window.location.search);
+const id = parseInt(params.get("id"));
 
-const params=new URLSearchParams(window.location.search)
-const id=parseInt(params.get("id"))
+// Elements
+const titleEl = document.getElementById("title");
+const contentEl = document.getElementById("content");
+const loaderEl = document.getElementById("loader");
+const copyBtn = document.getElementById("copyBtn");
+const imgEl = document.getElementById("promptImage");
 
-let prompts=[]
-let promptData=null
-
-/* DRIVE IMAGE FIX */
-
+// Helper to format Google Drive links
 function formatImage(url){
-
-if(!url) return ""
-
-let fileId=""
-
-if(url.includes("open?id=")){
-fileId=url.split("open?id=")[1]
+  if(!url) return "";
+  let id="";
+  if(url.includes("open?id=")){
+    id=url.split("open?id=")[1];
+  } else if(url.includes("/file/d/")){
+    id=url.split("/file/d/")[1].split("/")[0];
+  }
+  if(id){
+    return "https://lh3.googleusercontent.com/d/"+id;
+  }
+  return url;
 }
 
-else if(url.includes("/file/d/")){
-fileId=url.split("/file/d/")[1].split("/")[0]
-}
-
-if(fileId){
-return "https://lh3.googleusercontent.com/d/"+fileId
-}
-
-return url
-
-}
-
-
-/* LOAD DATA */
-
+// Fetch prompts
 fetch(API)
-.then(res=>res.json())
-.then(data=>{
+  .then(res => res.json())
+  .then(data => {
+    loaderEl.style.display = "none";
+    if (!data[id]) {
+      titleEl.textContent = "Prompt not found";
+      contentEl.textContent = "";
+      copyBtn.style.display = "none";
+      imgEl.style.display = "none";
+      return;
+    }
+    const prompt = data[id];
+    titleEl.textContent = prompt["Prompt Title"] || "Untitled";
+    contentEl.textContent = prompt["Prompt Text"] || "";
+    imgEl.src = formatImage(prompt["Image File"]) || "";
+    if(!imgEl.src) imgEl.style.display="none";
+  })
+  .catch(err => {
+    loaderEl.style.display = "none";
+    titleEl.textContent = "Error loading prompt";
+    contentEl.textContent = "";
+    copyBtn.style.display = "none";
+    imgEl.style.display="none";
+    console.error(err);
+  });
 
-prompts=data
-
-promptData=prompts[id]
-
-if(!promptData){
-alert("Prompt not found")
-return
-}
-
-document.getElementById("title").innerText=
-promptData["Prompt Title"]
-
-document.getElementById("image").src=
-formatImage(promptData["Image File"])
-
-document.getElementById("notes").innerText=
-promptData["Notes"] || ""
-
-document.getElementById("meta").innerText=
-"Category: "+promptData["Category"]+
-" • Author: "+promptData["Author"]
-
-/* blurred preview */
-
-let preview=promptData["Prompt Text"] || ""
-
-preview=preview.substring(0,120)+"..."
-
-document.getElementById("promptPreview").innerText=preview
-
-renderRelated()
-
-startUnlock()
-
-})
-
-
-/* PREMIUM UNLOCK */
-
-function startUnlock(){
-
-let seconds=6
-
-const countdown=document.getElementById("countdown")
-const progress=document.getElementById("progressFill")
-
-countdown.innerText="Unlocking in "+seconds+"..."
-
-const timer=setInterval(()=>{
-
-seconds--
-
-progress.style.width=((6-seconds)/6*100)+"%"
-
-countdown.innerText="Unlocking in "+seconds+"..."
-
-if(seconds<=0){
-
-clearInterval(timer)
-
-unlockPrompt()
-
-}
-
-},1000)
-
-}
-
-
-function unlockPrompt(){
-
-document.getElementById("promptPreview").style.display="none"
-
-const promptText=document.getElementById("promptText")
-
-promptText.innerText=promptData["Prompt Text"] || "No prompt text found."
-
-promptText.style.display="block"
-
-document.getElementById("copyBtn").style.display="inline-block"
-
-document.getElementById("countdown").innerText="Unlocked ✓"
-
-}
-
-
-/* COPY */
-
-function copyPrompt(){
-
-navigator.clipboard.writeText(promptData["Prompt Text"])
-
-alert("Prompt copied!")
-
-}
-
-
-/* RELATED */
-
-function renderRelated(){
-
-const related=document.getElementById("related")
-
-related.innerHTML=""
-
-const shuffled=[...prompts].sort(()=>Math.random()-0.5)
-
-const selected=shuffled.slice(0,6)
-
-selected.forEach(p=>{
-
-const card=document.createElement("div")
-
-card.className="relatedCard"
-
-card.onclick=()=>{
-window.location.href=`prompt.html?id=${prompts.indexOf(p)}`
-}
-
-card.innerHTML=`
-<img src="${formatImage(p["Image File"])}">
-<div>${p["Prompt Title"]}</div>
-`
-
-related.appendChild(card)
-
-})
-
-}
-
+// Copy button functionality
+copyBtn.addEventListener("click", () => {
+  const text = contentEl.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    copyBtn.textContent = "Copied!";
+    setTimeout(() => copyBtn.textContent = "Copy Prompt", 1500);
+  });
+});
 </script>
 
 </body>
