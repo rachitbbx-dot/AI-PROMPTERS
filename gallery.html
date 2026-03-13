@@ -138,7 +138,6 @@ opacity:.6;
 <option value="new">Newest</option>
 <option value="old">Oldest</option>
 <option value="random">Random</option>
-<option value="popular">Popular</option>
 </select>
 
 </div>
@@ -155,9 +154,17 @@ const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2
 
 let prompts=[]
 let filtered=[]
-
 let loaded=0
 const batch=12
+
+
+/* CLEAN VALUE HELPER (handles sheet spacing bugs) */
+
+function clean(val){
+if(!val) return ""
+return String(val).trim()
+}
+
 
 /* FIX GOOGLE DRIVE IMAGE LINKS */
 
@@ -165,27 +172,21 @@ function formatImage(url){
 
 if(!url) return ""
 
-let id=""
+url=String(url)
 
-/* open?id= format */
+let id=""
 
 if(url.includes("open?id=")){
 id=url.split("open?id=")[1]
 }
 
-/* file/d/ format */
-
 else if(url.includes("/file/d/")){
 id=url.split("/file/d/")[1].split("/")[0]
 }
 
-/* uc?id= format */
-
 else if(url.includes("uc?id=")){
 id=url.split("uc?id=")[1].split("&")[0]
 }
-
-/* already correct */
 
 else if(url.includes("uc?export=view")){
 return url
@@ -197,19 +198,20 @@ return "https://drive.google.com/uc?export=view&id="+id
 
 return url
 }
+
+
 /* LOAD DATA */
 
 fetch(API)
 .then(res=>res.json())
 .then(data=>{
 
-prompts=data.reverse()
+prompts=data
 
-filtered=[...prompts]
-
-renderMore()
+applyFilters()
 
 })
+
 
 function renderMore(){
 
@@ -231,9 +233,9 @@ window.location.href=`prompt.html?id=${realIndex}`
 
 card.innerHTML=`
 
-<img src="${p['Image File']}" referrerpolicy="no-referrer">
+<img src="${formatImage(p['Image File'])}" referrerpolicy="no-referrer">
 
-<div class="cardTitle">${p['Prompt Title']}</div>
+<div class="cardTitle">${clean(p['Prompt Title'])}</div>
 
 `
 
@@ -245,17 +247,17 @@ loaded+=batch
 
 }
 
+
 /* INFINITE SCROLL */
 
 window.addEventListener("scroll",()=>{
 
 if(window.innerHeight+window.scrollY>=document.body.offsetHeight-400){
-
 renderMore()
-
 }
 
 })
+
 
 /* SEARCH */
 
@@ -265,8 +267,8 @@ const term=e.target.value.toLowerCase()
 
 filtered=prompts.filter(p=>
 
-p['Prompt Title'].toLowerCase().includes(term) ||
-(p['Tags'] && p['Tags'].toLowerCase().includes(term))
+clean(p['Prompt Title']).toLowerCase().includes(term) ||
+clean(p['Tags']).toLowerCase().includes(term)
 
 )
 
@@ -274,10 +276,12 @@ reset()
 
 })
 
-/* FILTER */
+
+/* FILTERS */
 
 document.getElementById("category").addEventListener("change",applyFilters)
 document.getElementById("sort").addEventListener("change",applyFilters)
+
 
 function applyFilters(){
 
@@ -286,18 +290,40 @@ let list=[...prompts]
 const category=document.getElementById("category").value
 const sort=document.getElementById("sort").value
 
+
+/* CATEGORY */
+
 if(category!=="all"){
 
-list=list.filter(p=>p['Category'].toLowerCase()===category)
+list=list.filter(p=>
+clean(p['Category']).toLowerCase()===category
+)
+
+}
+
+
+/* SORT */
+
+if(sort==="new"){
+
+list=list.sort((a,b)=>
+new Date(b['Timestamp']) - new Date(a['Timestamp'])
+)
+
+}
+
+if(sort==="old"){
+
+list=list.sort((a,b)=>
+new Date(a['Timestamp']) - new Date(b['Timestamp'])
+)
 
 }
 
 if(sort==="random"){
-list=list.sort(()=>Math.random()-0.5)
-}
 
-if(sort==="old"){
-list=list.reverse()
+list=list.sort(()=>Math.random()-0.5)
+
 }
 
 filtered=list
@@ -305,6 +331,9 @@ filtered=list
 reset()
 
 }
+
+
+/* RESET */
 
 function reset(){
 
