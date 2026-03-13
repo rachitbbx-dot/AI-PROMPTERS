@@ -165,25 +165,33 @@ function formatImage(url){
 
 if(!url) return ""
 
-if(url.includes("drive.google.com")){
+let id=""
 
-try{
+/* format: file/d/ID */
 
-const id=url.split("/d/")[1].split("/")[0]
+if(url.includes("/file/d/")){
+id=url.split("/file/d/")[1].split("/")[0]
+}
 
-return `https://drive.google.com/uc?export=view&id=${id}`
+/* format: open?id=ID */
 
-}catch{
+else if(url.includes("id=")){
+id=url.split("id=")[1].split("&")[0]
+}
+
+/* already formatted */
+
+else if(url.includes("uc?export=view")){
+return url
+}
+
+if(id){
+return "https://drive.google.com/uc?export=view&id="+id
+}
 
 return url
 
 }
-
-}
-
-return url
-}
-
 /* LOAD DATA */
 
 fetch(API)
