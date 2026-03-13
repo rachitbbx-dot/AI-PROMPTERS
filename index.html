@@ -34,7 +34,7 @@ overflow-y:auto;
 
 }
 
-/* animated background */
+/* gradient background */
 
 body::before{
 
@@ -51,21 +51,7 @@ radial-gradient(circle at 40% 80%, #4f46e5, transparent 40%);
 filter:blur(120px);
 opacity:.9;
 
-animation:bgmove 16s infinite alternate ease-in-out;
-
 z-index:-1;
-
-}
-
-@keyframes bgmove{
-
-0%{
-transform:translateY(-40px) scale(1);
-}
-
-100%{
-transform:translateY(40px) scale(1.1);
-}
 
 }
 
@@ -147,11 +133,9 @@ letter-spacing:1px;
 
 }
 
-/* glass buttons */
+/* buttons */
 
 .glass{
-
-position:relative;
 
 display:block;
 
@@ -167,17 +151,13 @@ border:1px solid rgba(255,255,255,.35);
 
 background:rgba(255,255,255,.08);
 
-backdrop-filter:blur(30px);
-
 font-size:17px;
 
 color:white;
 
 cursor:pointer;
 
-transition:all .2s ease;
-
-overflow:hidden;
+transition:.2s;
 
 box-shadow:
 0 12px 30px rgba(0,0,0,.6),
@@ -185,94 +165,9 @@ inset 0 1px 0 rgba(255,255,255,.2);
 
 }
 
-/* hover only on desktop */
-
-@media (hover: hover) and (pointer: fine){
-
-.glass:hover{
-
-transform:translateY(-3px);
-
-box-shadow:
-0 20px 50px rgba(0,0,0,.8),
-0 0 25px rgba(79,70,229,.7);
-
-}
-
-.glass:hover::after{
-
-animation:sweep .9s;
-
-}
-
-}
-
-/* press animation */
-
 .glass:active{
 
 transform:scale(.95);
-
-box-shadow:0 4px 12px rgba(0,0,0,.5);
-
-}
-
-/* light sweep */
-
-.glass::after{
-
-content:"";
-
-position:absolute;
-
-top:0;
-left:-150%;
-
-width:60%;
-height:100%;
-
-background:linear-gradient(
-120deg,
-transparent,
-rgba(255,255,255,.6),
-transparent
-);
-
-transform:skewX(-25deg);
-
-}
-
-@keyframes sweep{
-
-0%{left:-150%}
-100%{left:180%}
-
-}
-
-/* ripple */
-
-.ripple{
-
-position:absolute;
-
-border-radius:50%;
-
-background:rgba(255,255,255,.5);
-
-transform:scale(0);
-
-animation:ripple .6s linear;
-
-pointer-events:none;
-
-}
-
-@keyframes ripple{
-
-to{
-transform:scale(4);
-opacity:0;
-}
 
 }
 
@@ -295,9 +190,11 @@ font-size:12px;
 opacity:.6;
 
 }
+
 #secretAdmin{
 touch-action: manipulation;
 }
+
 </style>
 
 </head>
@@ -316,37 +213,41 @@ touch-action: manipulation;
 THE BEST AI PROMPT PROVIDER
 </div>
 
-<button class="glass"><span class="btntext">COUPLE IMAGES</span></button>
-<button class="glass"><span class="btntext">MALE PIC</span></button>
-<button class="glass"><span class="btntext">FEMALE PIC</span></button>
-<button class="glass"><span class="btntext">PFP MATERIAL</span></button>
+<button class="glass" onclick="openGallery()">
+<span class="btntext">PROMPT GALLERY</span>
+</button>
+
+<button class="glass" onclick="openTools()">
+<span class="btntext">BEST AI TOOLS</span>
+</button>
+
+<button class="glass" onclick="openSponsors()">
+<span class="btntext">SPONSORS</span>
+</button>
+
+<div class="footer">
+New prompts added daily
 </div>
 
 </div>
 
 <script>
 
-document.querySelectorAll(".glass").forEach(btn=>{
+/* page redirects */
 
-btn.addEventListener("click",function(e){
+function openGallery(){
+window.location.href="gallery.html"
+}
 
-const circle=document.createElement("span")
+function openTools(){
+window.location.href="tools.html"
+}
 
-const rect=this.getBoundingClientRect()
+function openSponsors(){
+window.location.href="sponsors.html"
+}
 
-circle.style.left=e.clientX-rect.left+"px"
-circle.style.top=e.clientY-rect.top+"px"
-
-circle.classList.add("ripple")
-
-this.appendChild(circle)
-
-setTimeout(()=>circle.remove(),600)
-
-})
-
-})
-/* secret admin unlock (mobile + haptic) */
+/* secret admin unlock */
 
 let tapCount = 0;
 
@@ -362,17 +263,12 @@ tapCount = 0
 
 if(tapCount >= 5){
 
-/* phone vibration */
-if(navigator.vibrate){
-navigator.vibrate(60);
-}
-
 window.location.href="admin.html";
 
 }
 
 });
-  
+
 </script>
 
 </body>
