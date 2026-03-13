@@ -12,6 +12,7 @@ body{
   padding:20px;
   max-width:800px;
   margin:auto;
+  position:relative;
 }
 body::before{
   content:"";
@@ -24,6 +25,38 @@ body::before{
   filter:blur(120px);
   opacity:.9;
   z-index:-1;
+}
+
+/* Unlock overlay */
+#unlockOverlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.75);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  z-index:1000;
+  backdrop-filter: blur(4px);
+  border-radius:15px;
+}
+#progressContainer{
+  width:300px;
+  height:20px;
+  background:rgba(255,255,255,0.1);
+  border-radius:15px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 0 10px rgba(255,255,255,0.2) inset;
+  overflow:hidden;
+  position:relative;
+  margin-top:10px;
+}
+#progress{
+  width:0%;
+  height:100%;
+  background:linear-gradient(90deg, #fffa, #4f46e5);
+  box-shadow: 0 0 12px #4f46e5, 0 0 20px #4f46e5 inset;
+  border-radius:15px;
 }
 img#promptImage{
   width:100%;
@@ -64,11 +97,18 @@ button:hover{
 </head>
 <body>
 
-<img id="promptImage" src="" alt="Prompt Image">
-<h1 id="title">Loading...</h1>
-<button id="copyBtn">Copy Prompt</button>
-<div id="content"></div>
-<div class="loader" id="loader">Loading...</div>
+<!-- Unlock overlay -->
+<div id="unlockOverlay">
+  <div>Unlocking prompt...</div>
+  <div id="progressContainer"><div id="progress"></div></div>
+</div>
+
+<!-- Prompt content -->
+<img id="promptImage" src="" alt="Prompt Image" style="display:none;">
+<h1 id="title" style="display:none;">Loading...</h1>
+<button id="copyBtn" style="display:none;">Copy Prompt</button>
+<div id="content" style="display:none;"></div>
+<div class="loader" id="loader" style="display:none;">Loading...</div>
 
 <script>
 const API = "https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec";
@@ -83,8 +123,10 @@ const contentEl = document.getElementById("content");
 const loaderEl = document.getElementById("loader");
 const copyBtn = document.getElementById("copyBtn");
 const imgEl = document.getElementById("promptImage");
+const overlay = document.getElementById("unlockOverlay");
+const progressEl = document.getElementById("progress");
 
-// Helper to format Google Drive links
+// Format Google Drive images
 function formatImage(url){
   if(!url) return "";
   let id="";
@@ -100,38 +142,64 @@ function formatImage(url){
 }
 
 // Fetch prompts
+let promptData;
 fetch(API)
-  .then(res => res.json())
-  .then(data => {
-    loaderEl.style.display = "none";
-    if (!data[id]) {
-      titleEl.textContent = "Prompt not found";
-      contentEl.textContent = "";
-      copyBtn.style.display = "none";
-      imgEl.style.display = "none";
-      return;
-    }
-    const prompt = data[id];
-    titleEl.textContent = prompt["Prompt Title"] || "Untitled";
-    contentEl.textContent = prompt["Prompt Text"] || "";
-    imgEl.src = formatImage(prompt["Image File"]) || "";
-    if(!imgEl.src) imgEl.style.display="none";
+  .then(res=>res.json())
+  .then(data=>{
+    promptData = data[id];
+    startUnlock();
   })
-  .catch(err => {
-    loaderEl.style.display = "none";
-    titleEl.textContent = "Error loading prompt";
-    contentEl.textContent = "";
-    copyBtn.style.display = "none";
-    imgEl.style.display="none";
+  .catch(err=>{
+    overlay.innerHTML = "Error loading prompt";
     console.error(err);
   });
 
-// Copy button functionality
-copyBtn.addEventListener("click", () => {
-  const text = contentEl.textContent;
-  navigator.clipboard.writeText(text).then(() => {
+// Unlock mechanic (5 seconds, stuttering)
+function startUnlock(){
+  let width = 0;
+  const target = 100;
+  const duration = 5000; // 5 seconds
+  const interval = 50; // update every 50ms
+  const steps = duration / interval;
+  let currentStep = 0;
+
+  const progressInterval = setInterval(()=>{
+    // Randomized progress increment (50% - 150% of normal step)
+    const randomIncrement = (target/steps) * (0.5 + Math.random());
+    width += randomIncrement;
+    if(width > target) width = target;
+    progressEl.style.width = width + "%";
+
+    currentStep++;
+    if(width >= target || currentStep >= steps*2){
+      clearInterval(progressInterval);
+      showPrompt();
+    }
+  }, interval);
+}
+
+// Show prompt after unlock
+function showPrompt(){
+  overlay.style.display = "none";
+  if(!promptData){
+    titleEl.textContent = "Prompt not found";
+    return;
+  }
+  titleEl.style.display = "block";
+  contentEl.style.display = "block";
+  copyBtn.style.display = "inline-block";
+  imgEl.style.display = promptData["Image File"] ? "block" : "none";
+
+  titleEl.textContent = promptData["Prompt Title"] || "Untitled";
+  contentEl.textContent = promptData["Prompt Text"] || "";
+  imgEl.src = formatImage(promptData["Image File"]) || "";
+}
+
+// Copy button
+copyBtn.addEventListener("click", ()=>{
+  navigator.clipboard.writeText(contentEl.textContent).then(()=>{
     copyBtn.textContent = "Copied!";
-    setTimeout(() => copyBtn.textContent = "Copy Prompt", 1500);
+    setTimeout(()=> copyBtn.textContent = "Copy Prompt",1500);
   });
 });
 </script>
