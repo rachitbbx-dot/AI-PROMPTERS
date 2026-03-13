@@ -22,6 +22,8 @@ color:white;
 padding:20px;
 }
 
+/* background */
+
 body::before{
 content:"";
 position:fixed;
@@ -29,61 +31,77 @@ inset:0;
 
 background:
 radial-gradient(circle at 20% 30%, #4f46e5, transparent 45%),
-radial-gradient(circle at 80% 70%, #06b6d4, transparent 45%),
-radial-gradient(circle at 40% 80%, #4f46e5, transparent 40%);
+radial-gradient(circle at 80% 70%, #06b6d4, transparent 45%);
 
 filter:blur(120px);
 opacity:.9;
 z-index:-1;
 }
 
+/* container */
+
 .container{
-max-width:900px;
+max-width:700px;
 margin:auto;
 }
+
+/* back button */
 
 .back{
 margin-bottom:20px;
 cursor:pointer;
+opacity:.7;
 }
 
-.image{
-width:100%;
+/* card */
+
+.card{
+background:rgba(255,255,255,.08);
 border-radius:20px;
-margin-bottom:20px;
+overflow:hidden;
+border:1px solid rgba(255,255,255,.2);
+}
+
+.card img{
+width:100%;
+display:block;
 }
 
 .title{
-font-size:22px;
-margin-bottom:15px;
+padding:16px;
+font-size:20px;
+font-weight:600;
 }
 
-.unlock{
-padding:12px 20px;
-border:none;
+/* unlock */
+
+.unlockBox{
+padding:20px;
+text-align:center;
+}
+
+button{
+padding:12px 24px;
 border-radius:30px;
+border:none;
 background:#4f46e5;
 color:white;
 cursor:pointer;
-margin-bottom:15px;
+font-size:15px;
 }
+
+/* prompt text */
 
 .prompt{
 display:none;
-background:rgba(255,255,255,.08);
 padding:20px;
-border-radius:20px;
-margin-bottom:10px;
+white-space:pre-wrap;
+line-height:1.6;
+background:rgba(0,0,0,.3);
 }
 
-.copy{
-display:none;
-padding:10px 20px;
-border:none;
-border-radius:30px;
-background:#06b6d4;
-color:white;
-cursor:pointer;
+.copyBtn{
+margin:20px;
 }
 
 </style>
@@ -96,15 +114,25 @@ cursor:pointer;
 
 <div class="back" onclick="history.back()">← Back</div>
 
-<img id="image" class="image">
+<div class="card">
 
-<div id="title" class="title"></div>
+<img id="image">
 
-<button class="unlock" onclick="unlockPrompt()">Unlock Prompt</button>
+<div class="title" id="title"></div>
 
-<div id="prompt" class="prompt"></div>
+<div class="unlockBox" id="unlockBox">
 
-<button id="copyBtn" class="copy" onclick="copyPrompt()">Copy Prompt</button>
+<button onclick="unlock()">Unlock Prompt</button>
+
+</div>
+
+<div class="prompt" id="promptText"></div>
+
+<button class="copyBtn" id="copyBtn" onclick="copyPrompt()" style="display:none">
+Copy Prompt
+</button>
+
+</div>
 
 </div>
 
@@ -112,14 +140,15 @@ cursor:pointer;
 
 const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec"
 
-const params=new URLSearchParams(window.location.search)
+/* GET ID FROM URL */
 
+const params=new URLSearchParams(window.location.search)
 const id=params.get("id")
 
-let prompts=[]
-let current
+let promptData
 
-/* FIX DRIVE IMAGES */
+
+/* FIX GOOGLE DRIVE IMAGE */
 
 function formatImage(url){
 
@@ -127,28 +156,12 @@ if(!url) return ""
 
 let id=""
 
-/* open?id= format */
-
 if(url.includes("open?id=")){
 id=url.split("open?id=")[1]
 }
 
-/* file/d/ format */
-
 else if(url.includes("/file/d/")){
 id=url.split("/file/d/")[1].split("/")[0]
-}
-
-/* uc?id= format */
-
-else if(url.includes("uc?id=")){
-id=url.split("uc?id=")[1].split("&")[0]
-}
-
-/* already correct */
-
-else if(url.includes("uc?export=view")){
-return url
 }
 
 if(id){
@@ -157,36 +170,47 @@ return "https://drive.google.com/uc?export=view&id="+id
 
 return url
 }
+
+
+/* LOAD PROMPT */
+
 fetch(API)
 .then(res=>res.json())
 .then(data=>{
 
-prompts=data.reverse()
+promptData=data.reverse()[id]
 
-current=prompts[id]
+document.getElementById("title").innerText=promptData["Prompt Title"]
 
-document.getElementById("image").setAttribute("referrerpolicy","no-referrer")
-document.getElementById("image").src=current["Image File"]
-
-document.getElementById("title").textContent=current["Prompt Title"]
-
-document.getElementById("prompt").textContent=current["Prompt Text"]
+document.getElementById("image").src=
+formatImage(promptData["Image File"])
 
 })
 
-function unlockPrompt(){
 
-document.getElementById("prompt").style.display="block"
+/* UNLOCK */
 
-document.getElementById("copyBtn").style.display="inline-block"
+function unlock(){
+
+document.getElementById("unlockBox").style.display="none"
+
+document.getElementById("promptText").style.display="block"
+
+document.getElementById("copyBtn").style.display="block"
+
+document.getElementById("promptText").innerText=
+promptData["Prompt Text"]
 
 }
 
+
+/* COPY */
+
 function copyPrompt(){
 
-navigator.clipboard.writeText(current["Prompt Text"])
+navigator.clipboard.writeText(promptData["Prompt Text"])
 
-alert("Prompt copied")
+alert("Prompt copied!")
 
 }
 
