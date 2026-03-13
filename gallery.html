@@ -167,19 +167,25 @@ if(!url) return ""
 
 let id=""
 
-/* format: file/d/ID */
+/* open?id= format */
 
-if(url.includes("/file/d/")){
+if(url.includes("open?id=")){
+id=url.split("open?id=")[1]
+}
+
+/* file/d/ format */
+
+else if(url.includes("/file/d/")){
 id=url.split("/file/d/")[1].split("/")[0]
 }
 
-/* format: open?id=ID */
+/* uc?id= format */
 
-else if(url.includes("id=")){
-id=url.split("id=")[1].split("&")[0]
+else if(url.includes("uc?id=")){
+id=url.split("uc?id=")[1].split("&")[0]
 }
 
-/* already formatted */
+/* already correct */
 
 else if(url.includes("uc?export=view")){
 return url
@@ -190,7 +196,6 @@ return "https://drive.google.com/uc?export=view&id="+id
 }
 
 return url
-
 }
 /* LOAD DATA */
 
