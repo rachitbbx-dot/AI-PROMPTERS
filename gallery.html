@@ -1,28 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Prompt Gallery</title>
-
 <style>
-
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
   font-family:system-ui;
 }
-
 body{
   background:#0f0f0f;
   color:white;
   padding:20px;
 }
-
-/* background */
 body::before{
   content:"";
   position:fixed;
@@ -35,20 +28,16 @@ body::before{
   opacity:.9;
   z-index:-1;
 }
-
-/* header */
 .header{
   max-width:1000px;
   margin:auto;
   margin-bottom:25px;
 }
-
 .search-wrapper{
   position: relative;
   width: 100%;
   margin-bottom: 14px;
 }
-
 .search-wrapper input{
   width: 100%;
   padding:14px 45px 14px 14px;
@@ -57,7 +46,6 @@ body::before{
   background:rgba(255,255,255,.1);
   color:white;
 }
-
 .search-wrapper svg{
   position:absolute;
   right:14px;
@@ -68,15 +56,12 @@ body::before{
   fill:white;
   opacity:0.7;
 }
-
-/* controls */
 .controls{
   display:flex;
   gap:10px;
   flex-wrap:wrap;
   margin-bottom:20px;
 }
-
 select{
   padding:10px 14px;
   border-radius:20px;
@@ -84,21 +69,17 @@ select{
   background:rgba(255,255,255,.1);
   color:white;
 }
-
-/* gallery */
 .gallery{
   max-width:1000px;
   margin:auto;
   column-count:3;
   column-gap:16px;
 }
-
 @media(max-width:800px){
   .gallery{
     column-count:2;
   }
 }
-
 .card{
   break-inside:avoid;
   margin-bottom:16px;
@@ -109,170 +90,148 @@ select{
   cursor:pointer;
   transition: transform 0.2s;
 }
-
 .card:hover{
   transform: scale(1.03);
 }
-
 .card img{
   width:100%;
   display:block;
 }
-
 .cardTitle{
   padding:10px;
   font-size:14px;
 }
-
 .loader{
   text-align:center;
   margin:20px;
   opacity:.6;
 }
-
 </style>
-
 </head>
-
 <body>
 
 <div class="header">
-
-<div class="search-wrapper">
-  <input id="search" placeholder="Search prompts...">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-    <path d="M21 20l-5.8-5.8a7 7 0 1 0-1.4 1.4L20 21zM10 16a6 6 0 1 1 0-12 6 6 0 0 1 0 12z"/>
-  </svg>
-</div>
-
-<div class="controls">
-  <select id="category">
-    <option value="all">All Categories</option>
-    <option value="couple">Couple</option>
-    <option value="male">Male</option>
-    <option value="female">Female</option>
-    <option value="unisex">Unisex</option>
-    <option value="pfp">PFP</option>
-  </select>
-
-  <select id="sort">
-    <option value="new">Newest</option>
-    <option value="old">Oldest</option>
-    <option value="random">Random</option>
-  </select>
-</div>
-
+  <div class="search-wrapper">
+    <input id="search" placeholder="Search prompts...">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M21 20l-5.8-5.8a7 7 0 1 0-1.4 1.4L20 21zM10 16a6 6 0 1 1 0-12 6 6 0 0 1 0 12z"/>
+    </svg>
+  </div>
+  <div class="controls">
+    <select id="category">
+      <option value="all">All Categories</option>
+      <option value="couple">Couple</option>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+      <option value="unisex">Unisex</option>
+      <option value="pfp">PFP</option>
+    </select>
+    <select id="sort">
+      <option value="new">Newest</option>
+      <option value="old">Oldest</option>
+      <option value="random">Random</option>
+    </select>
+  </div>
 </div>
 
 <div id="gallery" class="gallery"></div>
-
 <div class="loader">Loading...</div>
 
 <script>
-
-const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec"
+const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec";
 
 let prompts=[]
 let filtered=[]
 let loaded=0
 const batch=12
 
-/* GOOGLE DRIVE IMAGE FIX */
 function formatImage(url){
-  if(!url) return ""
-  let id=""
+  if(!url) return "";
+  let id="";
   if(url.includes("open?id=")){
-    id=url.split("open?id=")[1]
+    id=url.split("open?id=")[1];
   } else if(url.includes("/file/d/")){
-    id=url.split("/file/d/")[1].split("/")[0]
+    id=url.split("/file/d/")[1].split("/")[0];
   }
   if(id){
-    return "https://lh3.googleusercontent.com/d/"+id
+    return "https://lh3.googleusercontent.com/d/"+id;
   }
-  return url
+  return url;
 }
 
-/* FETCH DATA */
 fetch(API)
-.then(res=>res.json())
-.then(data=>{
-  prompts=data
-  applyFilters()
-})
+  .then(res=>res.json())
+  .then(data=>{
+    prompts=data;
+    applyFilters();
+  });
 
 function renderMore(){
-  const gallery=document.getElementById("gallery")
-  const next=filtered.slice(loaded,loaded+batch)
-  next.forEach((p,index)=>{
-    const realIndex=loaded+index
-    const img=formatImage(p["Image File"])
-    const card=document.createElement("div")
-    card.className="card"
-    card.onclick=()=>{ window.location.href=`prompt.html?id=${realIndex}` }
-    card.innerHTML=`
+  const gallery=document.getElementById("gallery");
+  const next=filtered.slice(loaded,loaded+batch);
+  
+  next.forEach((p)=>{
+    const realIndex = prompts.indexOf(p); // ✅ Correct index in original array
+    const img = formatImage(p["Image File"]);
+    const card = document.createElement("div");
+    card.className = "card";
+    card.onclick = () => { window.location.href=`prompt.html?id=${realIndex}` };
+    card.innerHTML = `
       <img src="${img}">
       <div class="cardTitle">${p["Prompt Title"]}</div>
-    `
-    gallery.appendChild(card)
-  })
-  loaded+=batch
+    `;
+    gallery.appendChild(card);
+  });
+  
+  loaded += batch;
 }
 
-/* INFINITE SCROLL */
 window.addEventListener("scroll",()=>{
-  if(window.innerHeight+window.scrollY>=document.body.offsetHeight-400){
-    renderMore()
+  if(window.innerHeight + window.scrollY >= document.body.offsetHeight - 400){
+    renderMore();
   }
-})
+});
 
-/* SEARCH */
-document.getElementById("search").addEventListener("input",e=>{
-  const term=e.target.value.toLowerCase()
-  filtered=prompts.filter(p=>
+document.getElementById("search").addEventListener("input", e=>{
+  const term = e.target.value.toLowerCase();
+  filtered = prompts.filter(p=>
     (p["Prompt Title"]||"").toLowerCase().includes(term) ||
     (p["Tags"]||"").toLowerCase().includes(term)
-  )
-  reset()
-})
+  );
+  reset();
+});
 
-/* FILTER + SORT */
-document.getElementById("category").addEventListener("change",applyFilters)
-document.getElementById("sort").addEventListener("change",applyFilters)
+document.getElementById("category").addEventListener("change", applyFilters);
+document.getElementById("sort").addEventListener("change", applyFilters);
 
 function applyFilters(){
-  let list=[...prompts]
-  const category=document.getElementById("category").value
-  const sort=document.getElementById("sort").value
+  let list=[...prompts];
+  const category=document.getElementById("category").value;
+  const sort=document.getElementById("sort").value;
 
   if(category!=="all"){
-    list=list.filter(p=>
-      (p["Category"]||"").toLowerCase()===category
-    )
+    list=list.filter(p=>(p["Category"]||"").toLowerCase()===category);
   }
 
   if(sort==="new"){
-    list.sort((a,b)=>new Date(b.Timestamp)-new Date(a.Timestamp))
+    list.sort((a,b)=>new Date(b.Timestamp)-new Date(a.Timestamp));
   }
-
   if(sort==="old"){
-    list.sort((a,b)=>new Date(a.Timestamp)-new Date(b.Timestamp))
+    list.sort((a,b)=>new Date(a.Timestamp)-new Date(b.Timestamp));
   }
-
   if(sort==="random"){
-    list.sort(()=>Math.random()-0.5)
+    list.sort(()=>Math.random()-0.5);
   }
 
-  filtered=list
-  reset()
+  filtered = list;
+  reset();
 }
 
-/* RESET */
 function reset(){
-  document.getElementById("gallery").innerHTML=""
-  loaded=0
-  renderMore()
+  document.getElementById("gallery").innerHTML="";
+  loaded=0;
+  renderMore();
 }
-
 </script>
 
 </body>
