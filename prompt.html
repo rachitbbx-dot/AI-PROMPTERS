@@ -165,7 +165,8 @@ prompts=data.reverse()
 
 current=prompts[id]
 
-document.getElementById("image").src=formatImage(current["Image File"])
+document.getElementById("image").setAttribute("referrerpolicy","no-referrer")
+document.getElementById("image").src=current["Image File"]
 
 document.getElementById("title").textContent=current["Prompt Title"]
 
