@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Prompt Gallery</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:system-ui;
+}
+
+body{
+background:#0f0f0f;
+color:white;
+padding:20px;
+}
+
+/* gradient */
+
+body::before{
+content:"";
+position:fixed;
+inset:0;
+
+background:
+radial-gradient(circle at 20% 30%, #4f46e5, transparent 45%),
+radial-gradient(circle at 80% 70%, #06b6d4, transparent 45%),
+radial-gradient(circle at 40% 80%, #4f46e5, transparent 40%);
+
+filter:blur(120px);
+opacity:.9;
+z-index:-1;
+}
+
+/* header */
+
+.header{
+max-width:900px;
+margin:auto;
+margin-bottom:25px;
+}
+
+/* search */
+
+.search{
+width:100%;
+padding:14px;
+border-radius:20px;
+border:none;
+background:rgba(255,255,255,.1);
+color:white;
+margin-bottom:14px;
+}
+
+/* controls */
+
+.controls{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-bottom:20px;
+}
+
+select{
+padding:10px 14px;
+border-radius:20px;
+border:none;
+background:rgba(255,255,255,.1);
+color:white;
+}
+
+/* gallery */
+
+.gallery{
+max-width:900px;
+margin:auto;
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+gap:18px;
+}
+
+/* card */
+
+.card{
+background:rgba(255,255,255,.08);
+border-radius:20px;
+overflow:hidden;
+border:1px solid rgba(255,255,255,.2);
+cursor:pointer;
+transition:.2s;
+}
+
+.card:hover{
+transform:translateY(-3px);
+}
+
+/* image */
+
+.card img{
+width:100%;
+height:200px;
+object-fit:cover;
+}
+
+/* text */
+
+.cardContent{
+padding:14px;
+}
+
+.title{
+font-size:15px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<input
+class="search"
+id="search"
+placeholder="Search prompts..."
+>
+
+<div class="controls">
+
+<select id="category">
+<option value="all">All Categories</option>
+<option value="couple">Couple</option>
+<option value="male">Male</option>
+<option value="female">Female</option>
+<option value="unisex">Unisex</option>
+<option value="pfp">PFP</option>
+</select>
+
+<select id="sort">
+<option value="new">Newest</option>
+<option value="old">Oldest</option>
+<option value="random">Random</option>
+<option value="popular">Popular</option>
+</select>
+
+</div>
+
+</div>
+
+<div class="gallery" id="gallery"></div>
+
+<script>
+
+const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec"
+
+let prompts=[]
+let filtered=[]
+
+/* LOAD DATA */
+
+fetch(API)
+.then(res=>res.json())
+.then(data=>{
+
+prompts=data.reverse()
+
+filtered=[...prompts]
+
+render(filtered)
+
+})
+
+/* RENDER */
+
+function render(list){
+
+const gallery=document.getElementById("gallery")
+
+gallery.innerHTML=""
+
+list.forEach((p,index)=>{
+
+const card=document.createElement("div")
+
+card.className="card"
+
+card.onclick=()=>{
+
+window.location.href=`prompt.html?id=${index}`
+
+}
+
+card.innerHTML=`
+
+<img src="${p['Image File']}">
+
+<div class="cardContent">
+
+<div class="title">${p['Prompt Title']}</div>
+
+</div>
+
+`
+
+gallery.appendChild(card)
+
+})
+
+}
+
+/* SEARCH */
+
+document.getElementById("search").addEventListener("input",e=>{
+
+const term=e.target.value.toLowerCase()
+
+filtered=prompts.filter(p=>
+
+p['Prompt Title'].toLowerCase().includes(term) ||
+p['Tags'].toLowerCase().includes(term)
+
+)
+
+applyFilters()
+
+})
+
+/* CATEGORY FILTER */
+
+document.getElementById("category").addEventListener("change",applyFilters)
+
+/* SORT FILTER */
+
+document.getElementById("sort").addEventListener("change",applyFilters)
+
+function applyFilters(){
+
+let list=[...filtered]
+
+const category=document.getElementById("category").value
+
+const sort=document.getElementById("sort").value
+
+/* CATEGORY */
+
+if(category!=="all"){
+
+list=list.filter(p=>
+p['Category'].toLowerCase()===category
+)
+
+}
+
+/* SORT */
+
+if(sort==="new"){
+
+list=list.reverse()
+
+}
+
+if(sort==="old"){
+
+list=list.sort((a,b)=>0)
+
+}
+
+if(sort==="random"){
+
+list=list.sort(()=>Math.random()-0.5)
+
+}
+
+if(sort==="popular"){
+
+/* placeholder for later */
+list=list
+
+}
+
+render(list)
+
+}
+
+</script>
+
+</body>
+</html>
