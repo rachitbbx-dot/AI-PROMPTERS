@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Dashboard</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:system-ui;
+}
+
+body{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+background:#0f0f0f;
+color:white;
+}
+
+/* animated background */
+
+body::before{
+
+content:"";
+
+position:fixed;
+inset:0;
+
+background:
+radial-gradient(circle at 20% 30%, #4f46e5, transparent 45%),
+radial-gradient(circle at 80% 70%, #06b6d4, transparent 45%);
+
+filter:blur(120px);
+opacity:.9;
+z-index:-1;
+
+}
+
+/* container */
+
+.container{
+
+width:100%;
+max-width:420px;
+
+text-align:center;
+
+background:rgba(255,255,255,0.08);
+
+backdrop-filter:blur(50px);
+
+border:1px solid rgba(255,255,255,0.2);
+
+border-radius:30px;
+
+padding:40px 26px;
+
+box-shadow:
+0 40px 100px rgba(0,0,0,.6),
+inset 0 1px 0 rgba(255,255,255,.25);
+
+}
+
+/* title */
+
+h1{
+font-size:26px;
+margin-bottom:10px;
+}
+
+/* stats */
+
+.stat{
+font-size:14px;
+opacity:.7;
+margin-bottom:30px;
+}
+
+/* buttons */
+
+.glass{
+
+display:block;
+
+margin:14px auto;
+
+padding:18px;
+
+width:100%;
+
+border-radius:60px;
+
+border:1px solid rgba(255,255,255,.35);
+
+background:rgba(255,255,255,.08);
+
+font-size:16px;
+
+color:white;
+
+cursor:pointer;
+
+transition:.2s;
+
+}
+
+.glass:hover{
+transform:translateY(-2px);
+}
+
+.glass:active{
+transform:scale(.95);
+}
+
+.logout{
+
+margin-top:20px;
+font-size:13px;
+opacity:.6;
+cursor:pointer;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Admin Dashboard</h1>
+
+<div class="stat">
+Total Prompts: <span id="promptCount">Loading...</span>
+</div>
+
+<button class="glass" onclick="location.href='upload.html'">
+Upload New Prompt
+</button>
+
+<button class="glass" onclick="window.open('https://docs.google.com/spreadsheets/d/1Hp4lxp8PK-UWNzAMPj1c_jb_99BiIk0YTmU88D1pOiY')">
+Open Prompt Database
+</button>
+
+<button class="glass" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSe9pwQgcFEtfZZJGqzLo9nRGdzkIRduJ8fTN4MBk6EdRrJp4g/viewanalytics')">
+View Submissions
+</button>
+
+<button class="glass">
+Tools (Coming Soon)
+</button>
+
+<div class="logout" onclick="logout()">
+Logout
+</div>
+
+</div>
+
+<script>
+
+/* --- ADMIN PROTECTION --- */
+
+if(sessionStorage.getItem("admin") !== "true"){
+window.location.href="index.html"
+}
+
+/* --- PROMPT COUNTER --- */
+
+fetch("YOUR_JSON_ENDPOINT_URL")
+.then(res => res.json())
+.then(data=>{
+document.getElementById("promptCount").textContent = data.length
+})
+.catch(()=>{
+document.getElementById("promptCount").textContent = "Error"
+})
+
+/* --- LOGOUT --- */
+
+function logout(){
+
+sessionStorage.removeItem("admin")
+
+window.location.href="index.html"
+
+}
+
+</script>
+
+</body>
+</html>
