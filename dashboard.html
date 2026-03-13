@@ -17,72 +17,67 @@ font-family:system-ui;
 }
 
 body{
+
 min-height:100vh;
+
 display:flex;
 justify-content:center;
 align-items:center;
+
 padding:20px;
-background:#0f0f0f;
-color:white;
-}
-
-/* animated background */
-
-body::before{
-
-content:"";
-
-position:fixed;
-inset:0;
 
 background:
-radial-gradient(circle at 20% 30%, #4f46e5, transparent 45%),
-radial-gradient(circle at 80% 70%, #06b6d4, transparent 45%);
+radial-gradient(circle at 20% 30%, #4f46e5, transparent 40%),
+radial-gradient(circle at 80% 70%, #06b6d4, transparent 40%),
+#0f0f0f;
 
-filter:blur(120px);
-opacity:.9;
-z-index:-1;
+color:white;
 
 }
 
-/* container */
+/* glass container */
 
 .container{
 
 width:100%;
-max-width:420px;
+max-width:380px;
 
 text-align:center;
 
 background:rgba(255,255,255,0.08);
 
-backdrop-filter:blur(50px);
+backdrop-filter:blur(40px);
 
 border:1px solid rgba(255,255,255,0.2);
 
-border-radius:30px;
+border-radius:32px;
 
-padding:40px 26px;
+padding:36px 24px;
 
 box-shadow:
-0 40px 100px rgba(0,0,0,.6),
-inset 0 1px 0 rgba(255,255,255,.25);
+0 30px 80px rgba(0,0,0,0.5),
+inset 0 1px 0 rgba(255,255,255,0.25);
 
 }
 
 /* title */
 
 h1{
-font-size:26px;
+
 margin-bottom:10px;
+
 }
 
 /* stats */
 
-.stat{
+.stats{
+
 font-size:14px;
-opacity:.7;
-margin-bottom:30px;
+
+opacity:.75;
+
+margin-bottom:26px;
+
 }
 
 /* buttons */
@@ -91,21 +86,21 @@ margin-bottom:30px;
 
 display:block;
 
-margin:14px auto;
+margin:12px auto;
 
 padding:18px;
 
 width:100%;
 
-border-radius:60px;
+border-radius:40px;
 
 border:1px solid rgba(255,255,255,.35);
 
 background:rgba(255,255,255,.08);
 
-font-size:16px;
-
 color:white;
+
+font-size:16px;
 
 cursor:pointer;
 
@@ -113,19 +108,22 @@ transition:.2s;
 
 }
 
-.glass:hover{
-transform:translateY(-2px);
+.glass:active{
+
+transform:scale(.95);
+
 }
 
-.glass:active{
-transform:scale(.95);
-}
+/* logout */
 
 .logout{
 
-margin-top:20px;
+margin-top:16px;
+
 font-size:13px;
+
 opacity:.6;
+
 cursor:pointer;
 
 }
@@ -140,24 +138,24 @@ cursor:pointer;
 
 <h1>Admin Dashboard</h1>
 
-<div class="stat">
-Total Prompts: <span id="promptCount">Loading...</span>
+<div class="stats">
+Total Prompts: <span id="count">Loading...</span>
 </div>
 
-<button class="glass" onclick="location.href='upload.html'">
-Upload New Prompt
+<button class="glass" onclick="uploadPrompt()">
+Upload Prompt
 </button>
 
-<button class="glass" onclick="window.open('https://docs.google.com/spreadsheets/d/1Hp4lxp8PK-UWNzAMPj1c_jb_99BiIk0YTmU88D1pOiY')">
-Open Prompt Database
+<button class="glass" onclick="openSheet()">
+Prompt Database
 </button>
 
-<button class="glass" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSe9pwQgcFEtfZZJGqzLo9nRGdzkIRduJ8fTN4MBk6EdRrJp4g/viewanalytics')">
-View Submissions
+<button class="glass" onclick="openResponses()">
+View Form Responses
 </button>
 
 <button class="glass">
-Tools (Coming Soon)
+Admin Tools (coming later)
 </button>
 
 <div class="logout" onclick="logout()">
@@ -168,24 +166,51 @@ Logout
 
 <script>
 
-/* --- ADMIN PROTECTION --- */
+/* PROTECT DASHBOARD */
 
 if(sessionStorage.getItem("admin") !== "true"){
 window.location.href="index.html"
 }
 
-/* --- PROMPT COUNTER --- */
+/* COUNT PROMPTS */
 
-fetch("YOUR_JSON_ENDPOINT_URL")
-.then(res => res.json())
+fetch("https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec")
+.then(res=>res.json())
 .then(data=>{
-document.getElementById("promptCount").textContent = data.length
+document.getElementById("count").textContent=data.length
 })
 .catch(()=>{
-document.getElementById("promptCount").textContent = "Error"
+document.getElementById("count").textContent="error"
 })
 
-/* --- LOGOUT --- */
+/* BUTTON ACTIONS */
+
+function uploadPrompt(){
+
+window.open(
+"https://docs.google.com/forms/d/e/1FAIpQLSe9pwQgcFEtfZZJGqzLo9nRGdzkIRduJ8fTN4MBk6EdRrJp4g/viewform",
+"_blank"
+)
+
+}
+
+function openSheet(){
+
+window.open(
+"https://docs.google.com/spreadsheets/d/1Hp4lxp8PK-UWNzAMPj1c_jb_99BiIk0YTmU88D1pOiY",
+"_blank"
+)
+
+}
+
+function openResponses(){
+
+window.open(
+"https://docs.google.com/forms/d/e/1FAIpQLSe9pwQgcFEtfZZJGqzLo9nRGdzkIRduJ8fTN4MBk6EdRrJp4g/viewanalytics",
+"_blank"
+)
+
+}
 
 function logout(){
 
