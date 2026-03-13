@@ -49,7 +49,7 @@ cursor:pointer;
 opacity:.7;
 }
 
-/* post card */
+/* card */
 
 .card{
 background:rgba(255,255,255,.08);
@@ -85,47 +85,59 @@ margin-bottom:20px;
 line-height:1.5;
 }
 
-/* locked prompt */
+/* premium prompt */
 
 .promptBox{
 background:rgba(0,0,0,.35);
 border-radius:14px;
 padding:20px;
 text-align:center;
+overflow:hidden;
 }
 
-.lockIcon{
-font-size:22px;
-margin-bottom:8px;
-opacity:.7;
+.lockHeader{
+font-size:16px;
+margin-bottom:10px;
+opacity:.8;
 }
 
-.unlockBtn{
-margin-top:10px;
-padding:10px 20px;
-border-radius:30px;
-border:none;
-background:#4f46e5;
-color:white;
-cursor:pointer;
+.progressBar{
+width:100%;
+height:6px;
+background:rgba(255,255,255,.1);
+border-radius:20px;
+overflow:hidden;
+margin-bottom:10px;
+}
+
+.progressFill{
+height:100%;
+width:0%;
+background:linear-gradient(90deg,#4f46e5,#06b6d4);
+transition:width 1s linear;
 }
 
 .countdown{
-margin-top:8px;
-opacity:.7;
 font-size:13px;
+opacity:.7;
+margin-bottom:10px;
 }
 
-/* prompt text */
-
-.promptText{
-display:none;
-white-space:pre-wrap;
+.promptPreview{
+filter:blur(6px);
+opacity:.6;
 line-height:1.6;
+white-space:pre-wrap;
 text-align:left;
 }
 
-/* copy */
+.promptText{
+display:none;
+line-height:1.6;
+white-space:pre-wrap;
+text-align:left;
+margin-top:10px;
+}
 
 .copyBtn{
 display:none;
@@ -191,17 +203,23 @@ font-size:13px;
 
 <div class="notes" id="notes"></div>
 
-<div class="promptBox" id="promptBox">
+<div class="promptBox">
 
-<div class="lockIcon">🔒 Prompt Locked</div>
+<div class="lockHeader">
+🔒 Premium Prompt — Unlocking...
+</div>
 
-<div class="promptText" id="promptText"></div>
-
-<button class="unlockBtn" onclick="startUnlock()" id="unlockBtn">
-Unlock Prompt
-</button>
+<div class="progressBar">
+<div class="progressFill" id="progressFill"></div>
+</div>
 
 <div class="countdown" id="countdown"></div>
+
+<div class="promptPreview" id="promptPreview">
+Loading preview...
+</div>
+
+<div class="promptText" id="promptText"></div>
 
 <button class="copyBtn" id="copyBtn" onclick="copyPrompt()">
 Copy Prompt
@@ -226,8 +244,7 @@ const params=new URLSearchParams(window.location.search)
 const id=parseInt(params.get("id"))
 
 let prompts=[]
-let promptData
-
+let promptData=null
 
 /* DRIVE IMAGE FIX */
 
@@ -235,18 +252,18 @@ function formatImage(url){
 
 if(!url) return ""
 
-let id=""
+let fileId=""
 
 if(url.includes("open?id=")){
-id=url.split("open?id=")[1]
+fileId=url.split("open?id=")[1]
 }
 
 else if(url.includes("/file/d/")){
-id=url.split("/file/d/")[1].split("/")[0]
+fileId=url.split("/file/d/")[1].split("/")[0]
 }
 
-if(id){
-return "https://lh3.googleusercontent.com/d/"+id
+if(fileId){
+return "https://lh3.googleusercontent.com/d/"+fileId
 }
 
 return url
@@ -254,7 +271,7 @@ return url
 }
 
 
-/* LOAD */
+/* LOAD DATA */
 
 fetch(API)
 .then(res=>res.json())
@@ -263,8 +280,12 @@ fetch(API)
 prompts=data
 
 promptData=prompts[id]
-  
-fetch(API + "?view=" + id)
+
+if(!promptData){
+alert("Prompt not found")
+return
+}
+
 document.getElementById("title").innerText=
 promptData["Prompt Title"]
 
@@ -278,24 +299,37 @@ document.getElementById("meta").innerText=
 "Category: "+promptData["Category"]+
 " • Author: "+promptData["Author"]
 
+/* blurred preview */
+
+let preview=promptData["Prompt Text"] || ""
+
+preview=preview.substring(0,120)+"..."
+
+document.getElementById("promptPreview").innerText=preview
+
 renderRelated()
+
+startUnlock()
 
 })
 
 
-/* UNLOCK */
+/* PREMIUM UNLOCK */
 
 function startUnlock(){
 
-let seconds=5
+let seconds=6
 
 const countdown=document.getElementById("countdown")
+const progress=document.getElementById("progressFill")
 
 countdown.innerText="Unlocking in "+seconds+"..."
 
 const timer=setInterval(()=>{
 
 seconds--
+
+progress.style.width=((6-seconds)/6*100)+"%"
 
 countdown.innerText="Unlocking in "+seconds+"..."
 
@@ -314,16 +348,17 @@ unlockPrompt()
 
 function unlockPrompt(){
 
-document.getElementById("unlockBtn").style.display="none"
-document.getElementById("countdown").style.display="none"
+document.getElementById("promptPreview").style.display="none"
 
 const promptText=document.getElementById("promptText")
 
+promptText.innerText=promptData["Prompt Text"] || "No prompt text found."
+
 promptText.style.display="block"
 
-promptText.innerText=promptData["Prompt Text"]
-
 document.getElementById("copyBtn").style.display="inline-block"
+
+document.getElementById("countdown").innerText="Unlocked ✓"
 
 }
 
@@ -345,6 +380,8 @@ function renderRelated(){
 
 const related=document.getElementById("related")
 
+related.innerHTML=""
+
 const shuffled=[...prompts].sort(()=>Math.random()-0.5)
 
 const selected=shuffled.slice(0,6)
@@ -360,10 +397,8 @@ window.location.href=`prompt.html?id=${prompts.indexOf(p)}`
 }
 
 card.innerHTML=`
-
 <img src="${formatImage(p["Image File"])}">
 <div>${p["Prompt Title"]}</div>
-
 `
 
 related.appendChild(card)
