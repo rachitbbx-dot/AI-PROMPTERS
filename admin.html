@@ -60,8 +60,10 @@ inset 0 1px 0 rgba(255,255,255,0.25);
 
 }
 
+/* title */
+
 h1{
-margin-bottom:20px;
+margin-bottom:22px;
 }
 
 /* input */
@@ -75,6 +77,8 @@ padding:16px;
 border-radius:20px;
 
 border:none;
+
+outline:none;
 
 background:rgba(255,255,255,.15);
 
@@ -116,17 +120,36 @@ transform:scale(.96);
 
 }
 
+/* wrong password animation */
+
+.shake{
+animation:shake .3s;
+}
+
+@keyframes shake{
+0%{transform:translateX(0)}
+25%{transform:translateX(-6px)}
+50%{transform:translateX(6px)}
+75%{transform:translateX(-6px)}
+100%{transform:translateX(0)}
+}
+
 </style>
 
 </head>
 
 <body>
 
-<div class="container">
+<div class="container" id="card">
 
 <h1>Admin Access</h1>
 
-<input type="password" id="pass" placeholder="Enter password">
+<input 
+type="password" 
+id="pass" 
+placeholder="Enter password"
+autocomplete="off"
+>
 
 <button onclick="login()">Enter Dashboard</button>
 
@@ -134,21 +157,42 @@ transform:scale(.96);
 
 <script>
 
+/* allow ENTER key login */
+
+document.getElementById("pass").addEventListener("keypress",function(e){
+if(e.key==="Enter"){
+login()
+}
+})
+
 function login(){
 
 const password="manavAI987"
 
-const input=document.getElementById("pass").value
+const input=document.getElementById("pass").value.trim()
+
+if(input===""){
+alert("Enter password")
+return
+}
 
 if(input===password){
 
-window.location.href="upload.html"
+sessionStorage.setItem("admin","true")
+
+window.location.href="dashboard.html"
 
 }
 
 else{
 
-alert("Wrong password")
+const card=document.getElementById("card")
+
+card.classList.add("shake")
+
+setTimeout(()=>{
+card.classList.remove("shake")
+},300)
 
 }
 
