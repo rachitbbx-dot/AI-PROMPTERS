@@ -38,14 +38,10 @@ opacity:.9;
 z-index:-1;
 }
 
-/* container */
-
 .container{
 max-width:700px;
 margin:auto;
 }
-
-/* back button */
 
 .back{
 margin-bottom:20px;
@@ -53,13 +49,14 @@ cursor:pointer;
 opacity:.7;
 }
 
-/* card */
+/* post card */
 
 .card{
 background:rgba(255,255,255,.08);
 border-radius:20px;
 overflow:hidden;
 border:1px solid rgba(255,255,255,.2);
+margin-bottom:30px;
 }
 
 .card img{
@@ -67,49 +64,109 @@ width:100%;
 display:block;
 }
 
-.title{
-padding:16px;
-font-size:20px;
-font-weight:600;
+.content{
+padding:18px;
 }
 
-/* unlock section */
+.title{
+font-size:22px;
+font-weight:600;
+margin-bottom:10px;
+}
 
-.unlockBox{
+.meta{
+opacity:.7;
+font-size:13px;
+margin-bottom:14px;
+}
+
+.notes{
+margin-bottom:20px;
+line-height:1.5;
+}
+
+/* locked prompt */
+
+.promptBox{
+background:rgba(0,0,0,.35);
+border-radius:14px;
 padding:20px;
 text-align:center;
 }
 
-button{
-padding:12px 24px;
+.lockIcon{
+font-size:22px;
+margin-bottom:8px;
+opacity:.7;
+}
+
+.unlockBtn{
+margin-top:10px;
+padding:10px 20px;
 border-radius:30px;
 border:none;
 background:#4f46e5;
 color:white;
 cursor:pointer;
-font-size:15px;
+}
+
+.countdown{
+margin-top:8px;
+opacity:.7;
+font-size:13px;
 }
 
 /* prompt text */
 
-.prompt{
+.promptText{
 display:none;
-padding:20px;
 white-space:pre-wrap;
 line-height:1.6;
-background:rgba(0,0,0,.3);
+text-align:left;
 }
 
-/* copy button */
+/* copy */
 
 .copyBtn{
-margin:20px;
 display:none;
+margin-top:15px;
+padding:10px 20px;
+border:none;
+border-radius:30px;
+background:#06b6d4;
+color:white;
+cursor:pointer;
 }
 
-.countdown{
-margin-top:10px;
-opacity:.7;
+/* related */
+
+.relatedTitle{
+margin:30px 0 14px;
+font-size:18px;
+}
+
+.relatedGrid{
+column-count:2;
+column-gap:14px;
+}
+
+.relatedCard{
+break-inside:avoid;
+margin-bottom:14px;
+background:rgba(255,255,255,.08);
+border-radius:16px;
+overflow:hidden;
+cursor:pointer;
+}
+
+.relatedCard img{
+width:100%;
+display:block;
+}
+
+.relatedCard div{
+padding:8px;
+font-size:13px;
 }
 
 </style>
@@ -126,21 +183,38 @@ opacity:.7;
 
 <img id="image">
 
+<div class="content">
+
 <div class="title" id="title"></div>
 
-<div class="unlockBox" id="unlockBox">
+<div class="meta" id="meta"></div>
 
-<button onclick="startUnlock()">Unlock Prompt</button>
+<div class="notes" id="notes"></div>
+
+<div class="promptBox" id="promptBox">
+
+<div class="lockIcon">🔒 Prompt Locked</div>
+
+<div class="promptText" id="promptText"></div>
+
+<button class="unlockBtn" onclick="startUnlock()" id="unlockBtn">
+Unlock Prompt
+</button>
 
 <div class="countdown" id="countdown"></div>
 
-</div>
-
-<div class="prompt" id="promptText"></div>
-
-<button class="copyBtn" id="copyBtn" onclick="copyPrompt()">Copy Prompt</button>
+<button class="copyBtn" id="copyBtn" onclick="copyPrompt()">
+Copy Prompt
+</button>
 
 </div>
+
+</div>
+
+</div>
+
+<div class="relatedTitle">Related Prompts</div>
+<div class="relatedGrid" id="related"></div>
 
 </div>
 
@@ -149,12 +223,13 @@ opacity:.7;
 const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec"
 
 const params=new URLSearchParams(window.location.search)
-const id=params.get("id")
+const id=parseInt(params.get("id"))
 
+let prompts=[]
 let promptData
 
 
-/* GOOGLE DRIVE IMAGE FIX */
+/* DRIVE IMAGE FIX */
 
 function formatImage(url){
 
@@ -179,25 +254,35 @@ return url
 }
 
 
-/* LOAD PROMPT */
+/* LOAD */
 
 fetch(API)
 .then(res=>res.json())
 .then(data=>{
 
-const list=data
+prompts=data
 
-promptData=list[id]
+promptData=prompts[id]
 
-document.getElementById("title").innerText=promptData["Prompt Title"]
+document.getElementById("title").innerText=
+promptData["Prompt Title"]
 
 document.getElementById("image").src=
 formatImage(promptData["Image File"])
 
+document.getElementById("notes").innerText=
+promptData["Notes"] || ""
+
+document.getElementById("meta").innerText=
+"Category: "+promptData["Category"]+
+" • Author: "+promptData["Author"]
+
+renderRelated()
+
 })
 
 
-/* UNLOCK COUNTDOWN */
+/* UNLOCK */
 
 function startUnlock(){
 
@@ -228,14 +313,16 @@ unlockPrompt()
 
 function unlockPrompt(){
 
-document.getElementById("unlockBox").style.display="none"
+document.getElementById("unlockBtn").style.display="none"
+document.getElementById("countdown").style.display="none"
 
-document.getElementById("promptText").style.display="block"
+const promptText=document.getElementById("promptText")
 
-document.getElementById("copyBtn").style.display="block"
+promptText.style.display="block"
 
-document.getElementById("promptText").innerText=
-promptData["Prompt Text"]
+promptText.innerText=promptData["Prompt Text"]
+
+document.getElementById("copyBtn").style.display="inline-block"
 
 }
 
@@ -247,6 +334,40 @@ function copyPrompt(){
 navigator.clipboard.writeText(promptData["Prompt Text"])
 
 alert("Prompt copied!")
+
+}
+
+
+/* RELATED */
+
+function renderRelated(){
+
+const related=document.getElementById("related")
+
+const shuffled=[...prompts].sort(()=>Math.random()-0.5)
+
+const selected=shuffled.slice(0,6)
+
+selected.forEach(p=>{
+
+const card=document.createElement("div")
+
+card.className="relatedCard"
+
+card.onclick=()=>{
+window.location.href=`prompt.html?id=${prompts.indexOf(p)}`
+}
+
+card.innerHTML=`
+
+<img src="${formatImage(p["Image File"])}">
+<div>${p["Prompt Title"]}</div>
+
+`
+
+related.appendChild(card)
+
+})
 
 }
 
