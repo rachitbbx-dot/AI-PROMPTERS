@@ -73,7 +73,7 @@ font-size:20px;
 font-weight:600;
 }
 
-/* unlock */
+/* unlock section */
 
 .unlockBox{
 padding:20px;
@@ -100,8 +100,16 @@ line-height:1.6;
 background:rgba(0,0,0,.3);
 }
 
+/* copy button */
+
 .copyBtn{
 margin:20px;
+display:none;
+}
+
+.countdown{
+margin-top:10px;
+opacity:.7;
 }
 
 </style>
@@ -122,15 +130,15 @@ margin:20px;
 
 <div class="unlockBox" id="unlockBox">
 
-<button onclick="unlock()">Unlock Prompt</button>
+<button onclick="startUnlock()">Unlock Prompt</button>
+
+<div class="countdown" id="countdown"></div>
 
 </div>
 
 <div class="prompt" id="promptText"></div>
 
-<button class="copyBtn" id="copyBtn" onclick="copyPrompt()" style="display:none">
-Copy Prompt
-</button>
+<button class="copyBtn" id="copyBtn" onclick="copyPrompt()">Copy Prompt</button>
 
 </div>
 
@@ -140,15 +148,13 @@ Copy Prompt
 
 const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec"
 
-/* GET ID FROM URL */
-
 const params=new URLSearchParams(window.location.search)
 const id=params.get("id")
 
 let promptData
 
 
-/* FIX GOOGLE DRIVE IMAGE */
+/* GOOGLE DRIVE IMAGE FIX */
 
 function formatImage(url){
 
@@ -165,10 +171,11 @@ id=url.split("/file/d/")[1].split("/")[0]
 }
 
 if(id){
-return "https://drive.google.com/uc?export=view&id="+id
+return "https://lh3.googleusercontent.com/d/"+id
 }
 
 return url
+
 }
 
 
@@ -178,7 +185,9 @@ fetch(API)
 .then(res=>res.json())
 .then(data=>{
 
-promptData=data.reverse()[id]
+const list=data
+
+promptData=list[id]
 
 document.getElementById("title").innerText=promptData["Prompt Title"]
 
@@ -188,9 +197,36 @@ formatImage(promptData["Image File"])
 })
 
 
-/* UNLOCK */
+/* UNLOCK COUNTDOWN */
 
-function unlock(){
+function startUnlock(){
+
+let seconds=5
+
+const countdown=document.getElementById("countdown")
+
+countdown.innerText="Unlocking in "+seconds+"..."
+
+const timer=setInterval(()=>{
+
+seconds--
+
+countdown.innerText="Unlocking in "+seconds+"..."
+
+if(seconds<=0){
+
+clearInterval(timer)
+
+unlockPrompt()
+
+}
+
+},1000)
+
+}
+
+
+function unlockPrompt(){
 
 document.getElementById("unlockBox").style.display="none"
 
