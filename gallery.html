@@ -22,7 +22,7 @@ color:white;
 padding:20px;
 }
 
-/* gradient */
+/* background */
 
 body::before{
 content:"";
@@ -47,8 +47,6 @@ margin:auto;
 margin-bottom:25px;
 }
 
-/* search */
-
 .search{
 width:100%;
 padding:14px;
@@ -58,8 +56,6 @@ background:rgba(255,255,255,.1);
 color:white;
 margin-bottom:14px;
 }
-
-/* controls */
 
 .controls{
 display:flex;
@@ -79,45 +75,26 @@ color:white;
 /* gallery */
 
 .gallery{
-
 max-width:1000px;
 margin:auto;
-
 column-count:3;
 column-gap:16px;
-
 }
 
 @media(max-width:800px){
-
 .gallery{
 column-count:2;
 }
-
 }
 
 .card{
-
 break-inside:avoid;
-
 margin-bottom:16px;
-
 background:rgba(255,255,255,.08);
-
 border-radius:20px;
-
 overflow:hidden;
-
 border:1px solid rgba(255,255,255,.2);
-
 cursor:pointer;
-
-transition:.2s;
-
-}
-
-.card:hover{
-transform:translateY(-3px);
 }
 
 .card img{
@@ -129,8 +106,6 @@ display:block;
 padding:10px;
 font-size:14px;
 }
-
-/* loading */
 
 .loader{
 text-align:center;
@@ -146,11 +121,7 @@ opacity:.6;
 
 <div class="header">
 
-<input
-class="search"
-id="search"
-placeholder="Search prompts..."
->
+<input class="search" id="search" placeholder="Search prompts...">
 
 <div class="controls">
 
@@ -176,7 +147,7 @@ placeholder="Search prompts..."
 
 <div id="gallery" class="gallery"></div>
 
-<div id="loader" class="loader">Loading...</div>
+<div class="loader">Loading...</div>
 
 <script>
 
@@ -188,7 +159,32 @@ let filtered=[]
 let loaded=0
 const batch=12
 
-/* load sheet */
+/* FIX GOOGLE DRIVE IMAGE LINKS */
+
+function formatImage(url){
+
+if(!url) return ""
+
+if(url.includes("drive.google.com")){
+
+try{
+
+const id=url.split("/d/")[1].split("/")[0]
+
+return `https://drive.google.com/uc?export=view&id=${id}`
+
+}catch{
+
+return url
+
+}
+
+}
+
+return url
+}
+
+/* LOAD DATA */
 
 fetch(API)
 .then(res=>res.json())
@@ -202,8 +198,6 @@ renderMore()
 
 })
 
-/* render batch */
-
 function renderMore(){
 
 const gallery=document.getElementById("gallery")
@@ -214,43 +208,17 @@ next.forEach((p,index)=>{
 
 const realIndex=loaded+index
 
-/* ad slot placeholder every 8 posts */
-
-if(realIndex>0 && realIndex%8===0){
-
-const ad=document.createElement("div")
-
-ad.className="card"
-
-ad.innerHTML=`
-
-<div style="padding:40px;text-align:center;opacity:.7">
-
-Ad Space
-
-</div>
-
-`
-
-gallery.appendChild(ad)
-
-}
-
-/* prompt card */
-
 const card=document.createElement("div")
 
 card.className="card"
 
 card.onclick=()=>{
-
 window.location.href=`prompt.html?id=${realIndex}`
-
 }
 
 card.innerHTML=`
 
-<img src="${p['Image File']}">
+<img src="${formatImage(p['Image File'])}">
 
 <div class="cardTitle">${p['Prompt Title']}</div>
 
@@ -264,16 +232,11 @@ loaded+=batch
 
 }
 
-/* infinite scroll */
+/* INFINITE SCROLL */
 
 window.addEventListener("scroll",()=>{
 
-if(
-
-window.innerHeight+window.scrollY
->=document.body.offsetHeight-500
-
-){
+if(window.innerHeight+window.scrollY>=document.body.offsetHeight-400){
 
 renderMore()
 
@@ -290,18 +253,17 @@ const term=e.target.value.toLowerCase()
 filtered=prompts.filter(p=>
 
 p['Prompt Title'].toLowerCase().includes(term) ||
-p['Tags'].toLowerCase().includes(term)
+(p['Tags'] && p['Tags'].toLowerCase().includes(term))
 
 )
 
-resetGallery()
+reset()
 
 })
 
 /* FILTER */
 
 document.getElementById("category").addEventListener("change",applyFilters)
-
 document.getElementById("sort").addEventListener("change",applyFilters)
 
 function applyFilters(){
@@ -313,9 +275,7 @@ const sort=document.getElementById("sort").value
 
 if(category!=="all"){
 
-list=list.filter(p=>
-p['Category'].toLowerCase()===category
-)
+list=list.filter(p=>p['Category'].toLowerCase()===category)
 
 }
 
@@ -329,13 +289,11 @@ list=list.reverse()
 
 filtered=list
 
-resetGallery()
+reset()
 
 }
 
-/* reset */
-
-function resetGallery(){
+function reset(){
 
 document.getElementById("gallery").innerHTML=""
 
