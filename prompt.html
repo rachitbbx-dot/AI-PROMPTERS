@@ -263,7 +263,8 @@ fetch(API)
 prompts=data
 
 promptData=prompts[id]
-
+  
+fetch(API + "?view=" + id)
 document.getElementById("title").innerText=
 promptData["Prompt Title"]
 
