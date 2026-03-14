@@ -183,29 +183,25 @@ letter-spacing:1px;
 
 .footer{
 
-margin-top:20px;
+margin-top:24px;
 
 font-size:12px;
 
-opacity:.7;
+opacity:.6;
 
 }
 
-/* footer links */
-
 .footer-links{
 
-margin-top:14px;
+margin-top:10px;
 
 display:flex;
 
 justify-content:center;
 
-gap:16px;
+gap:14px;
 
 flex-wrap:wrap;
-
-font-size:12px;
 
 }
 
@@ -217,13 +213,61 @@ text-decoration:none;
 
 opacity:.6;
 
-transition:.2s;
-
 }
 
 .footer-links a:hover{
 
 opacity:1;
+
+}
+
+/* cookie banner */
+
+#cookieBanner{
+
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+
+max-width:340px;
+width:90%;
+
+padding:16px 18px;
+
+border-radius:20px;
+
+background:rgba(255,255,255,0.08);
+
+backdrop-filter:blur(30px);
+
+border:1px solid rgba(255,255,255,0.25);
+
+box-shadow:0 10px 40px rgba(0,0,0,.5);
+
+font-size:12px;
+
+text-align:center;
+
+z-index:999;
+
+}
+
+#cookieBanner button{
+
+margin-top:10px;
+
+padding:6px 16px;
+
+border-radius:20px;
+
+border:1px solid rgba(255,255,255,.4);
+
+background:rgba(255,255,255,.15);
+
+color:white;
+
+cursor:pointer;
 
 }
 
@@ -263,10 +307,8 @@ THE BEST AI PROMPT PROVIDER
 
 <div class="footer">
 
-<div>
 New prompts added daily.<br>
 by RCHT & Manav
-</div>
 
 <div class="footer-links">
 <a href="about.html">About</a>
@@ -276,6 +318,18 @@ by RCHT & Manav
 </div>
 
 </div>
+
+</div>
+
+<!-- Cookie Banner -->
+
+<div id="cookieBanner">
+
+This site uses cookies to improve your experience and may display ads from third-party networks.
+
+<br>
+
+<button onclick="acceptCookies()">OK</button>
 
 </div>
 
@@ -293,6 +347,22 @@ window.location.href="tools.html"
 
 function openSponsors(){
 window.location.href="sponsors.html"
+}
+
+/* cookie banner */
+
+function acceptCookies(){
+
+localStorage.setItem("cookiesAccepted","yes");
+
+document.getElementById("cookieBanner").style.display="none";
+
+}
+
+if(localStorage.getItem("cookiesAccepted") === "yes"){
+
+document.getElementById("cookieBanner").style.display="none";
+
 }
 
 /* secret admin unlock */
