@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>About | Prompt Hub</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:system-ui;
+}
+
+body{
+min-height:100dvh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+background:#0f0f0f;
+color:white;
+overflow-y:auto;
+}
+
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:
+radial-gradient(circle at 20% 30%, #4f46e5, transparent 45%),
+radial-gradient(circle at 80% 70%, #06b6d4, transparent 45%),
+radial-gradient(circle at 40% 80%, #4f46e5, transparent 40%);
+filter:blur(120px);
+opacity:.9;
+z-index:-1;
+}
+
+.container{
+width:100%;
+max-width:420px;
+text-align:left;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(50px);
+border:1px solid rgba(255,255,255,0.2);
+border-radius:30px;
+padding:40px 30px;
+box-shadow:
+0 40px 100px rgba(0,0,0,.6),
+inset 0 1px 0 rgba(255,255,255,.25);
+}
+
+h1{
+margin-bottom:20px;
+}
+
+p{
+opacity:.8;
+line-height:1.6;
+margin-bottom:14px;
+}
+
+.footer{
+margin-top:30px;
+font-size:12px;
+opacity:.7;
+text-align:center;
+}
+
+.footer-links{
+margin-top:12px;
+display:flex;
+justify-content:center;
+gap:16px;
+flex-wrap:wrap;
+}
+
+.footer-links a{
+color:white;
+text-decoration:none;
+opacity:.6;
+}
+
+.footer-links a:hover{
+opacity:1;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>About</h1>
+
+<p>
+Prompt Hub is a curated collection of powerful AI prompts designed to help creators get better results from modern AI tools.
+</p>
+
+<p>
+Our goal is to make useful prompts easy to discover, easy to copy, and accessible to anyone experimenting with AI.
+</p>
+
+<p>
+New prompts are shared through our social pages and organized here so visitors can quickly browse and use them.
+</p>
+
+<p>
+This project is maintained by a small team focused on collecting useful, creative, and effective prompts.
+</p>
+
+<div class="footer">
+
+<div class="footer-links">
+<a href="index.html">Home</a>
+<a href="contact.html">Contact</a>
+<a href="privacy.html">Privacy</a>
+<a href="terms.html">Terms</a>
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>
