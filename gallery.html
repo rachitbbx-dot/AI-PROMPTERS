@@ -1,237 +1,400 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Prompt Gallery</title>
+
 <style>
+
 *{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:system-ui;
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:system-ui;
 }
+
 body{
-  background:#0f0f0f;
-  color:white;
-  padding:20px;
+background:#0f0f0f;
+color:white;
+padding:20px;
 }
+
+/* background */
+
 body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  background:
-    radial-gradient(circle at 20% 30%, #4f46e5, transparent 45%),
-    radial-gradient(circle at 80% 70%, #06b6d4, transparent 45%),
-    radial-gradient(circle at 40% 80%, #4f46e5, transparent 40%);
-  filter:blur(120px);
-  opacity:.9;
-  z-index:-1;
+content:"";
+position:fixed;
+inset:0;
+
+background:
+radial-gradient(circle at 20% 30%, #4f46e5, transparent 45%),
+radial-gradient(circle at 80% 70%, #06b6d4, transparent 45%),
+radial-gradient(circle at 40% 80%, #4f46e5, transparent 40%);
+
+filter:blur(120px);
+opacity:.9;
+z-index:-1;
 }
+
+/* header */
+
 .header{
-  max-width:1000px;
-  margin:auto;
-  margin-bottom:25px;
+max-width:1000px;
+margin:auto;
+margin-bottom:25px;
 }
-.search-wrapper{
-  position: relative;
-  width: 100%;
-  margin-bottom: 14px;
+
+/* search bar */
+
+.searchWrap{
+position:relative;
+margin-bottom:14px;
 }
-.search-wrapper input{
-  width: 100%;
-  padding:14px 45px 14px 14px;
-  border-radius:20px;
-  border:none;
-  background:rgba(255,255,255,.1);
-  color:white;
+
+.search{
+width:100%;
+padding:14px 45px 14px 14px;
+border-radius:20px;
+border:none;
+background:rgba(255,255,255,.1);
+color:white;
 }
-.search-wrapper svg{
-  position:absolute;
-  right:14px;
-  top:50%;
-  transform:translateY(-50%);
-  width:20px;
-  height:20px;
-  fill:white;
-  opacity:0.7;
+
+.searchIcon{
+position:absolute;
+right:15px;
+top:50%;
+transform:translateY(-50%);
+opacity:.7;
 }
+
+/* controls */
+
 .controls{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-bottom:20px;
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-bottom:20px;
 }
+
 select{
-  padding:10px 14px;
-  border-radius:20px;
-  border:none;
-  background:rgba(255,255,255,.1);
-  color:white;
+padding:10px 14px;
+border-radius:20px;
+border:none;
+background:rgba(255,255,255,.1);
+color:white;
 }
+
+/* gallery */
+
 .gallery{
-  max-width:1000px;
-  margin:auto;
-  column-count:3;
-  column-gap:16px;
+max-width:1000px;
+margin:auto;
+column-count:3;
+column-gap:16px;
 }
+
 @media(max-width:800px){
-  .gallery{
-    column-count:2;
-  }
+.gallery{
+column-count:2;
 }
+}
+
+/* cards */
+
 .card{
-  break-inside:avoid;
-  margin-bottom:16px;
-  background:rgba(255,255,255,.08);
-  border-radius:20px;
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,.2);
-  cursor:pointer;
-  transition: transform 0.2s;
+break-inside:avoid;
+margin-bottom:16px;
+background:rgba(255,255,255,.08);
+border-radius:20px;
+overflow:hidden;
+border:1px solid rgba(255,255,255,.2);
+cursor:pointer;
+opacity:0;
+transform:translateY(10px);
+animation:fadeIn .4s forwards;
 }
-.card:hover{
-  transform: scale(1.03);
+
+@keyframes fadeIn{
+to{
+opacity:1;
+transform:translateY(0);
 }
+}
+
 .card img{
-  width:100%;
-  display:block;
+width:100%;
+display:block;
 }
+
 .cardTitle{
-  padding:10px;
-  font-size:14px;
+padding:10px;
+font-size:14px;
 }
-.loader{
-  text-align:center;
-  margin:20px;
-  opacity:.6;
+
+/* skeleton loader */
+
+.skeleton{
+break-inside:avoid;
+margin-bottom:16px;
+height:240px;
+border-radius:20px;
+
+background:linear-gradient(
+90deg,
+rgba(255,255,255,.05) 25%,
+rgba(255,255,255,.15) 50%,
+rgba(255,255,255,.05) 75%
+);
+
+background-size:400% 100%;
+animation:skeleton 1.2s infinite;
 }
+
+@keyframes skeleton{
+0%{background-position:100% 0}
+100%{background-position:-100% 0}
+}
+
 </style>
+
 </head>
+
 <body>
 
 <div class="header">
-  <div class="search-wrapper">
-    <input id="search" placeholder="Search prompts...">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <path d="M21 20l-5.8-5.8a7 7 0 1 0-1.4 1.4L20 21zM10 16a6 6 0 1 1 0-12 6 6 0 0 1 0 12z"/>
-    </svg>
-  </div>
-  <div class="controls">
-    <select id="category">
-      <option value="all">All Categories</option>
-      <option value="couple">Couple</option>
-      <option value="male">Male</option>
-      <option value="female">Female</option>
-      <option value="unisex">Unisex</option>
-      <option value="pfp">PFP</option>
-    </select>
-    <select id="sort">
-      <option value="new">Newest</option>
-      <option value="old">Oldest</option>
-      <option value="random">Random</option>
-    </select>
-  </div>
+
+<div class="searchWrap">
+
+<input class="search" id="search" placeholder="Search prompts...">
+
+<div class="searchIcon">🔍</div>
+
+</div>
+
+<div class="controls">
+
+<select id="category">
+<option value="all">All Categories</option>
+<option value="couple">Couple</option>
+<option value="male">Male</option>
+<option value="female">Female</option>
+<option value="unisex">Unisex</option>
+<option value="pfp">PFP</option>
+</select>
+
+<select id="sort">
+<option value="new">Newest</option>
+<option value="old">Oldest</option>
+<option value="random">Random</option>
+</select>
+
+</div>
+
 </div>
 
 <div id="gallery" class="gallery"></div>
-<div class="loader">Loading...</div>
 
 <script>
-const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec";
+
+const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec"
 
 let prompts=[]
 let filtered=[]
 let loaded=0
 const batch=12
 
-function formatImage(url){
-  if(!url) return "";
-  let id="";
-  if(url.includes("open?id=")){
-    id=url.split("open?id=")[1];
-  } else if(url.includes("/file/d/")){
-    id=url.split("/file/d/")[1].split("/")[0];
-  }
-  if(id){
-    return "https://lh3.googleusercontent.com/d/"+id;
-  }
-  return url;
+/* skeleton cards */
+
+function showSkeletons(count=12){
+
+const gallery=document.getElementById("gallery")
+
+for(let i=0;i<count;i++){
+
+const s=document.createElement("div")
+s.className="skeleton"
+
+gallery.appendChild(s)
+
 }
+
+}
+
+/* show instant loading UI */
+
+showSkeletons(12)
+
+/* image fix */
+
+function formatImage(url){
+
+if(!url) return ""
+
+let id=""
+
+if(url.includes("open?id=")){
+id=url.split("open?id=")[1]
+}
+
+else if(url.includes("/file/d/")){
+id=url.split("/file/d/")[1].split("/")[0]
+}
+
+if(id){
+return "https://lh3.googleusercontent.com/d/"+id
+}
+
+return url
+
+}
+
+/* fetch data */
 
 fetch(API)
-  .then(res=>res.json())
-  .then(data=>{
-    prompts=data;
-    applyFilters();
-  });
+
+.then(res=>res.json())
+
+.then(data=>{
+
+prompts=data
+
+document.getElementById("gallery").innerHTML=""
+
+applyFilters()
+
+})
+
+/* render prompts */
 
 function renderMore(){
-  const gallery=document.getElementById("gallery");
-  const next=filtered.slice(loaded,loaded+batch);
-  
-  next.forEach((p)=>{
-    const realIndex = prompts.indexOf(p); // ✅ Correct index in original array
-    const img = formatImage(p["Image File"]);
-    const card = document.createElement("div");
-    card.className = "card";
-    card.onclick = () => { window.location.href=`prompt.html?id=${realIndex}` };
-    card.innerHTML = `
-      <img src="${img}">
-      <div class="cardTitle">${p["Prompt Title"]}</div>
-    `;
-    gallery.appendChild(card);
-  });
-  
-  loaded += batch;
+
+const gallery=document.getElementById("gallery")
+
+const next=filtered.slice(loaded,loaded+batch)
+
+next.forEach(p=>{
+
+const realIndex=prompts.indexOf(p)
+
+const img=formatImage(p["Image File"])
+
+const card=document.createElement("div")
+
+card.className="card"
+
+card.onclick=()=>{
+window.location.href=`prompt.html?id=${realIndex}`
 }
+
+card.innerHTML=`
+
+<img loading="lazy" src="${img}">
+
+<div class="cardTitle">${p["Prompt Title"]}</div>
+
+`
+
+gallery.appendChild(card)
+
+})
+
+loaded+=batch
+
+}
+
+/* infinite scroll */
 
 window.addEventListener("scroll",()=>{
-  if(window.innerHeight + window.scrollY >= document.body.offsetHeight - 400){
-    renderMore();
-  }
-});
 
-document.getElementById("search").addEventListener("input", e=>{
-  const term = e.target.value.toLowerCase();
-  filtered = prompts.filter(p=>
-    (p["Prompt Title"]||"").toLowerCase().includes(term) ||
-    (p["Tags"]||"").toLowerCase().includes(term)
-  );
-  reset();
-});
+if(window.innerHeight+window.scrollY>=document.body.offsetHeight-500){
 
-document.getElementById("category").addEventListener("change", applyFilters);
-document.getElementById("sort").addEventListener("change", applyFilters);
+showSkeletons(6)
+
+setTimeout(()=>{
+
+document.querySelectorAll(".skeleton").forEach(e=>e.remove())
+
+renderMore()
+
+},350)
+
+}
+
+})
+
+/* search */
+
+document.getElementById("search").addEventListener("input",e=>{
+
+const term=e.target.value.toLowerCase()
+
+filtered=prompts.filter(p=>
+
+(p["Prompt Title"]||"").toLowerCase().includes(term) ||
+
+(p["Tags"]||"").toLowerCase().includes(term)
+
+)
+
+reset()
+
+})
+
+/* filters */
+
+document.getElementById("category").addEventListener("change",applyFilters)
+
+document.getElementById("sort").addEventListener("change",applyFilters)
 
 function applyFilters(){
-  let list=[...prompts];
-  const category=document.getElementById("category").value;
-  const sort=document.getElementById("sort").value;
 
-  if(category!=="all"){
-    list=list.filter(p=>(p["Category"]||"").toLowerCase()===category);
-  }
+let list=[...prompts]
 
-  if(sort==="new"){
-    list.sort((a,b)=>new Date(b.Timestamp)-new Date(a.Timestamp));
-  }
-  if(sort==="old"){
-    list.sort((a,b)=>new Date(a.Timestamp)-new Date(b.Timestamp));
-  }
-  if(sort==="random"){
-    list.sort(()=>Math.random()-0.5);
-  }
+const category=document.getElementById("category").value
+const sort=document.getElementById("sort").value
 
-  filtered = list;
-  reset();
+if(category!=="all"){
+
+list=list.filter(p=>
+(p["Category"]||"").toLowerCase()===category
+)
+
 }
+
+if(sort==="new"){
+list.sort((a,b)=>new Date(b.Timestamp)-new Date(a.Timestamp))
+}
+
+if(sort==="old"){
+list.sort((a,b)=>new Date(a.Timestamp)-new Date(b.Timestamp))
+}
+
+if(sort==="random"){
+list.sort(()=>Math.random()-0.5)
+}
+
+filtered=list
+
+reset()
+
+}
+
+/* reset */
 
 function reset(){
-  document.getElementById("gallery").innerHTML="";
-  loaded=0;
-  renderMore();
+
+document.getElementById("gallery").innerHTML=""
+
+loaded=0
+
+renderMore()
+
 }
+
 </script>
 
 </body>
