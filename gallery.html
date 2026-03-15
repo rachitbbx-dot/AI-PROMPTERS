@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -40,24 +41,83 @@ opacity:.9;
 z-index:-1;
 }
 
+/* loading overlay */
+
+#loadingOverlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.75);
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:999;
+transition:opacity .4s ease;
+}
+
+#loadingOverlay.hide{
+opacity:0;
+pointer-events:none;
+}
+
+.loadingBox{
+background:rgba(255,255,255,0.06);
+border:1px solid rgba(255,255,255,.2);
+backdrop-filter:blur(40px);
+padding:34px 42px;
+border-radius:16px;
+text-align:center;
+position:relative;
+}
+
+/* close button */
+
+.closeLoading{
+position:absolute;
+top:10px;
+right:12px;
+cursor:pointer;
+font-size:18px;
+opacity:.6;
+}
+
+.closeLoading:hover{
+opacity:1;
+}
+
+/* big spinner */
+
+.bigLoader{
+width:50px;
+height:50px;
+border:5px solid rgba(255,255,255,.2);
+border-top:5px solid #4f46e5;
+border-radius:50%;
+margin:auto;
+margin-bottom:14px;
+animation:spin .8s linear infinite;
+}
+
+.loadingBox p{
+font-size:14px;
+opacity:.9;
+}
+
+@keyframes spin{
+to{transform:rotate(360deg);}
+}
+
 /* header glass */
 
 .header{
-
 max-width:1100px;
 margin:auto;
 margin-bottom:18px;
-
 background:rgba(255,255,255,0.06);
 backdrop-filter:blur(40px);
-
 border:1px solid rgba(255,255,255,.15);
 border-radius:18px;
-
 padding:16px;
-
 box-shadow:0 20px 50px rgba(0,0,0,.6);
-
 }
 
 /* top bar */
@@ -70,16 +130,11 @@ margin-bottom:10px;
 }
 
 .backBtn{
-
 background:rgba(255,255,255,.08);
 border:1px solid rgba(255,255,255,.2);
-
 border-radius:20px;
-
 padding:8px 14px;
-
 font-size:13px;
-
 cursor:pointer;
 }
 
@@ -91,19 +146,13 @@ margin-bottom:12px;
 }
 
 .search{
-
 width:100%;
-
 padding:14px 42px 14px 16px;
-
 border-radius:20px;
 border:1px solid rgba(255,255,255,.15);
-
 background:rgba(255,255,255,.08);
-
 color:white;
 font-size:14px;
-
 }
 
 .search::placeholder{
@@ -127,57 +176,37 @@ flex-wrap:wrap;
 }
 
 select{
-
 padding:10px 14px;
-
 border-radius:20px;
-
 border:1px solid rgba(255,255,255,.15);
-
 background:rgba(255,255,255,.08);
-
 color:white;
-
 font-size:13px;
-
 cursor:pointer;
-
 }
 
 /* gallery */
 
 .gallery{
-
 max-width:1100px;
 margin:auto;
-
 display:grid;
 grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
 grid-auto-rows:10px;
-
 gap:12px;
-
 }
 
 /* card */
 
 .card{
-
 background:rgba(255,255,255,.05);
-
 border-radius:14px;
-
 overflow:hidden;
-
 cursor:pointer;
-
 border:1px solid rgba(255,255,255,.12);
-
 opacity:0;
 transform:translateY(10px);
-
 transition:.35s;
-
 }
 
 .card.show{
@@ -197,25 +226,14 @@ display:block;
 /* loader */
 
 .loader{
-
 width:36px;
 height:36px;
-
 border:4px solid rgba(255,255,255,.2);
 border-top:4px solid #4f46e5;
-
 border-radius:50%;
-
 animation:spin .8s linear infinite;
-
 margin:40px auto;
-
 display:none;
-
-}
-
-@keyframes spin{
-to{transform:rotate(360deg);}
 }
 
 </style>
@@ -223,20 +241,31 @@ to{transform:rotate(360deg);}
 
 <body>
 
-<div class="header">
+<!-- Loading Overlay -->
 
-<div class="topbar">
+<div id="loadingOverlay">
 
-<button class="backBtn" onclick="goHome()">← Home</button>
+<div class="loadingBox">
+
+<div class="closeLoading" onclick="closeLoader()">✕</div>
+
+<div class="bigLoader"></div>
+
+<p id="loadingText">Loading Gallery... Please Wait</p>
 
 </div>
 
+</div>
+
+<div class="header">
+
+<div class="topbar">
+<button class="backBtn" onclick="goHome()">← Home</button>
+</div>
+
 <div class="searchWrap">
-
 <input id="search" class="search" placeholder="Search prompts">
-
 <div class="searchIcon">🔍</div>
-
 </div>
 
 <div class="controls">
@@ -270,6 +299,23 @@ function goHome(){
 window.location.href="index.html"
 }
 
+function closeLoader(){
+document.getElementById("loadingOverlay").classList.add("hide")
+}
+
+/* failsafe message after 8s */
+
+setTimeout(()=>{
+const text=document.getElementById("loadingText")
+if(text) text.innerText="Still loading... please refresh if it takes too long."
+},8000)
+
+/* failsafe auto close after 15s */
+
+setTimeout(()=>{
+closeLoader()
+},15000)
+
 const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec"
 
 let prompts=[]
@@ -280,8 +326,6 @@ const batch=12
 
 const gallery=document.getElementById("gallery")
 const loader=document.getElementById("loader")
-
-/* drive image fix */
 
 function formatImage(url){
 
@@ -301,15 +345,12 @@ return url
 
 }
 
-/* masonry size */
-
 function resizeCard(card){
 
 const rowHeight=10
 const rowGap=12
 
 const img=card.querySelector("img")
-
 const height=img.getBoundingClientRect().height
 
 const span=Math.ceil((height+rowGap)/(rowHeight+rowGap))
@@ -317,8 +358,6 @@ const span=Math.ceil((height+rowGap)/(rowHeight+rowGap))
 card.style.gridRowEnd="span "+span
 
 }
-
-/* render */
 
 function renderMore(){
 
@@ -345,11 +384,8 @@ gallery.appendChild(card)
 const image=card.querySelector("img")
 
 image.onload=()=>{
-
 resizeCard(card)
-
 card.classList.add("show")
-
 }
 
 })
@@ -357,8 +393,6 @@ card.classList.add("show")
 loaded+=batch
 
 }
-
-/* infinite scroll */
 
 window.addEventListener("scroll",()=>{
 
@@ -369,35 +403,26 @@ if(loaded>=filtered.length) return
 loader.style.display="block"
 
 setTimeout(()=>{
-
 renderMore()
-
 loader.style.display="none"
-
 },200)
 
 }
 
 })
 
-/* search */
-
 document.getElementById("search").addEventListener("input",e=>{
 
 const term=e.target.value.toLowerCase()
 
 filtered=prompts.filter(p=>
-
 (p["Prompt Title"]||"").toLowerCase().includes(term) ||
 (p["Tags"]||"").toLowerCase().includes(term)
-
 )
 
 reset()
 
 })
-
-/* filters */
 
 document.getElementById("category").addEventListener("change",applyFilters)
 document.getElementById("sort").addEventListener("change",applyFilters)
@@ -429,19 +454,11 @@ reset()
 
 }
 
-/* reset */
-
 function reset(){
-
 gallery.innerHTML=""
-
 loaded=0
-
 renderMore()
-
 }
-
-/* cache system */
 
 function loadPrompts(){
 
@@ -451,6 +468,8 @@ const time=localStorage.getItem("promptCacheTime")
 if(cache && time && Date.now()-time<300000){
 
 prompts=JSON.parse(cache)
+
+closeLoader()
 
 applyFilters()
 
@@ -467,13 +486,13 @@ prompts=data
 localStorage.setItem("promptCache",JSON.stringify(data))
 localStorage.setItem("promptCacheTime",Date.now())
 
+closeLoader()
+
 applyFilters()
 
 })
 
 }
-
-/* start */
 
 loadPrompts()
 
@@ -481,3 +500,4 @@ loadPrompts()
 
 </body>
 </html>
+```
