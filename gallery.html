@@ -104,7 +104,6 @@ to{transform:rotate(360deg);}
 /* skeleton shimmer */
 
 .skeleton{
-
 width:100%;
 height:180px;
 
@@ -117,14 +116,11 @@ rgba(255,255,255,.05) 75%
 
 background-size:200% 100%;
 animation:skeleton 1.4s infinite;
-
 }
 
 @keyframes skeleton{
-
 0%{background-position:200% 0;}
 100%{background-position:-200% 0;}
-
 }
 
 /* header */
@@ -268,6 +264,23 @@ width:100%;
 display:block;
 }
 
+/* NEW TITLE STYLE */
+
+.cardTitle{
+
+padding:8px;
+font-size:13px;
+font-weight:700;
+text-align:center;
+color:white;
+line-height:1.3;
+
+background:rgba(0,0,0,.25);
+
+}
+
+/* loader */
+
 .loader{
 
 width:36px;
@@ -353,16 +366,11 @@ function closeLoader(){
 document.getElementById("loadingOverlay").classList.add("hide")
 }
 
-/* failsafe */
-
 setTimeout(()=>{
-
 const text=document.getElementById("loadingText")
-
 if(text){
 text.innerText="Still loading... please refresh if it takes too long."
 }
-
 },8000)
 
 setTimeout(()=>{
@@ -422,6 +430,7 @@ next.forEach(p=>{
 const index=prompts.indexOf(p)
 
 const img=formatImage(p["Image File"])
+const title=p["Prompt Title"] || "AI Prompt"
 
 const card=document.createElement("div")
 
@@ -429,7 +438,8 @@ card.className="card"
 
 card.innerHTML=`
 <div class="skeleton"></div>
-<img src="${img}" alt="${p["Prompt Title"]}" style="display:none">
+<img src="${img}" alt="${title}" style="display:none">
+<div class="cardTitle">${title}</div>
 `
 
 card.onclick=()=>{
@@ -570,4 +580,3 @@ loadPrompts()
 
 </body>
 </html>
-
