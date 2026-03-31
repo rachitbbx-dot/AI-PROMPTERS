@@ -4,14 +4,13 @@
 <head>
 
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
-<meta name="description" content="Prompt Hub is a curated collection of powerful AI prompts for ChatGPT, Midjourney and other AI tools. Discover prompts that produce better AI results instantly.">
+<meta name="description" content="Prompt Hub is a curated collection of powerful AI prompts for ChatGPT, Midjourney and other AI tools.">
 
 <meta name="google-adsense-account" content="ca-pub-4850710373893560">
 
-<meta name="7searchppc" content="cc20ffd753053e91b6f490947cfd694f"/>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4850710373893560" crossorigin="anonymous"></script>
 
 <title>Prompt Hub</title>
 
@@ -25,7 +24,7 @@ font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
 }
 
 body{
-background:#0f0f0f;
+background:#0b0b0b;
 color:white;
 line-height:1.6;
 }
@@ -36,38 +35,36 @@ body::before{
 content:"";
 position:fixed;
 inset:0;
-
 background:
-radial-gradient(circle at 20% 20%, #4f46e5, transparent 40%),
-radial-gradient(circle at 80% 70%, #06b6d4, transparent 40%);
-
+radial-gradient(circle at 15% 20%,#6366f1,transparent 40%),
+radial-gradient(circle at 80% 75%,#06b6d4,transparent 40%);
 filter:blur(120px);
-opacity:.7;
+opacity:.6;
 z-index:-1;
 }
 
 /* container */
 
 .container{
-max-width:900px;
+max-width:720px;
 margin:auto;
-padding:28px 18px 60px;
+padding:22px 16px 50px;
 }
 
 /* HERO */
 
 .hero{
 text-align:center;
-margin-bottom:36px;
+margin-bottom:30px;
 }
 
 .logo{
-width:90px;
-height:90px;
+width:82px;
+height:82px;
 border-radius:50%;
 overflow:hidden;
 margin:auto;
-border:2px solid rgba(255,255,255,.3);
+border:2px solid rgba(255,255,255,.25);
 }
 
 .logo img{
@@ -77,31 +74,33 @@ object-fit:cover;
 }
 
 .hero h1{
-margin-top:14px;
-font-size:30px;
+margin-top:12px;
+font-size:26px;
+font-weight:700;
 }
 
 .hero p{
+margin-top:4px;
 opacity:.7;
-margin-top:6px;
 font-size:14px;
 }
 
 /* buttons */
 
 .buttons{
-margin-top:24px;
+margin-top:20px;
 display:flex;
 flex-direction:column;
-gap:12px;
+gap:10px;
 }
 
 .btn{
-padding:16px;
+width:100%;
+padding:14px;
 border-radius:14px;
-border:1px solid rgba(255,255,255,.2);
+border:1px solid rgba(255,255,255,.15);
 background:rgba(255,255,255,.08);
-font-size:16px;
+font-size:15px;
 color:white;
 cursor:pointer;
 transition:.2s;
@@ -111,58 +110,61 @@ transition:.2s;
 background:rgba(255,255,255,.15);
 }
 
-/* article */
+/* sections */
 
 .section{
-margin-top:40px;
+margin-top:36px;
 }
 
 .section h2{
-margin-bottom:12px;
-font-size:22px;
+font-size:20px;
+margin-bottom:10px;
 }
 
 .section p{
 opacity:.85;
-margin-bottom:14px;
+margin-bottom:12px;
+font-size:14px;
 }
 
-/* featured prompts */
+/* featured grid */
 
 .grid{
 display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:14px;
-margin-top:18px;
+grid-template-columns:repeat(3,1fr);
+gap:10px;
+margin-top:12px;
 }
 
 .card{
 background:rgba(255,255,255,.08);
 border-radius:12px;
-padding:10px;
+padding:6px;
 cursor:pointer;
 transition:.2s;
 }
 
 .card:hover{
-transform:scale(1.04);
+transform:scale(1.05);
 }
 
 .card img{
 width:100%;
 border-radius:8px;
-margin-bottom:6px;
+aspect-ratio:1/1;
+object-fit:cover;
 }
 
 .card div{
-font-size:13px;
+font-size:12px;
+margin-top:4px;
 opacity:.9;
 }
 
 /* footer */
 
 footer{
-margin-top:50px;
+margin-top:46px;
 text-align:center;
 font-size:13px;
 opacity:.7;
@@ -172,45 +174,47 @@ footer nav{
 margin-top:10px;
 display:flex;
 justify-content:center;
-gap:14px;
+gap:16px;
 flex-wrap:wrap;
 }
 
 footer a{
 color:white;
 text-decoration:none;
-opacity:.6;
+opacity:.65;
+font-size:13px;
 }
 
 footer a:hover{
 opacity:1;
 }
 
-/* cookie banner */
+/* cookie */
 
 #cookieBanner{
 position:fixed;
 bottom:16px;
 left:50%;
 transform:translateX(-50%);
-width:90%;
+width:92%;
 max-width:320px;
 padding:14px;
-border-radius:16px;
-background:rgba(255,255,255,.1);
+border-radius:14px;
+background:rgba(255,255,255,.12);
 border:1px solid rgba(255,255,255,.25);
 text-align:center;
 font-size:12px;
-backdrop-filter:blur(20px);
+backdrop-filter:blur(16px);
 }
 
 #cookieBanner button{
 margin-top:8px;
-padding:6px 14px;
+padding:6px 16px;
 border-radius:14px;
-border:1px solid rgba(255,255,255,.3);
-background:rgba(255,255,255,.15);
-color:white;
+border:none;
+background:white;
+color:black;
+font-size:12px;
 cursor:pointer;
 }
 
@@ -230,7 +234,7 @@ cursor:pointer;
 
 <h1>Prompt Hub</h1>
 
-<p>Discover powerful AI prompts that generate better results.</p>
+<p>Powerful AI prompts that produce better results.</p>
 
 <div class="buttons">
 
@@ -249,25 +253,11 @@ cursor:pointer;
 <h2>What Is Prompt Hub?</h2>
 
 <p>
-Prompt Hub is a curated collection of powerful prompts designed to help you get better results from artificial intelligence tools such as ChatGPT and Midjourney.
+Prompt Hub is a curated collection of high-quality prompts designed to help you get better results from AI tools like ChatGPT and Midjourney.
 </p>
 
 <p>
-Instead of experimenting blindly, our prompts give you proven instructions that guide AI models to produce higher quality responses, images, ideas and code.
-</p>
-
-</div>
-
-<div class="section">
-
-<h2>Why AI Prompts Matter</h2>
-
-<p>
-AI systems respond differently depending on how instructions are written. A small change in wording can dramatically change the output.
-</p>
-
-<p>
-Well-designed prompts allow you to control tone, structure and detail, helping you generate more accurate and useful results.
+Instead of guessing how to talk to AI, these prompts guide models to generate clearer, more useful, and more powerful outputs.
 </p>
 
 </div>
@@ -297,64 +287,48 @@ by RCHT & Manav
 </div>
 
 <div id="cookieBanner">
-
-This website uses cookies and may display ads from third-party networks.
-
+This site uses cookies and may display ads.
 <br>
-
 <button onclick="acceptCookies()">OK</button>
-
 </div>
 
 <script>
 
-/* redirects */
+/* navigation */
 
-function openGallery(){
-window.location.href="gallery.html";
-}
+function openGallery(){window.location.href="gallery.html"}
+function openTools(){window.location.href="tools.html"}
+function openSponsors(){window.location.href="sponsors.html"}
 
-function openTools(){
-window.location.href="tools.html";
-}
-
-function openSponsors(){
-window.location.href="sponsors.html";
-}
-
-/* cookie */
+/* cookies */
 
 function acceptCookies(){
-
-localStorage.setItem("cookiesAccepted","yes");
-
-document.getElementById("cookieBanner").style.display="none";
-
+localStorage.setItem("cookiesAccepted","yes")
+document.getElementById("cookieBanner").style.display="none"
 }
 
 if(localStorage.getItem("cookiesAccepted")==="yes"){
-document.getElementById("cookieBanner").style.display="none";
+document.getElementById("cookieBanner").style.display="none"
 }
 
-/* secret admin unlock */
+/* secret admin */
 
-let tapCount=0;
-
-const secretImage=document.getElementById("secretAdmin");
+let tapCount=0
+const secretImage=document.getElementById("secretAdmin")
 
 secretImage.addEventListener("touchstart",()=>{
 
-tapCount++;
+tapCount++
 
-setTimeout(()=>{tapCount=0},2000);
+setTimeout(()=>{tapCount=0},2000)
 
 if(tapCount>=5){
-window.location.href="admin.html";
+window.location.href="admin.html"
 }
 
-});
+})
 
-/* Google Drive Image Fix */
+/* google drive image fix */
 
 function formatImage(url){
 
@@ -376,7 +350,7 @@ return url
 
 /* featured prompts */
 
-const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec";
+const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec"
 
 fetch(API)
 
@@ -384,39 +358,34 @@ fetch(API)
 
 .then(data=>{
 
-const grid=document.getElementById("featureGrid");
+const grid=document.getElementById("featureGrid")
 
-let picks=data.sort(()=>0.5-Math.random()).slice(0,4);
+let picks=data.sort(()=>0.5-Math.random()).slice(0,6)
 
 picks.forEach((p,i)=>{
 
 const img=formatImage(p["Image File"])
 
-let card=document.createElement("div");
+let card=document.createElement("div")
 
-card.className="card";
+card.className="card"
 
 card.innerHTML=`
-
 <img src="${img}">
-
 <div>${p["Prompt Title"]}</div>
-
-`;
+`
 
 card.onclick=()=>{
-window.location.href="prompt.html?id="+i;
-};
+window.location.href="prompt.html?id="+i
+}
 
-grid.appendChild(card);
+grid.appendChild(card)
 
-});
+})
 
-});
+})
 
 </script>
-
-<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "4f5ddedb3c9948459f24a7a20f6ba01d"}'></script>
 
 </body>
 </html>
