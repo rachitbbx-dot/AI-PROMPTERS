@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
-<meta name="description" content="Prompt Hub is a curated collection of powerful AI prompts for ChatGPT, Midjourney and other AI tools.">
+<meta name="description" content="Prompt Hub – discover powerful AI prompts that generate better results.">
 
 <meta name="google-adsense-account" content="ca-pub-4850710373893560">
 
@@ -24,47 +24,66 @@ font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
 }
 
 body{
-background:#0b0b0b;
+background:#060a0f;
 color:white;
 line-height:1.6;
+overflow-x:hidden;
 }
 
-/* background glow */
+/* vibrant background */
 
 body::before{
 content:"";
 position:fixed;
 inset:0;
+
 background:
-radial-gradient(circle at 15% 20%,#6366f1,transparent 40%),
-radial-gradient(circle at 80% 75%,#06b6d4,transparent 40%);
+radial-gradient(circle at 20% 15%,#4f46e5,transparent 40%),
+radial-gradient(circle at 85% 75%,#06b6d4,transparent 40%),
+radial-gradient(circle at 40% 90%,#10b981,transparent 45%);
+
 filter:blur(120px);
-opacity:.6;
+opacity:.8;
 z-index:-1;
 }
 
 /* container */
 
 .container{
-max-width:720px;
+max-width:760px;
 margin:auto;
-padding:22px 16px 50px;
+padding:24px 16px 60px;
 }
 
 /* HERO */
 
 .hero{
 text-align:center;
-margin-bottom:30px;
+margin-bottom:32px;
 }
 
+/* logo */
+
 .logo{
-width:82px;
-height:82px;
+width:95px;
+height:95px;
+margin:auto;
 border-radius:50%;
 overflow:hidden;
-margin:auto;
-border:2px solid rgba(255,255,255,.25);
+
+background:rgba(255,255,255,.08);
+
+backdrop-filter:blur(20px);
+
+border:1px solid rgba(255,255,255,.2);
+
+box-shadow:
+
+8px 8px 25px rgba(0,0,0,.6),
+-6px -6px 18px rgba(255,255,255,.05),
+
+0 0 25px rgba(6,182,212,.45);
+
 }
 
 .logo img{
@@ -74,115 +93,229 @@ object-fit:cover;
 }
 
 .hero h1{
-margin-top:12px;
-font-size:26px;
-font-weight:700;
+
+margin-top:16px;
+
+font-size:30px;
+
+background:linear-gradient(90deg,#60a5fa,#22d3ee,#34d399);
+-webkit-background-clip:text;
+color:transparent;
+
 }
 
 .hero p{
-margin-top:4px;
-opacity:.7;
+margin-top:6px;
 font-size:14px;
+opacity:.75;
 }
 
-/* buttons */
+/* BUTTONS */
 
 .buttons{
-margin-top:20px;
+margin-top:24px;
 display:flex;
 flex-direction:column;
-gap:10px;
+gap:14px;
 }
 
+/* neumorphic + glass buttons */
+
 .btn{
-width:100%;
-padding:14px;
-border-radius:14px;
-border:1px solid rgba(255,255,255,.15);
-background:rgba(255,255,255,.08);
-font-size:15px;
+
+padding:15px;
+
+border-radius:18px;
+
+background:rgba(255,255,255,.07);
+
+border:1px solid rgba(255,255,255,.18);
+
+backdrop-filter:blur(18px);
+
 color:white;
+
+font-size:15px;
+
 cursor:pointer;
-transition:.2s;
+
+transition:.25s;
+
+box-shadow:
+
+8px 8px 20px rgba(0,0,0,.6),
+
+-4px -4px 12px rgba(255,255,255,.04);
+
 }
 
 .btn:hover{
-background:rgba(255,255,255,.15);
+
+transform:translateY(-2px);
+
+box-shadow:
+
+10px 10px 30px rgba(0,0,0,.65),
+
+-6px -6px 14px rgba(255,255,255,.05),
+
+0 0 18px rgba(6,182,212,.35);
+
 }
 
 /* sections */
 
 .section{
-margin-top:36px;
+margin-top:38px;
+}
+
+/* neumorphic glass panels */
+
+.section-card{
+
+padding:18px;
+
+border-radius:18px;
+
+background:rgba(255,255,255,.07);
+
+border:1px solid rgba(255,255,255,.15);
+
+backdrop-filter:blur(18px);
+
+box-shadow:
+
+10px 10px 30px rgba(0,0,0,.6),
+
+-6px -6px 16px rgba(255,255,255,.03);
+
 }
 
 .section h2{
+
 font-size:20px;
 margin-bottom:10px;
+
+background:linear-gradient(90deg,#22d3ee,#34d399);
+-webkit-background-clip:text;
+color:transparent;
+
 }
 
 .section p{
-opacity:.85;
-margin-bottom:12px;
 font-size:14px;
+opacity:.85;
+margin-bottom:10px;
 }
 
-/* featured grid */
+/* FEATURE GRID */
 
 .grid{
+
 display:grid;
+
 grid-template-columns:repeat(3,1fr);
-gap:10px;
-margin-top:12px;
+
+gap:12px;
+
+margin-top:14px;
+
 }
 
+/* neumorphic glass cards */
+
 .card{
-background:rgba(255,255,255,.08);
-border-radius:12px;
+
+background:rgba(255,255,255,.07);
+
+border-radius:14px;
+
+border:1px solid rgba(255,255,255,.18);
+
+backdrop-filter:blur(16px);
+
 padding:6px;
+
 cursor:pointer;
-transition:.2s;
+
+transition:.25s;
+
+box-shadow:
+
+6px 6px 20px rgba(0,0,0,.6),
+
+-4px -4px 10px rgba(255,255,255,.04);
+
 }
 
 .card:hover{
+
 transform:scale(1.05);
+
+box-shadow:
+
+10px 10px 30px rgba(0,0,0,.7),
+
+-5px -5px 12px rgba(255,255,255,.04),
+
+0 0 14px rgba(6,182,212,.35);
+
 }
 
 .card img{
+
 width:100%;
-border-radius:8px;
+
 aspect-ratio:1/1;
+
 object-fit:cover;
+
+border-radius:10px;
+
 }
 
 .card div{
 font-size:12px;
-margin-top:4px;
+margin-top:5px;
 opacity:.9;
 }
 
 /* footer */
 
 footer{
-margin-top:46px;
+
+margin-top:50px;
+
 text-align:center;
+
 font-size:13px;
+
 opacity:.7;
+
 }
 
 footer nav{
-margin-top:10px;
+
+margin-top:12px;
+
 display:flex;
+
 justify-content:center;
+
 gap:16px;
+
 flex-wrap:wrap;
+
 }
 
 footer a{
+
 color:white;
+
 text-decoration:none;
-opacity:.65;
-font-size:13px;
+
+opacity:.7;
+
 }
 
 footer a:hover{
@@ -192,30 +325,59 @@ opacity:1;
 /* cookie */
 
 #cookieBanner{
+
 position:fixed;
+
 bottom:16px;
+
 left:50%;
+
 transform:translateX(-50%);
+
 width:92%;
+
 max-width:320px;
+
 padding:14px;
-border-radius:14px;
-background:rgba(255,255,255,.12);
-border:1px solid rgba(255,255,255,.25);
+
+border-radius:16px;
+
+background:rgba(255,255,255,.1);
+
+border:1px solid rgba(255,255,255,.2);
+
+backdrop-filter:blur(20px);
+
 text-align:center;
+
 font-size:12px;
-backdrop-filter:blur(16px);
+
+box-shadow:
+
+10px 10px 30px rgba(0,0,0,.6),
+
+-6px -6px 12px rgba(255,255,255,.03);
+
 }
 
 #cookieBanner button{
+
 margin-top:8px;
+
 padding:6px 16px;
-border-radius:14px;
+
+border-radius:12px;
+
 border:none;
-background:white;
-color:black;
-font-size:12px;
+
+background:linear-gradient(90deg,#22d3ee,#34d399);
+
+color:#032018;
+
+font-weight:600;
+
 cursor:pointer;
+
 }
 
 </style>
@@ -250,15 +412,15 @@ cursor:pointer;
 
 <div class="section">
 
+<div class="section-card">
+
 <h2>What Is Prompt Hub?</h2>
 
-<p>
-Prompt Hub is a curated collection of high-quality prompts designed to help you get better results from AI tools like ChatGPT and Midjourney.
-</p>
+<p>Prompt Hub is a curated collection of powerful prompts designed to help you get better results from AI tools like ChatGPT and Midjourney.</p>
 
-<p>
-Instead of guessing how to talk to AI, these prompts guide models to generate clearer, more useful, and more powerful outputs.
-</p>
+<p>Instead of guessing how to talk to AI, use proven prompts that generate clearer, smarter outputs instantly.</p>
+
+</div>
 
 </div>
 
@@ -294,13 +456,9 @@ This site uses cookies and may display ads.
 
 <script>
 
-/* navigation */
-
 function openGallery(){window.location.href="gallery.html"}
 function openTools(){window.location.href="tools.html"}
 function openSponsors(){window.location.href="sponsors.html"}
-
-/* cookies */
 
 function acceptCookies(){
 localStorage.setItem("cookiesAccepted","yes")
@@ -310,8 +468,6 @@ document.getElementById("cookieBanner").style.display="none"
 if(localStorage.getItem("cookiesAccepted")==="yes"){
 document.getElementById("cookieBanner").style.display="none"
 }
-
-/* secret admin */
 
 let tapCount=0
 const secretImage=document.getElementById("secretAdmin")
@@ -327,8 +483,6 @@ window.location.href="admin.html"
 }
 
 })
-
-/* google drive image fix */
 
 function formatImage(url){
 
@@ -348,14 +502,10 @@ return url
 
 }
 
-/* featured prompts */
-
 const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec"
 
 fetch(API)
-
 .then(res=>res.json())
-
 .then(data=>{
 
 const grid=document.getElementById("featureGrid")
@@ -367,7 +517,6 @@ picks.forEach((p,i)=>{
 const img=formatImage(p["Image File"])
 
 let card=document.createElement("div")
-
 card.className="card"
 
 card.innerHTML=`
