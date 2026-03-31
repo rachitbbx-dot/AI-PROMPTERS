@@ -13,6 +13,25 @@
 body{background:#0b0b0b;color:white;line-height:1.6;overflow-x:hidden;}
 body::before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 15% 20%,#6366f1,transparent 40%),radial-gradient(circle at 80% 75%,#06b6d4,transparent 40%);filter:blur(120px);opacity:.6;z-index:-1;}
 .container{max-width:720px;margin:auto;padding:20px 16px 50px;}
+
+/* Top Runner Banner */
+#topRunner{
+width:100%;
+background:linear-gradient(90deg,#4f46e5,#06b6d4);
+color:white;
+text-align:center;
+padding:10px 0;
+font-weight:600;
+font-size:14px;
+position:sticky;
+top:0;
+z-index:1000;
+box-shadow:0 3px 8px rgba(0,0,0,0.3);
+animation:slideDown 1s ease;
+}
+@keyframes slideDown{from{transform:translateY(-100%);}to{transform:translateY(0);}}
+
+/* Hero Section */
 .hero{text-align:center;margin-bottom:30px;backdrop-filter:blur(30px);padding:22px;border-radius:20px;background:rgba(255,255,255,0.05);}
 .logo{width:82px;height:82px;border-radius:50%;overflow:hidden;margin:auto;border:2px solid rgba(255,255,255,.25);}
 .logo img{width:100%;height:100%;object-fit:cover;}
@@ -21,6 +40,8 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(circle
 .buttons{margin-top:18px;display:flex;flex-direction:column;gap:10px;}
 .btn{width:100%;padding:14px;border-radius:14px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);font-size:15px;color:white;cursor:pointer;transition:.2s;backdrop-filter:blur(12px);}
 .btn:hover{background:rgba(255,255,255,.15);}
+
+/* Sections */
 .section{margin-top:36px;}
 .section h2{font-size:20px;margin-bottom:10px;}
 .section p{opacity:.85;margin-bottom:12px;font-size:14px;}
@@ -29,19 +50,51 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(circle
 .card:hover{transform:scale(1.05);}
 .card img{width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:12px;}
 .card div{font-size:12px;margin-top:4px;opacity:.9;text-align:center;}
+
+/* Footer */
 footer{margin-top:46px;text-align:center;font-size:13px;opacity:.7;}
 footer nav{margin-top:10px;display:flex;justify-content:center;gap:16px;flex-wrap:wrap;}
 footer a{color:white;text-decoration:none;opacity:.65;font-size:13px;}
 footer a:hover{opacity:1;}
+
+/* Cookie Banner */
 #cookieBanner{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);width:92%;max-width:320px;padding:14px;border-radius:14px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);text-align:center;font-size:12px;backdrop-filter:blur(16px);}
 #cookieBanner button{margin-top:8px;padding:6px 16px;border-radius:14px;border:none;background:white;color:black;font-size:12px;cursor:pointer;}
+
+/* Instagram Widget */
+#igStats{
+background:rgba(255,255,255,0.05);
+padding:12px 18px;
+border-radius:12px;
+margin:20px 0;
+text-align:center;
+font-size:14px;
+color:white;
+backdrop-filter:blur(8px);
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:4px;
+transition:0.3s;
+}
+#igStats a{color:#4f46e5;text-decoration:none;font-weight:600;}
+#igStats a:hover{opacity:0.85;}
+
+/* Random copy popup */
+#copyPopup{position:fixed;bottom:20px;right:20px;background:rgba(0,0,0,0.85);color:white;padding:12px 18px;border-radius:12px;box-shadow:0 5px 20px rgba(0,0,0,0.4);font-size:13px;opacity:0;transition:opacity 0.5s,transform 0.5s;}
+#copyPopup.show{opacity:1;transform:translateY(-10px);}
+
 @media(max-width:400px){.hero h1{font-size:24px;}.btn{font-size:14px;padding:12px;}}
 </style>
 </head>
 
 <body>
 
+<!-- Top Banner -->
+<div id="topRunner">🎉 New Prompts Released Weekly! Stay Tuned 🎉</div>
+
 <div class="container">
+
 <div class="hero">
 <div class="logo">
 <img src="manav.png" id="secretAdmin">
@@ -56,10 +109,17 @@ footer a:hover{opacity:1;}
 </div>
 </div>
 
+<!-- Instagram Stats Widget -->
+<div id="igStats">
+<a href="https://www.instagram.com/made.by.manav" target="_blank">@made.by.manav</a>
+<span>Followers: 51.6K | Posts: 70</span>
+</div>
+
 <div class="section">
 <h2>What Is Prompt Hub?</h2>
 <p>Prompt Hub is a curated collection of high-quality prompts designed to help you get better results from AI tools like ChatGPT and Midjourney.</p>
 <p>Instead of guessing how to talk to AI, these prompts guide models to generate clearer, more useful, and more powerful outputs.</p>
+<p><strong>All prompts are original and released alongside our Instagram Reels for followers. We update the site 2–3 times per week with high-quality images, descriptions, and tips, ensuring fresh and engaging content.</strong></p>
 </div>
 
 <div class="section">
@@ -78,19 +138,26 @@ New prompts added daily.<br>by RCHT & Manav
 </footer>
 </div>
 
+<!-- Cookie Banner -->
 <div id="cookieBanner">
 This site uses cookies and may display ads.<br>
 <button onclick="acceptCookies()">OK</button>
 </div>
 
+<!-- Random Copy Popup -->
+<div id="copyPopup"></div>
+
 <script>
+// Navigation
 function openGallery(){window.location.href="gallery.html"}
 function openTools(){window.location.href="tools.html"}
 function openSponsors(){window.location.href="sponsors.html"}
+
+// Cookies
 function acceptCookies(){localStorage.setItem("cookiesAccepted","yes");document.getElementById("cookieBanner").style.display="none"}
 if(localStorage.getItem("cookiesAccepted")==="yes"){document.getElementById("cookieBanner").style.display="none"}
 
-// secret admin
+// Secret Admin Tap
 let tapCount=0
 const secretImage=document.getElementById("secretAdmin")
 secretImage.addEventListener("touchstart",()=>{
@@ -99,7 +166,7 @@ setTimeout(()=>{tapCount=0},2000)
 if(tapCount>=5){window.location.href="admin.html"}
 })
 
-// Google Drive image fix
+// Google Drive Image Formatter
 function formatImage(url){
 if(!url) return ""
 let id=""
@@ -109,7 +176,7 @@ if(id) return "https://lh3.googleusercontent.com/d/"+id
 return url
 }
 
-// Featured prompts
+// Featured Prompts
 const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec"
 fetch(API)
 .then(res=>res.json())
@@ -125,6 +192,46 @@ card.onclick=()=>{window.location.href="prompt.html?id="+p.ID}
 grid.appendChild(card)
 })
 })
+
+// Random Copy Popup - Dynamic Users + Real Prompts
+let users = [];
+let promptNames = [];
+
+// 1️⃣ Fetch random users from RandomUser API
+fetch("https://randomuser.me/api/?results=15")
+.then(res => res.json())
+.then(data => {
+    users = data.results.map(u => u.name.first);
+});
+
+// 2️⃣ Fetch prompt titles from your API
+fetch(API)
+.then(res => res.json())
+.then(data => {
+    promptNames = data.map(p => p["Prompt Title"]);
+});
+
+// 3️⃣ Function to show popup
+function showRandomCopyPopup(){
+    if(users.length === 0 || promptNames.length === 0) return; // Wait until both are loaded
+
+    const user = users[Math.floor(Math.random()*users.length)];
+    const prompt = promptNames[Math.floor(Math.random()*promptNames.length)];
+    const minutesAgo = Math.floor(Math.random()*10)+1;
+
+    const popup = document.getElementById('copyPopup');
+    popup.textContent = `${user} copied "${prompt}" ${minutesAgo} minutes ago`;
+    popup.classList.add('show');
+
+    setTimeout(()=>{popup.classList.remove('show');},4000);
+}
+
+// 4️⃣ Show popup randomly every 30–60 seconds
+setInterval(()=>{
+    if(Math.random() < 0.6){ // 60% chance to show each interval
+        showRandomCopyPopup();
+    }
+}, Math.floor(Math.random() * 30000) + 30000); // 30k-60k ms
 </script>
 
 </body>
