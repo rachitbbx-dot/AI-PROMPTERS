@@ -3,11 +3,18 @@
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="7searchppc" content="cc20ffd753053e91b6f490947cfd694f"/>
+
+<meta name="description" content="Prompt Hub is a curated gallery of powerful AI prompts for ChatGPT, Midjourney and other AI tools. Discover prompts that generate better AI results instantly.">
+
+<meta name="keywords" content="AI prompts, ChatGPT prompts, Midjourney prompts, AI prompt gallery, best AI prompts">
+
 <meta name="google-adsense-account" content="ca-pub-4850710373893560">
-  
-<title>Prompt Hub</title>
+
+<meta name="7searchppc" content="cc20ffd753053e91b6f490947cfd694f"/>
+
+<title>Prompt Hub - Best AI Prompt Library</title>
 
 <style>
 
@@ -22,21 +29,17 @@ body{
 
 min-height:100dvh;
 
-display:flex;
-justify-content:center;
-align-items:center;
-
-padding:20px;
-
 background:#0f0f0f;
 
 color:white;
 
 overflow-y:auto;
 
+padding:40px 20px;
+
 }
 
-/* gradient background */
+/* background */
 
 body::before{
 
@@ -57,19 +60,25 @@ z-index:-1;
 
 }
 
-/* container */
+/* main container */
 
 .container{
 
-width:100%;
-max-width:380px;
+max-width:900px;
+
+margin:auto;
+
+}
+
+/* HERO CARD */
+
+.hero{
 
 text-align:center;
 
 background:rgba(255,255,255,0.08);
 
 backdrop-filter:blur(50px);
--webkit-backdrop-filter:blur(50px);
 
 border:1px solid rgba(255,255,255,0.2);
 
@@ -80,6 +89,8 @@ padding:40px 26px;
 box-shadow:
 0 40px 100px rgba(0,0,0,.6),
 inset 0 1px 0 rgba(255,255,255,.25);
+
+margin-bottom:40px;
 
 }
 
@@ -103,36 +114,23 @@ box-shadow:0 15px 50px rgba(0,0,0,.7);
 }
 
 .profile img{
-
 width:100%;
 height:100%;
 object-fit:cover;
-
 }
 
 /* title */
 
 h1{
-
 margin-top:18px;
-
-font-size:30px;
-
-font-weight:700;
-
+font-size:32px;
 }
 
 .subtitle{
-
 opacity:.7;
-font-size:13px;
-
+font-size:14px;
 margin-top:4px;
-
 margin-bottom:26px;
-
-letter-spacing:1px;
-
 }
 
 /* buttons */
@@ -143,9 +141,11 @@ display:block;
 
 margin:14px auto;
 
-padding:20px;
+padding:18px;
 
 width:100%;
+
+max-width:420px;
 
 border-radius:60px;
 
@@ -168,40 +168,122 @@ inset 0 1px 0 rgba(255,255,255,.2);
 }
 
 .glass:active{
-
 transform:scale(.95);
-
 }
 
 .btntext{
-
 font-style:italic;
-
 letter-spacing:1px;
+}
 
+/* ARTICLE */
+
+.article{
+
+background:rgba(255,255,255,0.06);
+
+border-radius:20px;
+
+padding:30px;
+
+line-height:1.7;
+
+margin-bottom:40px;
+
+}
+
+.article h2{
+
+margin-bottom:10px;
+font-size:22px;
+
+}
+
+.article p{
+
+opacity:.9;
+margin-bottom:16px;
+
+}
+
+/* featured prompts */
+
+.featured{
+
+margin-bottom:40px;
+
+}
+
+.featured h2{
+
+margin-bottom:16px;
+
+}
+
+.featureGrid{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+
+gap:18px;
+
+}
+
+.card{
+
+background:rgba(255,255,255,0.08);
+
+border-radius:14px;
+
+padding:14px;
+
+cursor:pointer;
+
+transition:.2s;
+
+}
+
+.card:hover{
+transform:scale(1.05);
+}
+
+.card img{
+
+width:100%;
+border-radius:10px;
+margin-bottom:8px;
+
+}
+
+.card div{
+font-size:14px;
+opacity:.9;
 }
 
 /* footer */
 
 .footer{
 
-margin-top:24px;
+margin-top:50px;
 
-font-size:12px;
+text-align:center;
 
-opacity:.6;
+font-size:13px;
+
+opacity:.7;
 
 }
 
 .footer-links{
 
-margin-top:10px;
+margin-top:12px;
 
 display:flex;
 
 justify-content:center;
 
-gap:14px;
+gap:16px;
 
 flex-wrap:wrap;
 
@@ -218,9 +300,7 @@ opacity:.6;
 }
 
 .footer-links a:hover{
-
 opacity:1;
-
 }
 
 /* cookie banner */
@@ -228,11 +308,15 @@ opacity:1;
 #cookieBanner{
 
 position:fixed;
+
 bottom:20px;
+
 left:50%;
+
 transform:translateX(-50%);
 
 max-width:340px;
+
 width:90%;
 
 padding:16px 18px;
@@ -273,10 +357,6 @@ cursor:pointer;
 
 }
 
-#secretAdmin{
-touch-action: manipulation;
-}
-
 </style>
 
 </head>
@@ -284,6 +364,10 @@ touch-action: manipulation;
 <body>
 
 <div class="container">
+
+<!-- HERO -->
+
+<div class="hero">
 
 <div class="profile">
 <img src="manav.png" id="secretAdmin">
@@ -294,8 +378,6 @@ touch-action: manipulation;
 <div class="subtitle">
 THE BEST AI PROMPT PROVIDER
 </div>
-
-<!-- BUTTONS -->
 
 <button class="glass" onclick="openGallery()">
 <span class="btntext">PROMPT GALLERY</span>
@@ -308,6 +390,58 @@ THE BEST AI PROMPT PROVIDER
 <button class="glass" onclick="openSponsors()">
 <span class="btntext">SPONSORS</span>
 </button>
+
+</div>
+
+<!-- ARTICLE -->
+
+<div class="article">
+
+<h2>Welcome to Prompt Hub</h2>
+
+<p>
+Prompt Hub is a curated library of powerful AI prompts designed to help you unlock the full potential of artificial intelligence tools like ChatGPT, Midjourney, and other generative AI systems.
+</p>
+
+<p>
+Instead of guessing what to type, our prompt collection provides structured instructions that produce higher quality AI results. Whether you are generating content, images, code, or ideas, the right prompt can dramatically improve your output.
+</p>
+
+<h2>Why Good Prompts Matter</h2>
+
+<p>
+AI models respond based on the instructions they receive. A poorly written prompt can produce vague or incorrect results, while a well-crafted prompt can guide the AI to generate detailed and accurate outputs.
+</p>
+
+<p>
+Our prompt gallery helps creators, developers, students, and professionals discover tested prompts that consistently produce great results.
+</p>
+
+<h2>How To Use Prompts</h2>
+
+<p>
+Browse the prompt gallery, choose a prompt that fits your goal, copy it, and paste it into your AI tool of choice. Many prompts can also be modified to suit your specific needs.
+</p>
+
+<p>
+New prompts are added daily so the collection continues to grow with the latest AI techniques.
+</p>
+
+</div>
+
+<!-- FEATURED PROMPTS -->
+
+<div class="featured">
+
+<h2>Featured Prompts</h2>
+
+<div class="featureGrid" id="featureGrid">
+
+</div>
+
+</div>
+
+<!-- FOOTER -->
 
 <div class="footer">
 
@@ -325,7 +459,7 @@ by RCHT & Manav
 
 </div>
 
-<!-- Cookie Banner -->
+<!-- COOKIE -->
 
 <div id="cookieBanner">
 
@@ -339,21 +473,21 @@ This site uses cookies to improve your experience and may display ads from third
 
 <script>
 
-/* PAGE REDIRECTS */
+/* redirects */
 
 function openGallery(){
-window.location.href = "gallery.html";
+window.location.href="gallery.html";
 }
 
 function openTools(){
-window.location.href = "tools.html";
+window.location.href="tools.html";
 }
 
 function openSponsors(){
-window.location.href = "sponsors.html";
+window.location.href="sponsors.html";
 }
 
-/* COOKIE BANNER */
+/* cookie banner */
 
 function acceptCookies(){
 
@@ -363,35 +497,68 @@ document.getElementById("cookieBanner").style.display="none";
 
 }
 
-if(localStorage.getItem("cookiesAccepted") === "yes"){
-
+if(localStorage.getItem("cookiesAccepted")==="yes"){
 document.getElementById("cookieBanner").style.display="none";
-
 }
 
-/* SECRET ADMIN UNLOCK */
+/* secret admin */
 
-let tapCount = 0;
+let tapCount=0;
 
-const secretImage = document.getElementById("secretAdmin");
+const secretImage=document.getElementById("secretAdmin");
 
-secretImage.addEventListener("touchstart", () => {
+secretImage.addEventListener("touchstart",()=>{
 
 tapCount++;
 
 setTimeout(()=>{
-tapCount = 0
+tapCount=0
 },2000);
 
-if(tapCount >= 5){
-
+if(tapCount>=5){
 window.location.href="admin.html";
-
 }
 
 });
 
+/* featured prompts dynamic */
+
+const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec";
+
+fetch(API)
+.then(res=>res.json())
+.then(data=>{
+
+const grid=document.getElementById("featureGrid");
+
+let picks=data.sort(()=>0.5-Math.random()).slice(0,4);
+
+picks.forEach((p,i)=>{
+
+let card=document.createElement("div");
+
+card.className="card";
+
+card.innerHTML=`
+<img src="${p["Image File"]}">
+<div>${p["Prompt Title"]}</div>
+`;
+
+card.onclick=()=>{
+window.location.href="prompt.html?id="+i;
+};
+
+grid.appendChild(card);
+
+});
+
+});
+
 </script>
-<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "4f5ddedb3c9948459f24a7a20f6ba01d"}'></script><!-- End Cloudflare Web Analytics -->
+
+<!-- analytics -->
+
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "4f5ddedb3c9948459f24a7a20f6ba01d"}'></script>
+
 </body>
 </html>
