@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Prompt Viewer</title>
 
 <style>
@@ -52,18 +55,14 @@ width:300px;
 height:20px;
 background:rgba(255,255,255,0.1);
 border-radius:15px;
-backdrop-filter: blur(8px);
-box-shadow: 0 0 10px rgba(255,255,255,0.2) inset;
 overflow:hidden;
-position:relative;
 margin-top:10px;
 }
 
 #progress{
 width:0%;
 height:100%;
-background:linear-gradient(90deg, #fffa, #4f46e5);
-box-shadow: 0 0 12px #4f46e5, 0 0 20px #4f46e5 inset;
+background:linear-gradient(90deg,#fffa,#4f46e5);
 border-radius:15px;
 }
 
@@ -108,7 +107,7 @@ margin-top:50px;
 opacity:.6;
 }
 
-/* SEO SECTION */
+/* SEO */
 
 #seoSection{
 margin-top:30px;
@@ -122,6 +121,43 @@ font-size:14px;
 #seoSection h2{
 font-size:18px;
 margin-bottom:10px;
+}
+
+/* MORE PROMPTS */
+
+#morePrompts{
+margin-top:40px;
+}
+
+#moreGrid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+gap:15px;
+}
+
+.promptCard{
+background:rgba(255,255,255,0.05);
+border-radius:12px;
+padding:10px;
+cursor:pointer;
+transition:.2s;
+}
+
+.promptCard:hover{
+transform:scale(1.05);
+background:rgba(255,255,255,0.08);
+}
+
+.promptCard img{
+width:100%;
+border-radius:8px;
+margin-bottom:6px;
+object-fit:cover;
+}
+
+.promptCard div{
+font-size:13px;
+opacity:.9;
 }
 
 </style>
@@ -150,7 +186,7 @@ margin-bottom:10px;
 
 <div class="loader" id="loader" style="display:none;">Loading...</div>
 
-<!-- SEO TEXT SECTION -->
+<!-- SEO -->
 
 <div id="seoSection" style="display:none;">
 
@@ -162,35 +198,42 @@ margin-bottom:10px;
 
 </div>
 
+<!-- MORE PROMPTS -->
+
+<div id="morePrompts" style="display:none;">
+
+<h2>More Prompts</h2>
+
+<div id="moreGrid"></div>
+
+</div>
+
 <script>
 
-const API = "https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec";
+const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec";
 
-// CSV files
-const EXPLAIN_CSV = "/content/explanations.csv";
-const TIPS_CSV = "/content/tips.csv";
+const EXPLAIN_CSV="/content/explanations.csv";
+const TIPS_CSV="/content/tips.csv";
 
-// Get the ID from URL
+const params=new URLSearchParams(window.location.search);
+const id=parseInt(params.get("id"));
 
-const params = new URLSearchParams(window.location.search);
-const id = parseInt(params.get("id"));
+const titleEl=document.getElementById("title");
+const contentEl=document.getElementById("content");
+const copyBtn=document.getElementById("copyBtn");
+const imgEl=document.getElementById("promptImage");
 
-// Elements
+const overlay=document.getElementById("unlockOverlay");
+const progressEl=document.getElementById("progress");
 
-const titleEl = document.getElementById("title");
-const contentEl = document.getElementById("content");
-const loaderEl = document.getElementById("loader");
-const copyBtn = document.getElementById("copyBtn");
-const imgEl = document.getElementById("promptImage");
+const seoSection=document.getElementById("seoSection");
+const seoExplain=document.getElementById("seoExplain");
+const seoTips=document.getElementById("seoTips");
 
-const overlay = document.getElementById("unlockOverlay");
-const progressEl = document.getElementById("progress");
+const morePromptsSection=document.getElementById("morePrompts");
+const moreGrid=document.getElementById("moreGrid");
 
-const seoSection = document.getElementById("seoSection");
-const seoExplain = document.getElementById("seoExplain");
-const seoTips = document.getElementById("seoTips");
-
-// Format Google Drive images
+let allPrompts;
 
 function formatImage(url){
 
@@ -213,69 +256,63 @@ return url;
 
 }
 
-// CSV loader
-
 async function loadCSV(url){
 
-const res = await fetch(url);
-const text = await res.text();
+const res=await fetch(url);
+const text=await res.text();
 
 return text.split("\n").filter(x=>x.trim()!="");
 
 }
 
-// Random item
-
 function randomItem(arr){
 return arr[Math.floor(Math.random()*arr.length)];
 }
 
-// Fetch prompts
-
-let promptData;
+/* FETCH PROMPTS */
 
 fetch(API)
 .then(res=>res.json())
 .then(data=>{
 
-promptData = data[id];
+allPrompts=data;
 
 startUnlock();
 
 })
 .catch(err=>{
 
-overlay.innerHTML = "Error loading prompt";
+overlay.innerHTML="Error loading prompt";
 console.error(err);
 
 });
 
-// Unlock mechanic
+/* UNLOCK ANIMATION */
 
 function startUnlock(){
 
-let width = 0;
-const target = 100;
-const duration = 5000;
-const interval = 50;
+let width=0;
 
-const steps = duration / interval;
+const duration=5000;
+const interval=50;
 
-let currentStep = 0;
+const steps=duration/interval;
 
-const progressInterval = setInterval(()=>{
+let currentStep=0;
 
-const randomIncrement = (target/steps) * (0.5 + Math.random());
+const progressInterval=setInterval(()=>{
 
-width += randomIncrement;
+const randomIncrement=(100/steps)*(0.5+Math.random());
 
-if(width > target) width = target;
+width+=randomIncrement;
 
-progressEl.style.width = width + "%";
+if(width>100) width=100;
+
+progressEl.style.width=width+"%";
 
 currentStep++;
 
-if(width >= target || currentStep >= steps*2){
+if(width>=100 || currentStep>=steps*2){
 
 clearInterval(progressInterval);
 
@@ -283,60 +320,114 @@ showPrompt();
 
 }
 
-}, interval);
+},interval);
 
 }
 
-// Show prompt
+/* SHOW PROMPT */
 
 async function showPrompt(){
 
-overlay.style.display = "none";
+overlay.style.display="none";
+
+const promptData=allPrompts[id];
 
 if(!promptData){
 
-titleEl.textContent = "Prompt not found";
+titleEl.textContent="Prompt not found";
+titleEl.style.display="block";
 return;
 
 }
 
-titleEl.style.display = "block";
-contentEl.style.display = "block";
-copyBtn.style.display = "inline-block";
+titleEl.style.display="block";
+contentEl.style.display="block";
+copyBtn.style.display="inline-block";
 
-imgEl.style.display = promptData["Image File"] ? "block" : "none";
+titleEl.textContent=promptData["Prompt Title"]||"Untitled";
+contentEl.textContent=promptData["Prompt Text"]||"";
 
-titleEl.textContent = promptData["Prompt Title"] || "Untitled";
+const img=formatImage(promptData["Image File"]);
 
-contentEl.textContent = promptData["Prompt Text"] || "";
+if(img){
+imgEl.src=img;
+imgEl.style.display="block";
+}
 
-imgEl.src = formatImage(promptData["Image File"]) || "";
+/* SEO */
 
-// Load SEO text
+const explainList=await loadCSV(EXPLAIN_CSV);
+const tipsList=await loadCSV(TIPS_CSV);
 
-const explainList = await loadCSV(EXPLAIN_CSV);
-const tipsList = await loadCSV(TIPS_CSV);
+seoExplain.textContent=randomItem(explainList);
+seoTips.textContent=randomItem(tipsList);
 
-seoExplain.textContent = randomItem(explainList);
-seoTips.textContent = randomItem(tipsList);
+seoSection.style.display="block";
 
-seoSection.style.display = "block";
+/* SHOW MORE PROMPTS */
+
+showMorePrompts();
 
 }
 
-// Copy button
+/* COPY */
 
-copyBtn.addEventListener("click", ()=>{
+copyBtn.addEventListener("click",()=>{
 
 navigator.clipboard.writeText(contentEl.textContent).then(()=>{
 
-copyBtn.textContent = "Copied!";
+copyBtn.textContent="Copied!";
 
-setTimeout(()=> copyBtn.textContent = "Copy Prompt",1500);
+setTimeout(()=>copyBtn.textContent="Copy Prompt",1500);
+
+});
 
 });
 
+/* MORE PROMPTS */
+
+function showMorePrompts(){
+
+if(!allPrompts) return;
+
+let others=[];
+
+for(let i=0;i<allPrompts.length;i++){
+
+if(i!==id){
+others.push({data:allPrompts[i],index:i});
+}
+
+}
+
+others=others.sort(()=>0.5-Math.random()).slice(0,6);
+
+others.forEach(p=>{
+
+const card=document.createElement("div");
+
+card.className="promptCard";
+
+const img=formatImage(p.data["Image File"]);
+
+card.innerHTML=`
+
+<img src="${img}">
+<div>${p.data["Prompt Title"]}</div>
+
+`;
+
+card.onclick=()=>{
+window.location.href="prompt.html?id="+p.index;
+};
+
+moreGrid.appendChild(card);
+
 });
+
+morePromptsSection.style.display="block";
+
+}
 
 </script>
 
