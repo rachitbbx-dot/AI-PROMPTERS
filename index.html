@@ -4,15 +4,14 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<meta name="description" content="Prompt Hub – discover powerful AI prompts that generate better results.">
+<title>Prompt Gallery</title>
 
 <meta name="google-adsense-account" content="ca-pub-4850710373893560">
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4850710373893560" crossorigin="anonymous"></script>
-
-<title>Prompt Hub</title>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4850710373893560"
+crossorigin="anonymous"></script>
 
 <style>
 
@@ -24,13 +23,10 @@ font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
 }
 
 body{
-background:#060a0f;
+background:#0f172a;
 color:white;
 line-height:1.6;
-overflow-x:hidden;
 }
-
-/* vibrant background */
 
 body::before{
 content:"";
@@ -38,52 +34,40 @@ position:fixed;
 inset:0;
 
 background:
-radial-gradient(circle at 20% 15%,#4f46e5,transparent 40%),
-radial-gradient(circle at 85% 75%,#06b6d4,transparent 40%),
-radial-gradient(circle at 40% 90%,#10b981,transparent 45%);
+radial-gradient(circle at 20% 20%, #3b82f6, transparent 40%),
+radial-gradient(circle at 80% 70%, #06b6d4, transparent 40%);
 
 filter:blur(120px);
-opacity:.8;
+opacity:.45;
+
 z-index:-1;
 }
-
-/* container */
 
 .container{
 max-width:760px;
 margin:auto;
-padding:24px 16px 60px;
+padding:26px 16px 60px;
 }
-
-/* HERO */
 
 .hero{
 text-align:center;
 margin-bottom:32px;
 }
 
-/* logo */
-
 .logo{
-width:95px;
-height:95px;
+width:90px;
+height:90px;
 margin:auto;
 border-radius:50%;
 overflow:hidden;
 
-background:rgba(255,255,255,.08);
-
+background:rgba(255,255,255,.05);
 backdrop-filter:blur(20px);
 
 border:1px solid rgba(255,255,255,.2);
 
 box-shadow:
-
-8px 8px 25px rgba(0,0,0,.6),
--6px -6px 18px rgba(255,255,255,.05),
-
-0 0 25px rgba(6,182,212,.45);
-
+0 10px 30px rgba(0,0,0,.35);
 }
 
 .logo img{
@@ -93,236 +77,143 @@ object-fit:cover;
 }
 
 .hero h1{
-
-margin-top:16px;
-
+margin-top:14px;
 font-size:30px;
+font-weight:700;
 
-background:linear-gradient(90deg,#60a5fa,#22d3ee,#34d399);
+background:linear-gradient(90deg,#3b82f6,#06b6d4);
 -webkit-background-clip:text;
 color:transparent;
-
 }
 
 .hero p{
 margin-top:6px;
-font-size:14px;
 opacity:.75;
+font-size:14px;
 }
-
-/* BUTTONS */
 
 .buttons{
-margin-top:24px;
+margin-top:22px;
 display:flex;
 flex-direction:column;
-gap:14px;
+gap:12px;
 }
 
-/* neumorphic + glass buttons */
-
 .btn{
-
 padding:15px;
 
-border-radius:18px;
+border-radius:14px;
 
-background:rgba(255,255,255,.07);
+background:rgba(255,255,255,.08);
 
-border:1px solid rgba(255,255,255,.18);
+border:1px solid rgba(255,255,255,.15);
 
-backdrop-filter:blur(18px);
+backdrop-filter:blur(20px);
 
 color:white;
-
 font-size:15px;
 
 cursor:pointer;
 
-transition:.25s;
+transition:.2s;
 
 box-shadow:
-
-8px 8px 20px rgba(0,0,0,.6),
-
--4px -4px 12px rgba(255,255,255,.04);
-
+0 8px 25px rgba(0,0,0,.35);
 }
 
 .btn:hover{
-
+background:rgba(255,255,255,.12);
 transform:translateY(-2px);
-
-box-shadow:
-
-10px 10px 30px rgba(0,0,0,.65),
-
--6px -6px 14px rgba(255,255,255,.05),
-
-0 0 18px rgba(6,182,212,.35);
-
 }
-
-/* sections */
 
 .section{
-margin-top:38px;
+margin-top:36px;
 }
 
-/* neumorphic glass panels */
+.section h2{
+font-size:20px;
+margin-bottom:10px;
 
-.section-card{
+background:linear-gradient(90deg,#3b82f6,#06b6d4);
+-webkit-background-clip:text;
+color:transparent;
+}
 
-padding:18px;
+.section p{
+opacity:.85;
+font-size:14px;
+margin-bottom:10px;
+}
 
-border-radius:18px;
+.grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+margin-top:14px;
+}
 
-background:rgba(255,255,255,.07);
+.card{
+
+background:rgba(255,255,255,.08);
+
+border-radius:12px;
 
 border:1px solid rgba(255,255,255,.15);
 
 backdrop-filter:blur(18px);
 
-box-shadow:
-
-10px 10px 30px rgba(0,0,0,.6),
-
--6px -6px 16px rgba(255,255,255,.03);
-
-}
-
-.section h2{
-
-font-size:20px;
-margin-bottom:10px;
-
-background:linear-gradient(90deg,#22d3ee,#34d399);
--webkit-background-clip:text;
-color:transparent;
-
-}
-
-.section p{
-font-size:14px;
-opacity:.85;
-margin-bottom:10px;
-}
-
-/* FEATURE GRID */
-
-.grid{
-
-display:grid;
-
-grid-template-columns:repeat(3,1fr);
-
-gap:12px;
-
-margin-top:14px;
-
-}
-
-/* neumorphic glass cards */
-
-.card{
-
-background:rgba(255,255,255,.07);
-
-border-radius:14px;
-
-border:1px solid rgba(255,255,255,.18);
-
-backdrop-filter:blur(16px);
-
 padding:6px;
 
 cursor:pointer;
 
-transition:.25s;
+transition:.2s;
 
 box-shadow:
-
-6px 6px 20px rgba(0,0,0,.6),
-
--4px -4px 10px rgba(255,255,255,.04);
+0 8px 25px rgba(0,0,0,.35);
 
 }
 
 .card:hover{
-
 transform:scale(1.05);
-
-box-shadow:
-
-10px 10px 30px rgba(0,0,0,.7),
-
--5px -5px 12px rgba(255,255,255,.04),
-
-0 0 14px rgba(6,182,212,.35);
-
 }
 
 .card img{
-
 width:100%;
-
 aspect-ratio:1/1;
-
 object-fit:cover;
-
 border-radius:10px;
-
 }
 
 .card div{
 font-size:12px;
-margin-top:5px;
+margin-top:4px;
 opacity:.9;
 }
 
-/* footer */
-
 footer{
-
-margin-top:50px;
-
+margin-top:48px;
 text-align:center;
-
 font-size:13px;
-
 opacity:.7;
-
 }
 
 footer nav{
-
-margin-top:12px;
-
+margin-top:10px;
 display:flex;
-
 justify-content:center;
-
 gap:16px;
-
 flex-wrap:wrap;
-
 }
 
 footer a{
-
 color:white;
-
 text-decoration:none;
-
-opacity:.7;
-
+opacity:.65;
 }
 
 footer a:hover{
 opacity:1;
 }
-
-/* cookie */
 
 #cookieBanner{
 
@@ -340,23 +231,17 @@ max-width:320px;
 
 padding:14px;
 
-border-radius:16px;
+border-radius:14px;
 
 background:rgba(255,255,255,.1);
 
-border:1px solid rgba(255,255,255,.2);
+border:1px solid rgba(255,255,255,.25);
 
-backdrop-filter:blur(20px);
+backdrop-filter:blur(16px);
 
 text-align:center;
 
 font-size:12px;
-
-box-shadow:
-
-10px 10px 30px rgba(0,0,0,.6),
-
--6px -6px 12px rgba(255,255,255,.03);
 
 }
 
@@ -366,22 +251,19 @@ margin-top:8px;
 
 padding:6px 16px;
 
-border-radius:12px;
+border-radius:10px;
 
 border:none;
 
-background:linear-gradient(90deg,#22d3ee,#34d399);
+background:#3b82f6;
 
-color:#032018;
-
-font-weight:600;
+color:white;
 
 cursor:pointer;
 
 }
 
 </style>
-
 </head>
 
 <body>
@@ -391,34 +273,22 @@ cursor:pointer;
 <div class="hero">
 
 <div class="logo">
-<img src="manav.png" id="secretAdmin">
+<img src="logo.png">
 </div>
 
-<h1>Prompt Hub</h1>
+<h1>Prompt Gallery</h1>
 
-<p>Powerful AI prompts that produce better results.</p>
+<p>Browse powerful AI prompts</p>
 
 <div class="buttons">
 
-<button class="btn" onclick="openGallery()">Browse Prompt Gallery</button>
+<button class="btn" onclick="location.href='gallery.html'">
+Browse Gallery
+</button>
 
-<button class="btn" onclick="openTools()">Best AI Tools</button>
-
-<button class="btn" onclick="openSponsors()">Sponsors</button>
-
-</div>
-
-</div>
-
-<div class="section">
-
-<div class="section-card">
-
-<h2>What Is Prompt Hub?</h2>
-
-<p>Prompt Hub is a curated collection of powerful prompts designed to help you get better results from AI tools like ChatGPT and Midjourney.</p>
-
-<p>Instead of guessing how to talk to AI, use proven prompts that generate clearer, smarter outputs instantly.</p>
+<button class="btn" onclick="location.href='submit.html'">
+Submit Prompt
+</button>
 
 </div>
 
@@ -428,20 +298,23 @@ cursor:pointer;
 
 <h2>Featured Prompts</h2>
 
-<div class="grid" id="featureGrid"></div>
+<p>Popular prompts from the community</p>
+
+<div class="grid" id="featured"></div>
 
 </div>
 
 <footer>
 
-New prompts added daily.<br>
-by RCHT & Manav
+<div>© 2026 Prompt Gallery</div>
 
 <nav>
+
 <a href="about.html">About</a>
-<a href="contact.html">Contact</a>
 <a href="privacy.html">Privacy</a>
 <a href="terms.html">Terms</a>
+<a href="contact.html">Contact</a>
+
 </nav>
 
 </footer>
@@ -449,40 +322,16 @@ by RCHT & Manav
 </div>
 
 <div id="cookieBanner">
-This site uses cookies and may display ads.
+
+We use cookies to improve experience.
+
 <br>
+
 <button onclick="acceptCookies()">OK</button>
+
 </div>
 
 <script>
-
-function openGallery(){window.location.href="gallery.html"}
-function openTools(){window.location.href="tools.html"}
-function openSponsors(){window.location.href="sponsors.html"}
-
-function acceptCookies(){
-localStorage.setItem("cookiesAccepted","yes")
-document.getElementById("cookieBanner").style.display="none"
-}
-
-if(localStorage.getItem("cookiesAccepted")==="yes"){
-document.getElementById("cookieBanner").style.display="none"
-}
-
-let tapCount=0
-const secretImage=document.getElementById("secretAdmin")
-
-secretImage.addEventListener("touchstart",()=>{
-
-tapCount++
-
-setTimeout(()=>{tapCount=0},2000)
-
-if(tapCount>=5){
-window.location.href="admin.html"
-}
-
-})
 
 function formatImage(url){
 
@@ -502,22 +351,25 @@ return url
 
 }
 
-const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec"
+async function loadFeatured(){
 
-fetch(API)
-.then(res=>res.json())
-.then(data=>{
+const sheetURL="YOUR_SHEET_API_URL"
 
-const grid=document.getElementById("featureGrid")
+const res=await fetch(sheetURL)
 
-let picks=data.sort(()=>0.5-Math.random()).slice(0,6)
+const data=await res.json()
 
-picks.forEach((p,i)=>{
+const container=document.getElementById("featured")
 
-const img=formatImage(p["Image File"])
+container.innerHTML=""
+
+data.slice(0,6).forEach(p=>{
 
 let card=document.createElement("div")
+
 card.className="card"
+
+const img=formatImage(p["Image File"])
 
 card.innerHTML=`
 <img src="${img}">
@@ -525,14 +377,25 @@ card.innerHTML=`
 `
 
 card.onclick=()=>{
-window.location.href="prompt.html?id="+i
+location.href=`prompt.html?id=${p.ID}`
 }
 
-grid.appendChild(card)
+container.appendChild(card)
 
 })
 
-})
+}
+
+function acceptCookies(){
+document.getElementById("cookieBanner").style.display="none"
+localStorage.setItem("cookieAccepted","1")
+}
+
+if(localStorage.getItem("cookieAccepted")){
+document.getElementById("cookieBanner").style.display="none"
+}
+
+loadFeatured()
 
 </script>
 
