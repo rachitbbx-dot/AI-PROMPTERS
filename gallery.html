@@ -2,8 +2,10 @@
 <html lang="en">
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
 <title>Prompt Gallery</title>
 
 <style>
@@ -21,6 +23,8 @@ color:white;
 padding:16px;
 }
 
+/* background glow */
+
 body::before{
 content:"";
 position:fixed;
@@ -35,6 +39,8 @@ filter:blur(120px);
 opacity:.9;
 z-index:-1;
 }
+
+/* loading overlay */
 
 #loadingOverlay{
 position:fixed;
@@ -86,28 +92,162 @@ margin-bottom:14px;
 animation:spin .8s linear infinite;
 }
 
+.loadingBox p{
+font-size:14px;
+opacity:.9;
+}
+
 @keyframes spin{
 to{transform:rotate(360deg);}
 }
 
-.gallery{
+/* skeleton shimmer */
+
+.skeleton{
+width:100%;
+height:180px;
+
+background:linear-gradient(
+90deg,
+rgba(255,255,255,.05) 25%,
+rgba(255,255,255,.12) 50%,
+rgba(255,255,255,.05) 75%
+);
+
+background-size:200% 100%;
+animation:skeleton 1.4s infinite;
+}
+
+@keyframes skeleton{
+0%{background-position:200% 0;}
+100%{background-position:-200% 0;}
+}
+
+/* header */
+
+.header{
+
 max-width:1100px;
 margin:auto;
+margin-bottom:18px;
+
+background:rgba(255,255,255,0.06);
+backdrop-filter:blur(40px);
+
+border:1px solid rgba(255,255,255,.15);
+border-radius:18px;
+
+padding:16px;
+
+box-shadow:0 20px 50px rgba(0,0,0,.6);
+
+}
+
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:10px;
+}
+
+.backBtn{
+
+background:rgba(255,255,255,.08);
+border:1px solid rgba(255,255,255,.2);
+border-radius:20px;
+
+padding:8px 14px;
+font-size:13px;
+
+cursor:pointer;
+
+}
+
+.searchWrap{
+position:relative;
+margin-bottom:12px;
+}
+
+.search{
+
+width:100%;
+padding:14px 42px 14px 16px;
+
+border-radius:20px;
+border:1px solid rgba(255,255,255,.15);
+
+background:rgba(255,255,255,.08);
+
+color:white;
+font-size:14px;
+
+}
+
+.search::placeholder{
+color:rgba(255,255,255,.5);
+}
+
+.searchIcon{
+position:absolute;
+right:14px;
+top:50%;
+transform:translateY(-50%);
+opacity:.6;
+}
+
+.controls{
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+}
+
+select{
+
+padding:10px 14px;
+border-radius:20px;
+
+border:1px solid rgba(255,255,255,.15);
+
+background:rgba(255,255,255,.08);
+
+color:white;
+font-size:13px;
+
+cursor:pointer;
+
+}
+
+/* gallery */
+
+.gallery{
+
+max-width:1100px;
+margin:auto;
+
 display:grid;
 grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
 grid-auto-rows:10px;
+
 gap:12px;
+
 }
 
 .card{
+
 background:rgba(255,255,255,.05);
+
 border-radius:14px;
 overflow:hidden;
+
 cursor:pointer;
+
 border:1px solid rgba(255,255,255,.12);
+
 opacity:0;
 transform:translateY(10px);
+
 transition:.35s;
+
 }
 
 .card.show{
@@ -115,19 +255,48 @@ opacity:1;
 transform:translateY(0);
 }
 
+.card:hover{
+transform:scale(1.03);
+}
+
 .card img{
 width:100%;
 display:block;
 }
 
+/* NEW TITLE STYLE */
+
 .cardTitle{
-padding:10px;
+
+padding:8px;
 font-size:13px;
 font-weight:700;
 text-align:center;
 color:white;
-line-height:1.35;
-background:rgba(0,0,0,.35);
+line-height:1.3;
+
+background:rgba(0,0,0,.25);
+
+}
+
+/* loader */
+
+.loader{
+
+width:36px;
+height:36px;
+
+border:4px solid rgba(255,255,255,.2);
+border-top:4px solid #4f46e5;
+
+border-radius:50%;
+
+animation:spin .8s linear infinite;
+
+margin:40px auto;
+
+display:none;
+
 }
 
 </style>
@@ -135,9 +304,78 @@ background:rgba(0,0,0,.35);
 
 <body>
 
+<div id="loadingOverlay">
+
+<div class="loadingBox">
+
+<div class="closeLoading" onclick="closeLoader()">✕</div>
+
+<div class="bigLoader"></div>
+
+<p id="loadingText">Loading Gallery... Please Wait</p>
+
+</div>
+
+</div>
+
+<div class="header">
+
+<div class="topbar">
+<button class="backBtn" onclick="goHome()">← Home</button>
+</div>
+
+<div class="searchWrap">
+
+<input id="search" class="search" placeholder="Search prompts">
+<div class="searchIcon">🔍</div>
+
+</div>
+
+<div class="controls">
+
+<select id="category">
+<option value="all">All Categories</option>
+<option value="couple">Couple</option>
+<option value="male">Male</option>
+<option value="female">Female</option>
+<option value="unisex">Unisex</option>
+<option value="pfp">PFP</option>
+</select>
+
+<select id="sort">
+<option value="new">Newest</option>
+<option value="old">Oldest</option>
+<option value="random">Random</option>
+</select>
+
+</div>
+
+</div>
+
 <div id="gallery" class="gallery"></div>
 
+<div id="loader" class="loader"></div>
+
 <script>
+
+function goHome(){
+window.location.href="index.html"
+}
+
+function closeLoader(){
+document.getElementById("loadingOverlay").classList.add("hide")
+}
+
+setTimeout(()=>{
+const text=document.getElementById("loadingText")
+if(text){
+text.innerText="Still loading... please refresh if it takes too long."
+}
+},8000)
+
+setTimeout(()=>{
+closeLoader()
+},15000)
 
 const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec"
 
@@ -146,7 +384,9 @@ let filtered=[]
 let loaded=0
 
 const batch=12
+
 const gallery=document.getElementById("gallery")
+const loader=document.getElementById("loader")
 
 function formatImage(url){
 
@@ -171,7 +411,9 @@ function resizeCard(card){
 const rowHeight=10
 const rowGap=12
 
-const height=card.getBoundingClientRect().height
+const img=card.querySelector("img")
+
+const height=img.getBoundingClientRect().height
 
 const span=Math.ceil((height+rowGap)/(rowHeight+rowGap))
 
@@ -186,14 +428,17 @@ const next=filtered.slice(loaded,loaded+batch)
 next.forEach(p=>{
 
 const index=prompts.indexOf(p)
+
 const img=formatImage(p["Image File"])
 const title=p["Prompt Title"] || "AI Prompt"
 
 const card=document.createElement("div")
+
 card.className="card"
 
 card.innerHTML=`
-<img src="${img}">
+<div class="skeleton"></div>
+<img src="${img}" alt="${title}" style="display:none">
 <div class="cardTitle">${title}</div>
 `
 
@@ -204,10 +449,16 @@ window.location.href=`prompt.html?id=${index}`
 gallery.appendChild(card)
 
 const image=card.querySelector("img")
+const skeleton=card.querySelector(".skeleton")
 
 image.onload=()=>{
 
+skeleton.remove()
+
+image.style.display="block"
+
 resizeCard(card)
+
 card.classList.add("show")
 
 }
@@ -218,16 +469,112 @@ loaded+=batch
 
 }
 
+window.addEventListener("scroll",()=>{
+
+if(window.innerHeight+window.scrollY>=document.body.offsetHeight-600){
+
+if(loaded>=filtered.length) return
+
+loader.style.display="block"
+
+setTimeout(()=>{
+renderMore()
+loader.style.display="none"
+},200)
+
+}
+
+})
+
+document.getElementById("search").addEventListener("input",e=>{
+
+const term=e.target.value.toLowerCase()
+
+filtered=prompts.filter(p=>
+
+(p["Prompt Title"]||"").toLowerCase().includes(term) ||
+(p["Tags"]||"").toLowerCase().includes(term)
+
+)
+
+reset()
+
+})
+
+document.getElementById("category").addEventListener("change",applyFilters)
+document.getElementById("sort").addEventListener("change",applyFilters)
+
+function applyFilters(){
+
+let list=[...prompts]
+
+const category=document.getElementById("category").value
+const sort=document.getElementById("sort").value
+
+if(category!=="all")
+list=list.filter(p=>
+(p["Category"]||"").toLowerCase()===category
+)
+
+if(sort==="new")
+list.sort((a,b)=>new Date(b.Timestamp)-new Date(a.Timestamp))
+
+if(sort==="old")
+list.sort((a,b)=>new Date(a.Timestamp)-new Date(b.Timestamp))
+
+if(sort==="random")
+list.sort(()=>Math.random()-0.5)
+
+filtered=list
+
+reset()
+
+}
+
+function reset(){
+
+gallery.innerHTML=""
+loaded=0
+
+renderMore()
+
+}
+
+function loadPrompts(){
+
+const cache=localStorage.getItem("promptCache")
+const time=localStorage.getItem("promptCacheTime")
+
+if(cache && time && Date.now()-time<300000){
+
+prompts=JSON.parse(cache)
+
+closeLoader()
+
+applyFilters()
+
+return
+
+}
+
 fetch(API)
 .then(res=>res.json())
 .then(data=>{
 
 prompts=data
-filtered=data
 
-renderMore()
+localStorage.setItem("promptCache",JSON.stringify(data))
+localStorage.setItem("promptCacheTime",Date.now())
+
+closeLoader()
+
+applyFilters()
 
 })
+
+}
+
+loadPrompts()
 
 </script>
 
