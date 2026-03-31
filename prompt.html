@@ -35,8 +35,6 @@ opacity:.9;
 z-index:-1;
 }
 
-/* Unlock overlay */
-
 #unlockOverlay{
 position:fixed;
 inset:0;
@@ -86,6 +84,15 @@ white-space:pre-wrap;
 margin-top:10px;
 }
 
+#expandBtn{
+margin-top:8px;
+font-size:13px;
+background:transparent;
+color:#8ab4ff;
+border:none;
+cursor:pointer;
+}
+
 button{
 padding:10px 15px;
 border:none;
@@ -107,8 +114,6 @@ margin-top:50px;
 opacity:.6;
 }
 
-/* SEO */
-
 #seoSection{
 margin-top:30px;
 padding:18px;
@@ -122,8 +127,6 @@ font-size:14px;
 font-size:18px;
 margin-bottom:10px;
 }
-
-/* MORE PROMPTS */
 
 #morePrompts{
 margin-top:40px;
@@ -160,6 +163,29 @@ font-size:13px;
 opacity:.9;
 }
 
+footer{
+margin-top:60px;
+padding-top:25px;
+border-top:1px solid rgba(255,255,255,0.1);
+text-align:center;
+font-size:13px;
+opacity:.8;
+}
+
+footer nav{
+margin-top:10px;
+}
+
+footer a{
+color:#aaa;
+margin:0 8px;
+text-decoration:none;
+}
+
+footer a:hover{
+color:white;
+}
+
 </style>
 
 </head>
@@ -184,9 +210,9 @@ opacity:.9;
 
 <div id="content" style="display:none;"></div>
 
-<div class="loader" id="loader" style="display:none;">Loading...</div>
+<button id="expandBtn" style="display:none;">Show More</button>
 
-<!-- SEO -->
+<div class="loader" id="loader" style="display:none;">Loading...</div>
 
 <div id="seoSection" style="display:none;">
 
@@ -198,8 +224,6 @@ opacity:.9;
 
 </div>
 
-<!-- MORE PROMPTS -->
-
 <div id="morePrompts" style="display:none;">
 
 <h2>More Prompts</h2>
@@ -207,6 +231,20 @@ opacity:.9;
 <div id="moreGrid"></div>
 
 </div>
+
+<footer>
+
+<div>New prompts added daily.</div>
+<div>by RCHT & Manav</div>
+
+<nav>
+<a href="about.html">About</a>
+<a href="contact.html">Contact</a>
+<a href="privacy.html">Privacy</a>
+<a href="terms.html">Terms</a>
+</nav>
+
+</footer>
 
 <script>
 
@@ -222,6 +260,7 @@ const titleEl=document.getElementById("title");
 const contentEl=document.getElementById("content");
 const copyBtn=document.getElementById("copyBtn");
 const imgEl=document.getElementById("promptImage");
+const expandBtn=document.getElementById("expandBtn");
 
 const overlay=document.getElementById("unlockOverlay");
 const progressEl=document.getElementById("progress");
@@ -234,6 +273,8 @@ const morePromptsSection=document.getElementById("morePrompts");
 const moreGrid=document.getElementById("moreGrid");
 
 let allPrompts;
+let fullPrompt="";
+let expanded=false;
 
 function formatImage(url){
 
@@ -269,14 +310,11 @@ function randomItem(arr){
 return arr[Math.floor(Math.random()*arr.length)];
 }
 
-/* FETCH PROMPTS */
-
 fetch(API)
 .then(res=>res.json())
 .then(data=>{
 
 allPrompts=data;
-
 startUnlock();
 
 })
@@ -286,8 +324,6 @@ overlay.innerHTML="Error loading prompt";
 console.error(err);
 
 });
-
-/* UNLOCK ANIMATION */
 
 function startUnlock(){
 
@@ -315,7 +351,6 @@ currentStep++;
 if(width>=100 || currentStep>=steps*2){
 
 clearInterval(progressInterval);
-
 showPrompt();
 
 }
@@ -323,8 +358,6 @@ showPrompt();
 },interval);
 
 }
-
-/* SHOW PROMPT */
 
 async function showPrompt(){
 
@@ -345,7 +378,21 @@ contentEl.style.display="block";
 copyBtn.style.display="inline-block";
 
 titleEl.textContent=promptData["Prompt Title"]||"Untitled";
-contentEl.textContent=promptData["Prompt Text"]||"";
+
+fullPrompt=promptData["Prompt Text"]||"";
+
+const words=fullPrompt.split(" ");
+
+if(words.length>20){
+
+contentEl.textContent=words.slice(0,20).join(" ")+"...";
+expandBtn.style.display="inline-block";
+
+}else{
+
+contentEl.textContent=fullPrompt;
+
+}
 
 const img=formatImage(promptData["Image File"]);
 
@@ -353,8 +400,6 @@ if(img){
 imgEl.src=img;
 imgEl.style.display="block";
 }
-
-/* SEO */
 
 const explainList=await loadCSV(EXPLAIN_CSV);
 const tipsList=await loadCSV(TIPS_CSV);
@@ -364,17 +409,32 @@ seoTips.textContent=randomItem(tipsList);
 
 seoSection.style.display="block";
 
-/* SHOW MORE PROMPTS */
-
 showMorePrompts();
 
 }
 
-/* COPY */
+expandBtn.addEventListener("click",()=>{
+
+if(!expanded){
+
+contentEl.textContent=fullPrompt;
+expandBtn.textContent="Show Less";
+expanded=true;
+
+}else{
+
+const words=fullPrompt.split(" ");
+contentEl.textContent=words.slice(0,20).join(" ")+"...";
+expandBtn.textContent="Show More";
+expanded=false;
+
+}
+
+});
 
 copyBtn.addEventListener("click",()=>{
 
-navigator.clipboard.writeText(contentEl.textContent).then(()=>{
+navigator.clipboard.writeText(fullPrompt).then(()=>{
 
 copyBtn.textContent="Copied!";
 
@@ -383,8 +443,6 @@ setTimeout(()=>copyBtn.textContent="Copy Prompt",1500);
 });
 
 });
-
-/* MORE PROMPTS */
 
 function showMorePrompts(){
 
