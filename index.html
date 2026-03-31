@@ -142,7 +142,7 @@ if(id) return "https://lh3.googleusercontent.com/d/"+id
 return url
 }
 
-// Featured prompts
+// Featured prompts (fixed to use gallery index)
 const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec"
 fetch(API)
 .then(res=>res.json())
@@ -151,10 +151,11 @@ const grid=document.getElementById("featureGrid")
 let picks=[...data].sort(()=>0.5-Math.random()).slice(0,6)
 picks.forEach(p=>{
 const img=formatImage(p["Image File"])
+const index = data.indexOf(p) // use same index as gallery
 let card=document.createElement("div")
 card.className="card"
 card.innerHTML=`<img src="${img}"><div>${p["Prompt Title"]}</div>`
-card.onclick=()=>{window.location.href="prompt.html?id="+p.ID}
+card.onclick=()=>{window.location.href="prompt.html?id="+index}
 grid.appendChild(card)
 })
 })
