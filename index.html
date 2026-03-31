@@ -4,14 +4,15 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
-<title>Prompt Gallery</title>
+<meta name="description" content="Prompt Hub is a curated collection of powerful AI prompts for ChatGPT, Midjourney and other AI tools.">
 
 <meta name="google-adsense-account" content="ca-pub-4850710373893560">
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4850710373893560"
-crossorigin="anonymous"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4850710373893560" crossorigin="anonymous"></script>
+
+<title>Prompt Hub</title>
 
 <style>
 
@@ -23,51 +24,57 @@ font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
 }
 
 body{
-background:#0f172a;
+background:#0b0b0b;
 color:white;
 line-height:1.6;
 }
+
+/* background glow */
 
 body::before{
 content:"";
 position:fixed;
 inset:0;
-
 background:
-radial-gradient(circle at 20% 20%, #3b82f6, transparent 40%),
-radial-gradient(circle at 80% 70%, #06b6d4, transparent 40%);
-
+radial-gradient(circle at 20% 20%,#6366f1,transparent 40%),
+radial-gradient(circle at 80% 70%,#06b6d4,transparent 40%);
 filter:blur(120px);
-opacity:.45;
-
+opacity:.6;
 z-index:-1;
 }
+
+/* container */
 
 .container{
 max-width:760px;
 margin:auto;
-padding:26px 16px 60px;
+padding:24px 16px 60px;
 }
+
+/* hero */
 
 .hero{
 text-align:center;
 margin-bottom:32px;
 }
 
+/* logo */
+
 .logo{
-width:90px;
-height:90px;
-margin:auto;
+width:88px;
+height:88px;
 border-radius:50%;
 overflow:hidden;
+margin:auto;
 
-background:rgba(255,255,255,.05);
-backdrop-filter:blur(20px);
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(16px);
 
 border:1px solid rgba(255,255,255,.2);
 
 box-shadow:
-0 10px 30px rgba(0,0,0,.35);
+8px 8px 18px rgba(0,0,0,.6),
+-6px -6px 14px rgba(255,255,255,.05);
 }
 
 .logo img{
@@ -76,12 +83,14 @@ height:100%;
 object-fit:cover;
 }
 
+/* title */
+
 .hero h1{
 margin-top:14px;
-font-size:30px;
+font-size:28px;
 font-weight:700;
 
-background:linear-gradient(90deg,#3b82f6,#06b6d4);
+background:linear-gradient(90deg,#6366f1,#06b6d4);
 -webkit-background-clip:text;
 color:transparent;
 }
@@ -92,6 +101,8 @@ opacity:.75;
 font-size:14px;
 }
 
+/* buttons */
+
 .buttons{
 margin-top:22px;
 display:flex;
@@ -100,15 +111,16 @@ gap:12px;
 }
 
 .btn{
+width:100%;
 padding:15px;
 
-border-radius:14px;
-
-background:rgba(255,255,255,.08);
+border-radius:16px;
 
 border:1px solid rgba(255,255,255,.15);
 
-backdrop-filter:blur(20px);
+background:rgba(255,255,255,.08);
+
+backdrop-filter:blur(14px);
 
 color:white;
 font-size:15px;
@@ -118,32 +130,37 @@ cursor:pointer;
 transition:.2s;
 
 box-shadow:
-0 8px 25px rgba(0,0,0,.35);
+8px 8px 18px rgba(0,0,0,.5),
+-4px -4px 10px rgba(255,255,255,.05);
 }
 
 .btn:hover{
-background:rgba(255,255,255,.12);
+background:rgba(255,255,255,.14);
 transform:translateY(-2px);
 }
 
+/* sections */
+
 .section{
-margin-top:36px;
+margin-top:40px;
 }
 
 .section h2{
-font-size:20px;
-margin-bottom:10px;
+font-size:21px;
+margin-bottom:12px;
 
-background:linear-gradient(90deg,#3b82f6,#06b6d4);
+background:linear-gradient(90deg,#6366f1,#06b6d4);
 -webkit-background-clip:text;
 color:transparent;
 }
 
 .section p{
 opacity:.85;
+margin-bottom:12px;
 font-size:14px;
-margin-bottom:10px;
 }
+
+/* featured grid */
 
 .grid{
 display:grid;
@@ -156,32 +173,33 @@ margin-top:14px;
 
 background:rgba(255,255,255,.08);
 
-border-radius:12px;
-
-border:1px solid rgba(255,255,255,.15);
-
-backdrop-filter:blur(18px);
+border-radius:14px;
 
 padding:6px;
 
+border:1px solid rgba(255,255,255,.15);
+
+backdrop-filter:blur(14px);
+
 cursor:pointer;
 
-transition:.2s;
+transition:.25s;
 
 box-shadow:
-0 8px 25px rgba(0,0,0,.35);
+8px 8px 18px rgba(0,0,0,.6),
+-4px -4px 10px rgba(255,255,255,.05);
 
 }
 
 .card:hover{
-transform:scale(1.05);
+transform:translateY(-3px) scale(1.04);
 }
 
 .card img{
 width:100%;
+border-radius:10px;
 aspect-ratio:1/1;
 object-fit:cover;
-border-radius:10px;
 }
 
 .card div{
@@ -190,36 +208,41 @@ margin-top:4px;
 opacity:.9;
 }
 
+/* footer */
+
 footer{
-margin-top:48px;
+margin-top:50px;
 text-align:center;
 font-size:13px;
-opacity:.7;
+opacity:.75;
 }
 
 footer nav{
 margin-top:10px;
 display:flex;
 justify-content:center;
-gap:16px;
+gap:18px;
 flex-wrap:wrap;
 }
 
 footer a{
 color:white;
 text-decoration:none;
-opacity:.65;
+opacity:.7;
+font-size:13px;
 }
 
 footer a:hover{
 opacity:1;
 }
 
+/* cookie */
+
 #cookieBanner{
 
 position:fixed;
 
-bottom:16px;
+bottom:18px;
 
 left:50%;
 
@@ -229,19 +252,23 @@ width:92%;
 
 max-width:320px;
 
-padding:14px;
+padding:16px;
 
-border-radius:14px;
+border-radius:16px;
 
-background:rgba(255,255,255,.1);
+background:rgba(255,255,255,.12);
 
 border:1px solid rgba(255,255,255,.25);
 
-backdrop-filter:blur(16px);
+backdrop-filter:blur(18px);
 
 text-align:center;
 
 font-size:12px;
+
+box-shadow:
+8px 8px 20px rgba(0,0,0,.6),
+-4px -4px 10px rgba(255,255,255,.05);
 
 }
 
@@ -251,19 +278,22 @@ margin-top:8px;
 
 padding:6px 16px;
 
-border-radius:10px;
+border-radius:14px;
 
 border:none;
 
-background:#3b82f6;
+background:white;
 
-color:white;
+color:black;
+
+font-size:12px;
 
 cursor:pointer;
 
 }
 
 </style>
+
 </head>
 
 <body>
@@ -273,22 +303,20 @@ cursor:pointer;
 <div class="hero">
 
 <div class="logo">
-<img src="logo.png">
+<img src="manav.png" id="secretAdmin">
 </div>
 
-<h1>Prompt Gallery</h1>
+<h1>Prompt Hub</h1>
 
-<p>Browse powerful AI prompts</p>
+<p>Powerful AI prompts that produce better results.</p>
 
 <div class="buttons">
 
-<button class="btn" onclick="location.href='gallery.html'">
-Browse Gallery
-</button>
+<button class="btn" onclick="openGallery()">Browse Prompt Gallery</button>
 
-<button class="btn" onclick="location.href='submit.html'">
-Submit Prompt
-</button>
+<button class="btn" onclick="openTools()">Best AI Tools</button>
+
+<button class="btn" onclick="openSponsors()">Sponsors</button>
 
 </div>
 
@@ -296,25 +324,36 @@ Submit Prompt
 
 <div class="section">
 
+<h2>What Is Prompt Hub?</h2>
+
+<p>
+Prompt Hub is a curated collection of high-quality prompts designed to help you get better results from AI tools like ChatGPT and Midjourney.
+</p>
+
+<p>
+Instead of guessing how to talk to AI, these prompts guide models to generate clearer, more useful, and more powerful outputs.
+</p>
+
+</div>
+
+<div class="section">
+
 <h2>Featured Prompts</h2>
 
-<p>Popular prompts from the community</p>
-
-<div class="grid" id="featured"></div>
+<div class="grid" id="featureGrid"></div>
 
 </div>
 
 <footer>
 
-<div>© 2026 Prompt Gallery</div>
+New prompts added daily.<br>
+by RCHT & Manav
 
 <nav>
-
 <a href="about.html">About</a>
+<a href="contact.html">Contact</a>
 <a href="privacy.html">Privacy</a>
 <a href="terms.html">Terms</a>
-<a href="contact.html">Contact</a>
-
 </nav>
 
 </footer>
@@ -322,16 +361,48 @@ Submit Prompt
 </div>
 
 <div id="cookieBanner">
-
-We use cookies to improve experience.
-
+This site uses cookies and may display ads.
 <br>
-
 <button onclick="acceptCookies()">OK</button>
-
 </div>
 
 <script>
+
+/* navigation */
+
+function openGallery(){window.location.href="gallery.html"}
+function openTools(){window.location.href="tools.html"}
+function openSponsors(){window.location.href="sponsors.html"}
+
+/* cookies */
+
+function acceptCookies(){
+localStorage.setItem("cookiesAccepted","yes")
+document.getElementById("cookieBanner").style.display="none"
+}
+
+if(localStorage.getItem("cookiesAccepted")==="yes"){
+document.getElementById("cookieBanner").style.display="none"
+}
+
+/* secret admin */
+
+let tapCount=0
+const secretImage=document.getElementById("secretAdmin")
+
+secretImage.addEventListener("touchstart",()=>{
+
+tapCount++
+
+setTimeout(()=>{tapCount=0},2000)
+
+if(tapCount>=5){
+window.location.href="admin.html"
+}
+
+})
+
+/* google drive image fix */
 
 function formatImage(url){
 
@@ -351,25 +422,27 @@ return url
 
 }
 
-async function loadFeatured(){
+/* featured prompts */
 
-const sheetURL="YOUR_SHEET_API_URL"
+const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec"
 
-const res=await fetch(sheetURL)
+fetch(API)
 
-const data=await res.json()
+.then(res=>res.json())
 
-const container=document.getElementById("featured")
+.then(data=>{
 
-container.innerHTML=""
+const grid=document.getElementById("featureGrid")
 
-data.slice(0,6).forEach(p=>{
+let picks=data.sort(()=>0.5-Math.random()).slice(0,6)
+
+picks.forEach((p,i)=>{
+
+const img=formatImage(p["Image File"])
 
 let card=document.createElement("div")
 
 card.className="card"
-
-const img=formatImage(p["Image File"])
 
 card.innerHTML=`
 <img src="${img}">
@@ -377,25 +450,14 @@ card.innerHTML=`
 `
 
 card.onclick=()=>{
-location.href=`prompt.html?id=${p.ID}`
+window.location.href="prompt.html?id="+i
 }
 
-container.appendChild(card)
+grid.appendChild(card)
 
 })
 
-}
-
-function acceptCookies(){
-document.getElementById("cookieBanner").style.display="none"
-localStorage.setItem("cookieAccepted","1")
-}
-
-if(localStorage.getItem("cookieAccepted")){
-document.getElementById("cookieBanner").style.display="none"
-}
-
-loadFeatured()
+})
 
 </script>
 
