@@ -5,11 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Prompt Gallery</title>
 
-<!-- Adsterra Social Bar -->
-<script src="https://pl29033403.profitablecpmratenetwork.com/c7/58/83/c7588384a025a5f208695da76567edd6.js"></script>
-
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui;}
+html,body{max-width:100%;overflow-x:hidden;}
 body{background:#0f0f0f;color:white;padding:16px;}
 
 body::before{
@@ -23,6 +21,25 @@ radial-gradient(circle at 40% 80%,#4f46e5,transparent 40%);
 filter:blur(120px);
 opacity:.9;
 z-index:-1;
+}
+
+.ad-center{
+display:flex;
+justify-content:center;
+align-items:center;
+margin:20px 0;
+max-width:100%;
+overflow:hidden;
+}
+
+.ad-728{
+width:100%;
+display:flex;
+justify-content:center;
+}
+
+@media(max-width:768px){
+.ad-728{display:none;}
 }
 
 #igPopup{
@@ -203,40 +220,25 @@ display:none;
 </div>
 </div>
 
-<!-- Top Banner -->
-<div style="text-align:center;margin:20px 0;">
+<div class="ad-center ad-728">
 <script>
-atOptions={
-'key':'d5788142542f13a7fb0f557272aef17b',
-'format':'iframe',
-'height':90,
-'width':728,
-'params':{}
-};
+atOptions={'key':'d5788142542f13a7fb0f557272aef17b','format':'iframe','height':90,'width':728,'params':{}};
 </script>
 <script src="https://www.highperformanceformat.com/d5788142542f13a7fb0f557272aef17b/invoke.js"></script>
 </div>
 
 <div id="gallery" class="gallery"></div>
 
-<!-- Mid Banner -->
-<div style="text-align:center;margin:25px 0;">
+<div class="ad-center">
 <script>
-atOptions={
-'key':'03441af9d7c950c75c0b698da8e3a00c',
-'format':'iframe',
-'height':250,
-'width':300,
-'params':{}
-};
+atOptions={'key':'03441af9d7c950c75c0b698da8e3a00c','format':'iframe','height':250,'width':300,'params':{}};
 </script>
 <script src="https://www.highperformanceformat.com/03441af9d7c950c75c0b698da8e3a00c/invoke.js"></script>
 </div>
 
 <div id="loader" class="loader"></div>
 
-<!-- Native Ad -->
-<div style="margin:30px auto;text-align:center;">
+<div class="ad-center">
 <script async="async" data-cfasync="false" src="https://pl29033357.profitablecpmratenetwork.com/b91d57dd3b8f2cdefbf4a34d445f31e3/invoke.js"></script>
 <div id="container-b91d57dd3b8f2cdefbf4a34d445f31e3"></div>
 </div>
@@ -270,9 +272,7 @@ popup.style.transform='translateX(-50%) translateY(40px)';
 },3000);
 }
 
-setInterval(()=>{
-showUserPopup();
-},5000 + Math.random()*7000);
+setInterval(()=>{showUserPopup();},5000 + Math.random()*7000);
 
 const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec";
 
@@ -305,19 +305,13 @@ const title=p["Prompt Title"]||"AI Prompt";
 
 const card=document.createElement("div");
 card.className="card";
-card.innerHTML=`<div class="skeleton"></div><img src="${img}" alt="${title}" style="display:none"><div class="cardTitle">${title}</div>`;
+card.innerHTML=`<img src="${img}" alt="${title}"><div class="cardTitle">${title}</div>`;
 card.onclick=()=>{window.location.href=`prompt.html?id=${index}`;};
 
 gallery.appendChild(card);
 
-const image=card.querySelector("img"),skeleton=card.querySelector(".skeleton");
-
-image.onload=()=>{
-skeleton.remove();
-image.style.display="block";
-resizeCard(card);
-card.classList.add("show");
-}
+const image=card.querySelector("img");
+image.onload=()=>{resizeCard(card);card.classList.add("show");}
 });
 
 loaded+=batch;
@@ -327,10 +321,7 @@ window.addEventListener("scroll",()=>{
 if(window.innerHeight+window.scrollY>=document.body.offsetHeight-600){
 if(loaded>=filtered.length) return;
 loader.style.display="block";
-setTimeout(()=>{
-renderMore();
-loader.style.display="none";
-},200);
+setTimeout(()=>{renderMore();loader.style.display="none";},200);
 }
 });
 
@@ -348,7 +339,6 @@ document.getElementById("sort").addEventListener("change",applyFilters);
 
 function applyFilters(){
 let list=[...prompts];
-
 const category=document.getElementById("category").value;
 const sort=document.getElementById("sort").value;
 
@@ -375,7 +365,6 @@ renderMore();
 }
 
 function loadPrompts(){
-
 const cache=localStorage.getItem("promptCache");
 const time=localStorage.getItem("promptCacheTime");
 
@@ -399,9 +388,6 @@ showIGPopup();
 
 loadPrompts();
 </script>
-
-<!-- Popunder -->
-<script src="https://pl29033356.profitablecpmratenetwork.com/66/35/13/663513085ca9542f459ee6ffb4d20754.js"></script>
 
 </body>
 </html>
