@@ -42,6 +42,32 @@ justify-content:center;
 .ad-728{display:none;}
 }
 
+#pageLoader{
+position:fixed;
+inset:0;
+background:#0f0f0f;
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:2000;
+flex-direction:column;
+gap:14px;
+}
+
+.loaderSpin{
+width:42px;
+height:42px;
+border:4px solid rgba(255,255,255,.2);
+border-top:4px solid #4f46e5;
+border-radius:50%;
+animation:spin 1s linear infinite;
+}
+
+.loaderText{
+font-size:14px;
+opacity:.8;
+}
+
 #igPopup{
 position:fixed;
 top:20px;
@@ -185,6 +211,11 @@ display:none;
 </head>
 
 <body>
+
+<div id="pageLoader">
+<div class="loaderSpin"></div>
+<div class="loaderText">Loading prompts...</div>
+</div>
 
 <div id="igPopup">
 <a href="https://www.instagram.com/made.by.manav" target="_blank">@made.by.manav</a> • Followers: 51.6K | Posts: 70
@@ -364,6 +395,10 @@ loaded=0;
 renderMore();
 }
 
+function hideLoader(){
+document.getElementById("pageLoader").style.display="none";
+}
+
 function loadPrompts(){
 const cache=localStorage.getItem("promptCache");
 const time=localStorage.getItem("promptCacheTime");
@@ -372,6 +407,7 @@ if(cache && time && Date.now()-time<300000){
 prompts=JSON.parse(cache);
 applyFilters();
 showIGPopup();
+hideLoader();
 return;
 }
 
@@ -383,6 +419,7 @@ localStorage.setItem("promptCache",JSON.stringify(data));
 localStorage.setItem("promptCacheTime",Date.now());
 applyFilters();
 showIGPopup();
+hideLoader();
 });
 }
 
