@@ -9,36 +9,266 @@
 <title>Prompt Hub</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;}
-body{background:#0b0b0b;color:white;line-height:1.6;overflow-x:hidden;}
-body::before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 15% 20%,#6366f1,transparent 40%),radial-gradient(circle at 80% 75%,#06b6d4,transparent 40%);filter:blur(120px);opacity:.6;z-index:-1;}
-.container{max-width:720px;margin:auto;padding:20px 16px 50px;}
-.hero{text-align:center;margin-bottom:30px;backdrop-filter:blur(30px);padding:22px;border-radius:20px;background:rgba(255,255,255,0.05);}
-.logo{width:82px;height:82px;border-radius:50%;overflow:hidden;margin:auto;border:2px solid rgba(255,255,255,.25);}
-.logo img{width:100%;height:100%;object-fit:cover;}
-.hero h1{margin-top:12px;font-size:28px;font-weight:700;}
-.hero p{margin-top:6px;opacity:.75;font-size:14px;}
-.buttons{margin-top:18px;display:flex;flex-direction:column;gap:10px;}
-.btn{width:100%;padding:14px;border-radius:14px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);font-size:15px;color:white;cursor:pointer;transition:.2s;backdrop-filter:blur(12px);}
-.btn:hover{background:rgba(255,255,255,.15);}
-.section{margin-top:36px;}
-.section h2{font-size:20px;margin-bottom:10px;}
-.section p{opacity:.85;margin-bottom:12px;font-size:14px;}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-top:14px;}
-.card{background:rgba(255,255,255,.08);border-radius:14px;padding:6px;cursor:pointer;transition:.2s;backdrop-filter:blur(12px);}
-.card:hover{transform:scale(1.05);}
-.card img{width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:12px;}
-.card div{font-size:12px;margin-top:4px;opacity:.9;text-align:center;}
-footer{margin-top:46px;text-align:center;font-size:13px;opacity:.7;}
-footer nav{margin-top:10px;display:flex;justify-content:center;gap:16px;flex-wrap:wrap;}
-footer a{color:white;text-decoration:none;opacity:.65;font-size:13px;}
-footer a:hover{opacity:1;}
-#cookieBanner{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);width:92%;max-width:320px;padding:14px;border-radius:14px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);text-align:center;font-size:12px;backdrop-filter:blur(16px);}
-#cookieBanner button{margin-top:8px;padding:6px 16px;border-radius:14px;border:none;background:white;color:black;font-size:12px;cursor:pointer;}
-@media(max-width:400px){.hero h1{font-size:24px;}.btn{font-size:14px;padding:12px;}}
-#igPopup{position:fixed;top:20px;right:20px;background:rgba(255,255,255,0.08);backdrop-filter:blur(25px);border:1px solid rgba(255,255,255,0.15);border-radius:16px;padding:14px 18px;text-align:center;font-size:13px;z-index:1000;opacity:0;pointer-events:none;transition:opacity .3s;}
-#igPopup.show{opacity:1;pointer-events:auto;}
-#igPopup button{margin-top:6px;padding:4px 10px;border:none;border-radius:12px;background:#4f46e5;color:white;font-size:12px;cursor:pointer;}
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+}
+
+/* FIX horizontal scrolling */
+html,body{
+max-width:100%;
+overflow-x:hidden;
+}
+
+body{
+background:#0b0b0b;
+color:white;
+line-height:1.6;
+}
+
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:
+radial-gradient(circle at 15% 20%,#6366f1,transparent 40%),
+radial-gradient(circle at 80% 75%,#06b6d4,transparent 40%);
+filter:blur(120px);
+opacity:.6;
+z-index:-1;
+}
+
+.container{
+max-width:720px;
+margin:auto;
+padding:20px 16px 50px;
+}
+
+/* ad containers */
+
+.ad-center{
+display:flex;
+justify-content:center;
+align-items:center;
+margin:20px 0;
+max-width:100%;
+overflow:hidden;
+}
+
+.ad-728{
+width:100%;
+display:flex;
+justify-content:center;
+}
+
+@media (max-width:768px){
+.ad-728{
+display:none;
+}
+}
+
+.hero{
+text-align:center;
+margin-bottom:30px;
+backdrop-filter:blur(30px);
+padding:22px;
+border-radius:20px;
+background:rgba(255,255,255,0.05);
+}
+
+.logo{
+width:82px;
+height:82px;
+border-radius:50%;
+overflow:hidden;
+margin:auto;
+border:2px solid rgba(255,255,255,.25);
+}
+
+.logo img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.hero h1{
+margin-top:12px;
+font-size:28px;
+font-weight:700;
+}
+
+.hero p{
+margin-top:6px;
+opacity:.75;
+font-size:14px;
+}
+
+.buttons{
+margin-top:18px;
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.btn{
+width:100%;
+padding:14px;
+border-radius:14px;
+border:1px solid rgba(255,255,255,.15);
+background:rgba(255,255,255,.08);
+font-size:15px;
+color:white;
+cursor:pointer;
+transition:.2s;
+backdrop-filter:blur(12px);
+}
+
+.btn:hover{
+background:rgba(255,255,255,.15);
+}
+
+.section{
+margin-top:36px;
+}
+
+.section h2{
+font-size:20px;
+margin-bottom:10px;
+}
+
+.section p{
+opacity:.85;
+margin-bottom:12px;
+font-size:14px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+gap:12px;
+margin-top:14px;
+}
+
+.card{
+background:rgba(255,255,255,.08);
+border-radius:14px;
+padding:6px;
+cursor:pointer;
+transition:.2s;
+backdrop-filter:blur(12px);
+}
+
+.card:hover{
+transform:scale(1.05);
+}
+
+.card img{
+width:100%;
+height:auto;
+aspect-ratio:1/1;
+object-fit:cover;
+border-radius:12px;
+}
+
+.card div{
+font-size:12px;
+margin-top:4px;
+opacity:.9;
+text-align:center;
+}
+
+footer{
+margin-top:46px;
+text-align:center;
+font-size:13px;
+opacity:.7;
+}
+
+footer nav{
+margin-top:10px;
+display:flex;
+justify-content:center;
+gap:16px;
+flex-wrap:wrap;
+}
+
+footer a{
+color:white;
+text-decoration:none;
+opacity:.65;
+font-size:13px;
+}
+
+footer a:hover{
+opacity:1;
+}
+
+#cookieBanner{
+position:fixed;
+bottom:16px;
+left:50%;
+transform:translateX(-50%);
+width:92%;
+max-width:320px;
+padding:14px;
+border-radius:14px;
+background:rgba(255,255,255,.12);
+border:1px solid rgba(255,255,255,.25);
+text-align:center;
+font-size:12px;
+backdrop-filter:blur(16px);
+}
+
+#cookieBanner button{
+margin-top:8px;
+padding:6px 16px;
+border-radius:14px;
+border:none;
+background:white;
+color:black;
+font-size:12px;
+cursor:pointer;
+}
+
+@media(max-width:400px){
+.hero h1{font-size:24px;}
+.btn{font-size:14px;padding:12px;}
+}
+
+#igPopup{
+position:fixed;
+top:20px;
+right:20px;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(25px);
+border:1px solid rgba(255,255,255,0.15);
+border-radius:16px;
+padding:14px 18px;
+text-align:center;
+font-size:13px;
+z-index:1000;
+opacity:0;
+pointer-events:none;
+transition:opacity .3s;
+}
+
+#igPopup.show{
+opacity:1;
+pointer-events:auto;
+}
+
+#igPopup button{
+margin-top:6px;
+padding:4px 10px;
+border:none;
+border-radius:12px;
+background:#4f46e5;
+color:white;
+font-size:12px;
+cursor:pointer;
+}
 </style>
 </head>
 
@@ -50,6 +280,7 @@ footer a:hover{opacity:1;}
 <div class="logo">
 <img src="manav.png" id="secretAdmin">
 </div>
+
 <h1>Prompt Hub</h1>
 <p>Powerful AI prompts that produce better results.</p>
 
@@ -60,8 +291,8 @@ footer a:hover{opacity:1;}
 </div>
 </div>
 
-<!-- 728x90 banner -->
-<div style="text-align:center;margin:20px 0;">
+<!-- 728x90 DESKTOP ONLY -->
+<div class="ad-center ad-728">
 <script>
 atOptions={'key':'d5788142542f13a7fb0f557272aef17b','format':'iframe','height':90,'width':728,'params':{}};
 </script>
@@ -74,8 +305,8 @@ atOptions={'key':'d5788142542f13a7fb0f557272aef17b','format':'iframe','height':9
 <p>Instead of guessing how to talk to AI, these prompts guide models to generate clearer, more useful, and more powerful outputs.</p>
 </div>
 
-<!-- 300x250 banner -->
-<div style="text-align:center;margin:20px 0;">
+<!-- 300x250 -->
+<div class="ad-center">
 <script>
 atOptions={'key':'03441af9d7c950c75c0b698da8e3a00c','format':'iframe','height':250,'width':300,'params':{}};
 </script>
@@ -88,7 +319,7 @@ atOptions={'key':'03441af9d7c950c75c0b698da8e3a00c','format':'iframe','height':2
 </div>
 
 <!-- Native banner -->
-<div style="margin:30px 0;text-align:center;">
+<div class="ad-center">
 <script async="async" data-cfasync="false" src="https://pl29033357.profitablecpmratenetwork.com/b91d57dd3b8f2cdefbf4a34d445f31e3/invoke.js"></script>
 <div id="container-b91d57dd3b8f2cdefbf4a34d445f31e3"></div>
 </div>
@@ -102,6 +333,7 @@ New prompts added daily.<br>by RCHT & Manav
 <a href="terms.html">Terms</a>
 </nav>
 </footer>
+
 </div>
 
 <div id="cookieBanner">
@@ -115,21 +347,29 @@ This site uses cookies and may display ads.<br>
 <button onclick="closeIG()">Close</button>
 </div>
 
-<script src="https://pl29033403.profitablecpmratenetwork.com/c7/58/83/c7588384a025a5f208695da76567edd6.js"></script>
-
 <script>
 function openGallery(){window.location.href="gallery.html"}
 function openTools(){window.location.href="tools.html"}
 function openSponsors(){window.location.href="sponsors.html"}
-function acceptCookies(){localStorage.setItem("cookiesAccepted","yes");document.getElementById("cookieBanner").style.display="none"}
-if(localStorage.getItem("cookiesAccepted")==="yes"){document.getElementById("cookieBanner").style.display="none"}
+
+function acceptCookies(){
+localStorage.setItem("cookiesAccepted","yes")
+document.getElementById("cookieBanner").style.display="none"
+}
+
+if(localStorage.getItem("cookiesAccepted")==="yes"){
+document.getElementById("cookieBanner").style.display="none"
+}
 
 let tapCount=0
 const secretImage=document.getElementById("secretAdmin")
+
 secretImage.addEventListener("touchstart",()=>{
 tapCount++
 setTimeout(()=>{tapCount=0},2000)
-if(tapCount>=5){window.location.href="admin.html"}
+if(tapCount>=5){
+window.location.href="admin.html"
+}
 })
 
 function formatImage(url){
@@ -142,29 +382,37 @@ return url
 }
 
 const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec"
+
 fetch(API)
 .then(res=>res.json())
 .then(data=>{
 const grid=document.getElementById("featureGrid")
+
 let picks=[...data].sort(()=>0.5-Math.random()).slice(0,6)
+
 picks.forEach(p=>{
 const img=formatImage(p["Image File"])
 const index=data.indexOf(p)
+
 let card=document.createElement("div")
 card.className="card"
 card.innerHTML=`<img src="${img}"><div>${p["Prompt Title"]}</div>`
-card.onclick=()=>{window.location.href="prompt.html?id="+index}
+
+card.onclick=()=>{
+window.location.href="prompt.html?id="+index
+}
+
 grid.appendChild(card)
 })
 })
 
 const igPopup=document.getElementById("igPopup")
+
 function showIG(){igPopup.classList.add("show")}
 function closeIG(){igPopup.classList.remove("show")}
+
 setTimeout(showIG,2000)
 </script>
-
-<script src="https://pl29033356.profitablecpmratenetwork.com/66/35/13/663513085ca9542f459ee6ffb4d20754.js"></script>
 
 </body>
 </html>
