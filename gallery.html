@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Prompt Gallery</title>
 
-<!-- Adsterra Social Bar -->
 <script src="https://pl29033403.profitablecpmratenetwork.com/c7/58/83/c7588384a025a5f208695da76567edd6.js"></script>
 
 <style>
@@ -203,7 +202,6 @@ display:none;
 </div>
 </div>
 
-<!-- Top Banner -->
 <div style="text-align:center;margin:20px 0;">
 <script>
 atOptions={
@@ -219,27 +217,7 @@ atOptions={
 
 <div id="gallery" class="gallery"></div>
 
-<!-- Mid Banner -->
-<div style="text-align:center;margin:25px 0;">
-<script>
-atOptions={
-'key':'03441af9d7c950c75c0b698da8e3a00c',
-'format':'iframe',
-'height':250,
-'width':300,
-'params':{}
-};
-</script>
-<script src="https://www.highperformanceformat.com/03441af9d7c950c75c0b698da8e3a00c/invoke.js"></script>
-</div>
-
 <div id="loader" class="loader"></div>
-
-<!-- Native Ad -->
-<div style="margin:30px auto;text-align:center;">
-<script async="async" data-cfasync="false" src="https://pl29033357.profitablecpmratenetwork.com/b91d57dd3b8f2cdefbf4a34d445f31e3/invoke.js"></script>
-<div id="container-b91d57dd3b8f2cdefbf4a34d445f31e3"></div>
-</div>
 
 <script>
 function goHome(){window.location.href="index.html";}
@@ -297,8 +275,11 @@ card.style.gridRowEnd="span "+span;
 }
 
 function renderMore(){
+
 const next=filtered.slice(loaded,loaded+batch);
-next.forEach(p=>{
+
+next.forEach((p,i)=>{
+
 const index=prompts.indexOf(p);
 const img=formatImage(p["Image File"]);
 const title=p["Prompt Title"]||"AI Prompt";
@@ -317,10 +298,29 @@ skeleton.remove();
 image.style.display="block";
 resizeCard(card);
 card.classList.add("show");
+};
+
+/* native ad every 6 prompts */
+
+if((loaded+i+1)%6===0){
+
+const ad=document.createElement("div");
+ad.style.gridColumn="1 / -1";
+ad.style.textAlign="center";
+ad.style.margin="30px 0";
+
+ad.innerHTML=`
+<script async="async" data-cfasync="false" src="https://pl29033357.profitablecpmratenetwork.com/b91d57dd3b8f2cdefbf4a34d445f31e3/invoke.js"></script>
+<div id="container-b91d57dd3b8f2cdefbf4a34d445f31e3"></div>
+`;
+
+gallery.appendChild(ad);
 }
+
 });
 
 loaded+=batch;
+
 }
 
 window.addEventListener("scroll",()=>{
@@ -400,7 +400,6 @@ showIGPopup();
 loadPrompts();
 </script>
 
-<!-- Popunder -->
 <script src="https://pl29033356.profitablecpmratenetwork.com/66/35/13/663513085ca9542f459ee6ffb4d20754.js"></script>
 
 </body>
