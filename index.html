@@ -36,38 +36,16 @@ footer a:hover{opacity:1;}
 #cookieBanner{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);width:92%;max-width:320px;padding:14px;border-radius:14px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);text-align:center;font-size:12px;backdrop-filter:blur(16px);}
 #cookieBanner button{margin-top:8px;padding:6px 16px;border-radius:14px;border:none;background:white;color:black;font-size:12px;cursor:pointer;}
 @media(max-width:400px){.hero h1{font-size:24px;}.btn{font-size:14px;padding:12px;}}
-
-/* IG follower popup */
-#igPopup{
-position:fixed;
-top:20px;
-right:20px;
-background:rgba(255,255,255,0.08);
-backdrop-filter:blur(25px);
-border:1px solid rgba(255,255,255,0.15);
-border-radius:16px;
-padding:14px 18px;
-text-align:center;
-font-size:13px;
-z-index:1000;
-opacity:0;
-pointer-events:none;
-transition:opacity .3s;
-}
-#igPopup.show{
-opacity:1;
-pointer-events:auto;
-}
-#igPopup button{
-margin-top:6px;padding:4px 10px;border:none;border-radius:12px;background:#4f46e5;color:white;font-size:12px;cursor:pointer;
-}
-
+#igPopup{position:fixed;top:20px;right:20px;background:rgba(255,255,255,0.08);backdrop-filter:blur(25px);border:1px solid rgba(255,255,255,0.15);border-radius:16px;padding:14px 18px;text-align:center;font-size:13px;z-index:1000;opacity:0;pointer-events:none;transition:opacity .3s;}
+#igPopup.show{opacity:1;pointer-events:auto;}
+#igPopup button{margin-top:6px;padding:4px 10px;border:none;border-radius:12px;background:#4f46e5;color:white;font-size:12px;cursor:pointer;}
 </style>
 </head>
 
 <body>
 
 <div class="container">
+
 <div class="hero">
 <div class="logo">
 <img src="manav.png" id="secretAdmin">
@@ -82,15 +60,37 @@ margin-top:6px;padding:4px 10px;border:none;border-radius:12px;background:#4f46e
 </div>
 </div>
 
+<!-- 728x90 banner -->
+<div style="text-align:center;margin:20px 0;">
+<script>
+atOptions={'key':'d5788142542f13a7fb0f557272aef17b','format':'iframe','height':90,'width':728,'params':{}};
+</script>
+<script src="https://www.highperformanceformat.com/d5788142542f13a7fb0f557272aef17b/invoke.js"></script>
+</div>
+
 <div class="section">
 <h2>What Is Prompt Hub?</h2>
 <p>Prompt Hub is a curated collection of high-quality prompts designed to help you get better results from AI tools like ChatGPT and Midjourney.</p>
 <p>Instead of guessing how to talk to AI, these prompts guide models to generate clearer, more useful, and more powerful outputs.</p>
 </div>
 
+<!-- 300x250 banner -->
+<div style="text-align:center;margin:20px 0;">
+<script>
+atOptions={'key':'03441af9d7c950c75c0b698da8e3a00c','format':'iframe','height':250,'width':300,'params':{}};
+</script>
+<script src="https://www.highperformanceformat.com/03441af9d7c950c75c0b698da8e3a00c/invoke.js"></script>
+</div>
+
 <div class="section">
 <h2>Featured Prompts</h2>
 <div class="grid" id="featureGrid"></div>
+</div>
+
+<!-- Native banner -->
+<div style="margin:30px 0;text-align:center;">
+<script async="async" data-cfasync="false" src="https://pl29033357.profitablecpmratenetwork.com/b91d57dd3b8f2cdefbf4a34d445f31e3/invoke.js"></script>
+<div id="container-b91d57dd3b8f2cdefbf4a34d445f31e3"></div>
 </div>
 
 <footer>
@@ -109,12 +109,13 @@ This site uses cookies and may display ads.<br>
 <button onclick="acceptCookies()">OK</button>
 </div>
 
-<!-- IG follower popup -->
 <div id="igPopup">
 <span id="igName">@made.by.manav</span><br>
 <span id="igCount">51.6k followers</span><br>
 <button onclick="closeIG()">Close</button>
 </div>
+
+<script src="https://pl29033403.profitablecpmratenetwork.com/c7/58/83/c7588384a025a5f208695da76567edd6.js"></script>
 
 <script>
 function openGallery(){window.location.href="gallery.html"}
@@ -123,7 +124,6 @@ function openSponsors(){window.location.href="sponsors.html"}
 function acceptCookies(){localStorage.setItem("cookiesAccepted","yes");document.getElementById("cookieBanner").style.display="none"}
 if(localStorage.getItem("cookiesAccepted")==="yes"){document.getElementById("cookieBanner").style.display="none"}
 
-// secret admin
 let tapCount=0
 const secretImage=document.getElementById("secretAdmin")
 secretImage.addEventListener("touchstart",()=>{
@@ -132,7 +132,6 @@ setTimeout(()=>{tapCount=0},2000)
 if(tapCount>=5){window.location.href="admin.html"}
 })
 
-// Google Drive image fix
 function formatImage(url){
 if(!url) return ""
 let id=""
@@ -142,7 +141,6 @@ if(id) return "https://lh3.googleusercontent.com/d/"+id
 return url
 }
 
-// Featured prompts (fixed to use gallery index)
 const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec"
 fetch(API)
 .then(res=>res.json())
@@ -151,7 +149,7 @@ const grid=document.getElementById("featureGrid")
 let picks=[...data].sort(()=>0.5-Math.random()).slice(0,6)
 picks.forEach(p=>{
 const img=formatImage(p["Image File"])
-const index = data.indexOf(p) // use same index as gallery
+const index=data.indexOf(p)
 let card=document.createElement("div")
 card.className="card"
 card.innerHTML=`<img src="${img}"><div>${p["Prompt Title"]}</div>`
@@ -160,17 +158,13 @@ grid.appendChild(card)
 })
 })
 
-// IG popup logic
 const igPopup=document.getElementById("igPopup")
-function showIG(){
-igPopup.classList.add("show")
-}
-function closeIG(){
-igPopup.classList.remove("show")
-}
-// Show popup after 2s
+function showIG(){igPopup.classList.add("show")}
+function closeIG(){igPopup.classList.remove("show")}
 setTimeout(showIG,2000)
 </script>
+
+<script src="https://pl29033356.profitablecpmratenetwork.com/66/35/13/663513085ca9542f459ee6ffb4d20754.js"></script>
 
 </body>
 </html>
