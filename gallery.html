@@ -234,15 +234,6 @@ display:none;
 </div>
 
 <div class="controls">
-<select id="category">
-<option value="all">All Categories</option>
-<option value="couple">Couple</option>
-<option value="male">Male</option>
-<option value="female">Female</option>
-<option value="unisex">Unisex</option>
-<option value="pfp">PFP</option>
-</select>
-
 <select id="sort">
 <option value="new">Newest</option>
 <option value="old">Oldest</option>
@@ -365,16 +356,11 @@ filtered=prompts.filter(p=>
 reset();
 });
 
-document.getElementById("category").addEventListener("change",applyFilters);
-document.getElementById("sort").addEventListener("change",applyFilters);
+document.getElementById("sort").addEventListener("change",applySort);
 
-function applyFilters(){
-let list=[...prompts];
-const category=document.getElementById("category").value;
+function applySort(){
+let list=[...filtered];
 const sort=document.getElementById("sort").value;
-
-if(category!=="all")
-list=list.filter(p=>(p["Category"]||"").toLowerCase()===category);
 
 if(sort==="new")
 list.sort((a,b)=>new Date(b.Timestamp)-new Date(a.Timestamp));
@@ -405,7 +391,8 @@ const time=localStorage.getItem("promptCacheTime");
 
 if(cache && time && Date.now()-time<300000){
 prompts=JSON.parse(cache);
-applyFilters();
+filtered=[...prompts];
+applySort();
 showIGPopup();
 hideLoader();
 return;
@@ -415,9 +402,10 @@ fetch(API)
 .then(res=>res.json())
 .then(data=>{
 prompts=data;
+filtered=[...prompts];
 localStorage.setItem("promptCache",JSON.stringify(data));
 localStorage.setItem("promptCacheTime",Date.now());
-applyFilters();
+applySort();
 showIGPopup();
 hideLoader();
 });
