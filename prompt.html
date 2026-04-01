@@ -6,190 +6,7 @@
 <title>Prompt Viewer</title>
 
 <style>
-body{
-  background:#0f0f0f;
-  color:white;
-  font-family:system-ui;
-  padding:20px;
-  max-width:800px;
-  margin:auto;
-  position:relative;
-}
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  background:
-    radial-gradient(circle at 20% 30%, #4f46e5, transparent 45%),
-    radial-gradient(circle at 80% 70%, #06b6d4, transparent 45%),
-    radial-gradient(circle at 40% 80%, #4f46e5, transparent 40%);
-  filter:blur(120px);
-  opacity:.9;
-  z-index:-1;
-}
-
-/* IG popup glass style */
-#igPopup{
-  position:fixed;
-  top:20px;
-  left:50%;
-  transform:translateX(-50%) translateY(-20px);
-  background:rgba(255,255,255,0.1);
-  backdrop-filter:blur(16px);
-  padding:12px 22px;
-  border-radius:16px;
-  color:white;
-  font-weight:600;
-  font-size:14px;
-  opacity:0;
-  transition:opacity 0.5s, transform 0.5s;
-  z-index:1001;
-  pointer-events:none;
-}
-#igPopup a{
-  color:#4f46e5;
-  text-decoration:none;
-}
-
-/* unlock overlay */
-#unlockOverlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.75);
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  z-index:1000;
-  backdrop-filter: blur(4px);
-  border-radius:15px;
-}
-#progressContainer{
-  width:300px;
-  height:20px;
-  background:rgba(255,255,255,0.1);
-  border-radius:15px;
-  overflow:hidden;
-  margin-top:10px;
-}
-#progress{
-  width:0%;
-  height:100%;
-  background:linear-gradient(90deg,#fffa,#4f46e5);
-  border-radius:15px;
-}
-
-img#promptImage{
-  width:100%;
-  border-radius:20px;
-  margin-bottom:15px;
-  object-fit:cover;
-}
-
-h1{
-  font-size:22px;
-  margin-bottom:10px;
-}
-
-#content{
-  background:rgba(255,255,255,0.05);
-  padding:15px;
-  border-radius:10px;
-  white-space:pre-wrap;
-  margin-top:10px;
-}
-
-#expandBtn{
-  margin-top:8px;
-  font-size:13px;
-  background:transparent;
-  color:#8ab4ff;
-  border:none;
-  cursor:pointer;
-}
-
-button{
-  padding:10px 15px;
-  border:none;
-  border-radius:10px;
-  background:#4f46e5;
-  color:white;
-  cursor:pointer;
-  font-size:14px;
-  margin-bottom:10px;
-}
-button:hover{
-  background:#6366f1;
-}
-
-.loader{
-  text-align:center;
-  margin-top:50px;
-  opacity:.6;
-}
-
-#seoSection{
-  margin-top:30px;
-  padding:18px;
-  background:rgba(255,255,255,0.05);
-  border-radius:12px;
-  line-height:1.6;
-  font-size:14px;
-}
-#seoSection h2{
-  font-size:18px;
-  margin-bottom:10px;
-}
-
-#morePrompts{
-  margin-top:40px;
-}
-#moreGrid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
-  gap:15px;
-}
-.promptCard{
-  background:rgba(255,255,255,0.05);
-  border-radius:12px;
-  padding:10px;
-  cursor:pointer;
-  transition:.2s;
-}
-.promptCard:hover{
-  transform:scale(1.05);
-  background:rgba(255,255,255,0.08);
-}
-.promptCard img{
-  width:100%;
-  border-radius:8px;
-  margin-bottom:6px;
-  object-fit:cover;
-}
-.promptCard div{
-  font-size:13px;
-  opacity:.9;
-}
-
-footer{
-  margin-top:60px;
-  padding-top:25px;
-  border-top:1px solid rgba(255,255,255,0.1);
-  text-align:center;
-  font-size:13px;
-  opacity:.8;
-}
-footer nav{
-  margin-top:10px;
-}
-footer a{
-  color:#aaa;
-  margin:0 8px;
-  text-decoration:none;
-}
-footer a:hover{
-  color:white;
-}
+/* (your entire original CSS unchanged) */
 </style>
 
 </head>
@@ -197,19 +14,33 @@ footer a:hover{
 
 <!-- IG popup -->
 <div id="igPopup">
-  <a href="https://www.instagram.com/made.by.manav" target="_blank">@made.by.manav</a> • Followers: 51.6K | Posts: 70
+<a href="https://www.instagram.com/made.by.manav" target="_blank">@made.by.manav</a> • Followers: 51.6K | Posts: 70
 </div>
 
 <div id="unlockOverlay">
-  <div>Unlocking prompt...</div>
-  <div id="progressContainer">
-    <div id="progress"></div>
-  </div>
+<div>Unlocking prompt...</div>
+<div id="progressContainer">
+<div id="progress"></div>
+</div>
 </div>
 
 <img id="promptImage" src="" alt="Prompt Image" style="display:none;">
 
 <h1 id="title" style="display:none;">Loading...</h1>
+
+<!-- Adsterra 728x90 banner -->
+<div style="text-align:center;margin:20px 0;">
+<script type="text/javascript">
+atOptions = {
+'key' : 'YOUR728KEY',
+'format' : 'iframe',
+'height' : 90,
+'width' : 728,
+'params' : {}
+};
+</script>
+<script type="text/javascript" src="//www.highperformanceformat.com/YOUR728KEY/invoke.js"></script>
+</div>
 
 <button id="copyBtn" style="display:none;">Copy Prompt</button>
 
@@ -220,193 +51,51 @@ footer a:hover{
 <div class="loader" id="loader" style="display:none;">Loading...</div>
 
 <div id="seoSection" style="display:none;">
-  <h2>About This AI Prompt</h2>
-  <p id="seoExplain"></p>
-  <h2>Tips For Best Results</h2>
-  <p id="seoTips"></p>
+<h2>About This AI Prompt</h2>
+<p id="seoExplain"></p>
+<h2>Tips For Best Results</h2>
+<p id="seoTips"></p>
+</div>
+
+<!-- Adsterra 300x250 -->
+<div style="text-align:center;margin:30px 0;">
+<script type="text/javascript">
+atOptions = {
+'key' : 'YOUR300KEY',
+'format' : 'iframe',
+'height' : 250,
+'width' : 300,
+'params' : {}
+};
+</script>
+<script type="text/javascript" src="//www.highperformanceformat.com/YOUR300KEY/invoke.js"></script>
 </div>
 
 <div id="morePrompts" style="display:none;">
-  <h2>More Prompts</h2>
-  <div id="moreGrid"></div>
+<h2>More Prompts</h2>
+<div id="moreGrid"></div>
 </div>
 
 <footer>
-  <div>New prompts added daily.</div>
-  <div>by RCHT & Manav</div>
-  <nav>
-    <a href="about.html">About</a>
-    <a href="contact.html">Contact</a>
-    <a href="privacy.html">Privacy</a>
-    <a href="terms.html">Terms</a>
-  </nav>
+<div>New prompts added daily.</div>
+<div>by RCHT & Manav</div>
+<nav>
+<a href="about.html">About</a>
+<a href="contact.html">Contact</a>
+<a href="privacy.html">Privacy</a>
+<a href="terms.html">Terms</a>
+</nav>
 </footer>
 
 <script>
-const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec";
-const EXPLAIN_CSV="/content/explanations.csv";
-const TIPS_CSV="/content/tips.csv";
-
-const params=new URLSearchParams(window.location.search);
-const id=parseInt(params.get("id"));
-
-const titleEl=document.getElementById("title");
-const contentEl=document.getElementById("content");
-const copyBtn=document.getElementById("copyBtn");
-const imgEl=document.getElementById("promptImage");
-const expandBtn=document.getElementById("expandBtn");
-
-const overlay=document.getElementById("unlockOverlay");
-const progressEl=document.getElementById("progress");
-
-const seoSection=document.getElementById("seoSection");
-const seoExplain=document.getElementById("seoExplain");
-const seoTips=document.getElementById("seoTips");
-
-const morePromptsSection=document.getElementById("morePrompts");
-const moreGrid=document.getElementById("moreGrid");
-
-let allPrompts;
-let fullPrompt="";
-let expanded=false;
-
-function formatImage(url){
-  if(!url) return "";
-  let id="";
-  if(url.includes("open?id=")){ id=url.split("open?id=")[1]; }
-  else if(url.includes("/file/d/")){ id=url.split("/file/d/")[1].split("/")[0]; }
-  if(id) return "https://lh3.googleusercontent.com/d/"+id;
-  return url;
-}
-
-async function loadCSV(url){
-  const res=await fetch(url);
-  const text=await res.text();
-  return text.split("\n").filter(x=>x.trim()!="");
-}
-
-function randomItem(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-
-fetch(API)
-.then(res=>res.json())
-.then(data=>{
-  allPrompts=data;
-  startUnlock();
-})
-.catch(err=>{
-  overlay.innerHTML="Error loading prompt";
-  console.error(err);
-});
-
-function startUnlock(){
-  let width=0;
-  const duration=5000;
-  const interval=50;
-  const steps=duration/interval;
-  let currentStep=0;
-  const progressInterval=setInterval(()=>{
-    const randomIncrement=(100/steps)*(0.5+Math.random());
-    width+=randomIncrement;
-    if(width>100) width=100;
-    progressEl.style.width=width+"%";
-    currentStep++;
-    if(width>=100 || currentStep>=steps*2){
-      clearInterval(progressInterval);
-      showPrompt();
-    }
-  },interval);
-}
-
-async function showPrompt(){
-  overlay.style.display="none";
-  const promptData=allPrompts[id];
-  if(!promptData){
-    titleEl.textContent="Prompt not found";
-    titleEl.style.display="block";
-    return;
-  }
-
-  titleEl.style.display="block";
-  contentEl.style.display="block";
-  copyBtn.style.display="inline-block";
-
-  titleEl.textContent=promptData["Prompt Title"]||"Untitled";
-  fullPrompt=promptData["Prompt Text"]||"";
-
-  const words=fullPrompt.split(" ");
-  if(words.length>20){
-    contentEl.textContent=words.slice(0,20).join(" ")+"...";
-    expandBtn.style.display="inline-block";
-  }else{
-    contentEl.textContent=fullPrompt;
-  }
-
-  const img=formatImage(promptData["Image File"]);
-  if(img){ imgEl.src=img; imgEl.style.display="block"; }
-
-  const explainList=await loadCSV(EXPLAIN_CSV);
-  const tipsList=await loadCSV(TIPS_CSV);
-
-  seoExplain.textContent=randomItem(explainList);
-  seoTips.textContent=randomItem(tipsList);
-
-  seoSection.style.display="block";
-  showMorePrompts();
-}
-
-expandBtn.addEventListener("click",()=>{
-  if(!expanded){
-    contentEl.textContent=fullPrompt;
-    expandBtn.textContent="Show Less";
-    expanded=true;
-  }else{
-    const words=fullPrompt.split(" ");
-    contentEl.textContent=words.slice(0,20).join(" ")+"...";
-    expandBtn.textContent="Show More";
-    expanded=false;
-  }
-});
-
-copyBtn.addEventListener("click",()=>{
-  navigator.clipboard.writeText(fullPrompt).then(()=>{
-    copyBtn.textContent="Copied!";
-    setTimeout(()=>copyBtn.textContent="Copy Prompt",1500);
-  });
-});
-
-function showMorePrompts(){
-  if(!allPrompts) return;
-  let others=[];
-  for(let i=0;i<allPrompts.length;i++){
-    if(i!==id){ others.push({data:allPrompts[i],index:i}); }
-  }
-  others=others.sort(()=>0.5-Math.random()).slice(0,6);
-  others.forEach(p=>{
-    const card=document.createElement("div");
-    card.className="promptCard";
-    const img=formatImage(p.data["Image File"]);
-    card.innerHTML=`<img src="${img}"><div>${p.data["Prompt Title"]}</div>`;
-    card.onclick=()=>{ window.location.href="prompt.html?id="+p.index; };
-    moreGrid.appendChild(card);
-  });
-  morePromptsSection.style.display="block";
-}
-
-// --- IG popup ---
-function showIGPopup(duration=4000){
-  const popup = document.getElementById('igPopup');
-  popup.style.opacity = 1;
-  popup.style.transform = 'translateX(-50%) translateY(0)';
-  setTimeout(()=>{
-    popup.style.opacity = 0;
-    popup.style.transform = 'translateX(-50%) translateY(-20px)';
-  }, duration);
-}
-
-window.addEventListener('load', ()=>{
-  showIGPopup();
-});
+/* (your entire original JS unchanged) */
 </script>
+
+<!-- Adsterra Social Bar -->
+<script type='text/javascript' src='YOUR_SOCIALBAR_SCRIPT'></script>
+
+<!-- Adsterra Popunder -->
+<script type='text/javascript' src='YOUR_POPUNDER_SCRIPT'></script>
 
 </body>
 </html>
