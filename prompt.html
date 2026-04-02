@@ -200,8 +200,38 @@ Please return to this page after it opens to claim your prompt.
 </div>
 </div>
 
+<!-- NATIVE BANNER -->
 <div class="ad-center">
+<script async="async" data-cfasync="false" src="https://pl29033357.profitablecpmratenetwork.com/b91d57dd3b8f2cdefbf4a34d445f31e3/invoke.js"></script>
 <div id="container-b91d57dd3b8f2cdefbf4a34d445f31e3"></div>
+</div>
+
+<!-- 728x90 DESKTOP BANNER -->
+<div class="ad-728">
+<script>
+  atOptions = {
+    'key' : 'd5788142542f13a7fb0f557272aef17b',
+    'format' : 'iframe',
+    'height' : 90,
+    'width' : 728,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/d5788142542f13a7fb0f557272aef17b/invoke.js"></script>
+</div>
+
+<!-- 300x250 BANNER -->
+<div class="ad-center">
+<script>
+  atOptions = {
+    'key' : '03441af9d7c950c75c0b698da8e3a00c',
+    'format' : 'iframe',
+    'height' : 250,
+    'width' : 300,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/03441af9d7c950c75c0b698da8e3a00c/invoke.js"></script>
 </div>
 
 <img id="promptImage" src="" alt="Prompt Image" style="display:none;">
@@ -285,31 +315,21 @@ function randomItem(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
 fetch(API)
 .then(res=>res.json())
-.then(data=>{
-allPrompts=data;
-startUnlock();
-})
-.catch(err=>{
-overlay.innerHTML="Error loading prompt";
-console.error(err);
-});
+.then(data=>{ allPrompts=data; startUnlock(); })
+.catch(err=>{ overlay.innerHTML="Error loading prompt"; console.error(err); });
 
 function startUnlock(){
-
 let width=0;
 const duration=5000;
 const interval=50;
 const steps=duration/interval;
 let currentStep=0;
-
 const progressInterval=setInterval(()=>{
 const randomIncrement=(100/steps)*(0.5+Math.random());
 width+=randomIncrement;
 if(width>100) width=100;
-
 progressEl.style.width=width+"%";
 currentStep++;
-
 if(width>=100 || currentStep>=steps*2){
 clearInterval(progressInterval);
 showPrompt();
@@ -319,93 +339,52 @@ showPrompt();
 
 async function showPrompt(){
 overlay.style.display="none";
-
 const promptData=allPrompts[id];
-
 if(!promptData){
 titleEl.textContent="Prompt not found";
 titleEl.style.display="block";
 return;
 }
-
 titleEl.style.display="block";
 contentEl.style.display="block";
 copyBtn.style.display="inline-block";
-
 titleEl.textContent=promptData["Prompt Title"]||"Untitled";
 fullPrompt=promptData["Prompt Text"]||"";
-
 const words=fullPrompt.split(" ");
-
-if(words.length>20){
-contentEl.textContent=words.slice(0,20).join(" ")+"...";
-expandBtn.style.display="inline-block";
-}else{
-contentEl.textContent=fullPrompt;
-}
-
+if(words.length>20){ contentEl.textContent=words.slice(0,20).join(" ")+"..."; expandBtn.style.display="inline-block"; }
+else{ contentEl.textContent=fullPrompt; }
 const img=formatImage(promptData["Image File"]);
 if(img){ preloadImage(img); }
-
 const explainList=await loadCSV(EXPLAIN_CSV);
 const tipsList=await loadCSV(TIPS_CSV);
-
 seoExplain.textContent=randomItem(explainList);
 seoTips.textContent=randomItem(tipsList);
-
 seoSection.style.display="block";
-
 showMorePrompts();
 }
 
 expandBtn.addEventListener("click",()=>{
-if(!expanded){
-contentEl.textContent=fullPrompt;
-expandBtn.textContent="Show Less";
-expanded=true;
-}else{
-const words=fullPrompt.split(" ");
-contentEl.textContent=words.slice(0,20).join(" ")+"...";
-expandBtn.textContent="Show More";
-expanded=false;
-}
+if(!expanded){ contentEl.textContent=fullPrompt; expandBtn.textContent="Show Less"; expanded=true; }
+else{ const words=fullPrompt.split(" "); contentEl.textContent=words.slice(0,20).join(" ")+"..."; expandBtn.textContent="Show More"; expanded=false; }
 });
 
 copyBtn.addEventListener("click",()=>{
-navigator.clipboard.writeText(fullPrompt).then(()=>{
-copyBtn.textContent="Copied!";
-setTimeout(()=>copyBtn.textContent="Copy Prompt",1500);
-});
+navigator.clipboard.writeText(fullPrompt).then(()=>{ copyBtn.textContent="Copied!"; setTimeout(()=>copyBtn.textContent="Copy Prompt",1500); });
 });
 
 function showMorePrompts(){
 if(!allPrompts) return;
-
 let others=[];
-
-for(let i=0;i<allPrompts.length;i++){
-if(i!==id){
-others.push({data:allPrompts[i],index:i});
-}
-}
-
+for(let i=0;i<allPrompts.length;i++){ if(i!==id){ others.push({data:allPrompts[i],index:i}); } }
 others=others.sort(()=>0.5-Math.random()).slice(0,6);
-
 others.forEach(p=>{
 const card=document.createElement("div");
 card.className="promptCard";
-
 const img=formatImage(p.data["Image File"]);
-
 card.innerHTML=`<img src="${img}"><div>${p.data["Prompt Title"]}</div>`;
-
-card.onclick=()=>{
-window.location.href="prompt.html?id="+p.index;
-};
-
+card.onclick=()=>{ window.location.href="prompt.html?id="+p.index; };
 moreGrid.appendChild(card);
 });
-
 morePromptsSection.style.display="block";
 }
 
@@ -413,20 +392,29 @@ function showIGPopup(duration=4000){
 const popup=document.getElementById('igPopup');
 popup.style.opacity=1;
 popup.style.transform='translateX(-50%) translateY(0)';
-setTimeout(()=>{
-popup.style.opacity=0;
-popup.style.transform='translateX(-50%) translateY(-20px)';
-},duration);
+setTimeout(()=>{ popup.style.opacity=0; popup.style.transform='translateX(-50%) translateY(-20px)'; },duration);
 }
 
-window.addEventListener('load',()=>{
-showIGPopup();
-});
+window.addEventListener('load',()=>{ showIGPopup(); });
 </script>
 
-<!-- POPUNDER & SOCIAL BAR ADS -->
+<!-- POPUNDER & SOCIAL BAR -->
 <script src="https://pl29033356.profitablecpmratenetwork.com/66/35/13/663513085ca9542f459ee6ffb4d20754.js"></script>
 <script src="https://pl29033403.profitablecpmratenetwork.com/c7/58/83/c7588384a025a5f208695da76567edd6.js"></script>
+
+<!-- 320x50 MOBILE BANNER -->
+<div class="ad-center" style="display:none;">
+<script>
+  atOptions = {
+    'key' : '3d0fb5aa8652375effd50a084eef0409',
+    'format' : 'iframe',
+    'height' : 50,
+    'width' : 320,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/3d0fb5aa8652375effd50a084eef0409/invoke.js"></script>
+</div>
 
 </body>
 </html>
