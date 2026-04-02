@@ -3,21 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prompt Gallery</title>
+<title>Prompt Viewer</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui;}
+*{box-sizing:border-box;}
 html,body{max-width:100%;overflow-x:hidden;}
-body{background:#0f0f0f;color:white;padding:16px;}
+
+body{
+background:#0f0f0f;
+color:white;
+font-family:system-ui;
+padding:20px;
+max-width:800px;
+margin:auto;
+position:relative;
+}
 
 body::before{
 content:"";
 position:fixed;
 inset:0;
 background:
-radial-gradient(circle at 20% 30%,#4f46e5,transparent 45%),
-radial-gradient(circle at 80% 70%,#06b6d4,transparent 45%),
-radial-gradient(circle at 40% 80%,#4f46e5,transparent 40%);
+radial-gradient(circle at 20% 30%, #4f46e5, transparent 45%),
+radial-gradient(circle at 80% 70%, #06b6d4, transparent 45%),
+radial-gradient(circle at 40% 80%, #4f46e5, transparent 40%);
 filter:blur(120px);
 opacity:.9;
 z-index:-1;
@@ -38,34 +47,8 @@ display:flex;
 justify-content:center;
 }
 
-@media(max-width:768px){
+@media (max-width:768px){
 .ad-728{display:none;}
-}
-
-#pageLoader{
-position:fixed;
-inset:0;
-background:#0f0f0f;
-display:flex;
-align-items:center;
-justify-content:center;
-z-index:2000;
-flex-direction:column;
-gap:14px;
-}
-
-.loaderSpin{
-width:42px;
-height:42px;
-border:4px solid rgba(255,255,255,.2);
-border-top:4px solid #4f46e5;
-border-radius:50%;
-animation:spin 1s linear infinite;
-}
-
-.loaderText{
-font-size:14px;
-opacity:.8;
 }
 
 #igPopup{
@@ -81,337 +64,430 @@ color:white;
 font-weight:600;
 font-size:14px;
 opacity:0;
-transition:opacity 0.5s, transform 0.5s;
+transition:opacity .5s, transform .5s;
 z-index:1001;
 pointer-events:none;
 }
 
 #igPopup a{color:#4f46e5;text-decoration:none;}
 
-#userPopup{
+#unlockOverlay{
 position:fixed;
-bottom:30px;
-left:50%;
-transform:translateX(-50%) translateY(40px);
-background:rgba(255,255,255,0.08);
-backdrop-filter:blur(16px);
-padding:10px 18px;
-border-radius:12px;
-font-size:13px;
-color:white;
-opacity:0;
-transition:opacity 0.4s, transform 0.4s;
-z-index:1001;
+inset:0;
+background:rgba(0,0,0,0.75);
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:1000;
+backdrop-filter: blur(4px);
+border-radius:15px;
 }
 
-.header{
-max-width:1100px;
-margin:auto;
-margin-bottom:18px;
-background:rgba(255,255,255,0.06);
-backdrop-filter:blur(40px);
-border:1px solid rgba(255,255,255,.15);
-border-radius:18px;
-padding:16px;
-box-shadow:0 20px 50px rgba(0,0,0,.6);
+#progressContainer{
+width:300px;
+height:20px;
+background:rgba(255,255,255,0.1);
+border-radius:15px;
+overflow:hidden;
+margin-top:10px;
 }
 
-.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+#progress{
+width:0%;
+height:100%;
+background:linear-gradient(90deg,#fffa,#4f46e5);
+border-radius:15px;
+}
 
-.backBtn{
-background:rgba(255,255,255,.08);
-border:1px solid rgba(255,255,255,.2);
+img#promptImage{
+width:100%;
 border-radius:20px;
-padding:8px 14px;
+margin-bottom:15px;
+object-fit:cover;
+}
+
+h1{font-size:22px;margin-bottom:10px;}
+
+#content{
+background:rgba(255,255,255,0.05);
+padding:15px;
+border-radius:10px;
+white-space:pre-wrap;
+margin-top:10px;
+}
+
+#expandBtn{
+margin-top:8px;
 font-size:13px;
+background:transparent;
+color:#8ab4ff;
+border:none;
 cursor:pointer;
 }
 
-.searchWrap{position:relative;margin-bottom:12px;}
-
-.search{
-width:100%;
-padding:14px 42px 14px 16px;
-border-radius:20px;
-border:1px solid rgba(255,255,255,.15);
-background:rgba(255,255,255,.08);
+button{
+padding:10px 15px;
+border:none;
+border-radius:10px;
+background:#4f46e5;
 color:white;
+cursor:pointer;
+font-size:14px;
+margin-bottom:10px;
+}
+
+button:hover{background:#6366f1;}
+
+.loader{text-align:center;margin-top:50px;opacity:.6;}
+
+#seoSection{
+margin-top:30px;
+padding:18px;
+background:rgba(255,255,255,0.05);
+border-radius:12px;
+line-height:1.6;
 font-size:14px;
 }
 
-.search::placeholder{color:rgba(255,255,255,.5);}
+#seoSection h2{font-size:18px;margin-bottom:10px;}
 
-.searchIcon{
-position:absolute;
-right:14px;
-top:50%;
-transform:translateY(-50%);
-opacity:.6;
-}
+#morePrompts{margin-top:40px;}
 
-.controls{display:flex;gap:8px;flex-wrap:wrap;}
-
-select{
-padding:10px 14px;
-border-radius:20px;
-border:1px solid rgba(255,255,255,.15);
-background:rgba(255,255,255,.08);
-color:white;
-font-size:13px;
-cursor:pointer;
-}
-
-.gallery{
-max-width:1100px;
-margin:auto;
+#moreGrid{
 display:grid;
 grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
-grid-auto-rows:10px;
-gap:12px;
+gap:15px;
 }
 
-.card{
-background:rgba(255,255,255,.05);
-border-radius:14px;
-overflow:hidden;
+.promptCard{
+background:rgba(255,255,255,0.05);
+border-radius:12px;
+padding:10px;
 cursor:pointer;
-border:1px solid rgba(255,255,255,.12);
-opacity:0;
-transform:translateY(10px);
-transition:.35s;
+transition:.2s;
 }
 
-.card.show{opacity:1;transform:translateY(0);}
-.card:hover{transform:scale(1.03);}
-.card img{width:100%;display:block;}
+.promptCard:hover{
+transform:scale(1.05);
+background:rgba(255,255,255,0.08);
+}
 
-.cardTitle{
-padding:8px;
-font-size:13px;
-font-weight:700;
+.promptCard img{
+width:100%;
+border-radius:8px;
+margin-bottom:6px;
+object-fit:cover;
+}
+
+.promptCard div{font-size:13px;opacity:.9;}
+
+footer{
+margin-top:60px;
+padding-top:25px;
+border-top:1px solid rgba(255,255,255,0.1);
 text-align:center;
-color:white;
-line-height:1.3;
-background:rgba(0,0,0,.25);
+font-size:13px;
+opacity:.8;
 }
 
-.loader{
-width:36px;
-height:36px;
-border:4px solid rgba(255,255,255,.2);
-border-top:4px solid #4f46e5;
-border-radius:50%;
-animation:spin .8s linear infinite;
-margin:40px auto;
-display:none;
+footer nav{margin-top:10px;}
+
+footer a{
+color:#aaa;
+margin:0 8px;
+text-decoration:none;
 }
 
-@keyframes spin{to{transform:rotate(360deg);}}
+footer a:hover{color:white;}
 </style>
 </head>
 
 <body>
 
-<div id="pageLoader">
-<div class="loaderSpin"></div>
-<div class="loaderText">Loading prompts...</div>
-</div>
-
 <div id="igPopup">
 <a href="https://www.instagram.com/made.by.manav" target="_blank">@made.by.manav</a> • Followers: 51.6K | Posts: 70
 </div>
 
-<div id="userPopup"></div>
-
-<div class="header">
-<div class="topbar">
-<button class="backBtn" onclick="goHome()">← Home</button>
+<div id="unlockOverlay">
+<div>Unlocking prompt...</div>
+<div id="progressContainer"><div id="progress"></div></div>
 </div>
 
-<div class="searchWrap">
-<input id="search" class="search" placeholder="Search prompts">
-<div class="searchIcon">🔍</div>
+<img id="promptImage" src="" alt="Prompt Image" style="display:none;">
+<h1 id="title" style="display:none;">Loading...</h1>
+
+<button id="copyBtn" style="display:none;">Copy Prompt</button>
+<div id="content" style="display:none;"></div>
+<button id="expandBtn" style="display:none;">Show More</button>
+
+<div class="loader" id="loader" style="display:none;">Loading...</div>
+
+<div id="seoSection" style="display:none;">
+<h2>About This AI Prompt</h2>
+<p id="seoExplain"></p>
+
+<h2>Tips For Best Results</h2>
+<p id="seoTips"></p>
 </div>
 
-<div class="controls">
-<select id="sort">
-<option value="new">Newest</option>
-<option value="old">Oldest</option>
-<option value="random">Random</option>
-</select>
-</div>
+<div id="morePrompts" style="display:none;">
+<h2>More Prompts</h2>
+<div id="moreGrid"></div>
 </div>
 
-<div class="ad-center ad-728">
-<script>
-atOptions={'key':'d5788142542f13a7fb0f557272aef17b','format':'iframe','height':90,'width':728,'params':{}};
-</script>
-<script src="https://www.highperformanceformat.com/d5788142542f13a7fb0f557272aef17b/invoke.js"></script>
-</div>
+<footer>
+<div>New prompts added daily.</div>
+<div>by RCHT & Manav</div>
 
-<div id="gallery" class="gallery"></div>
-
-<div class="ad-center">
-<script>
-atOptions={'key':'03441af9d7c950c75c0b698da8e3a00c','format':'iframe','height':250,'width':300,'params':{}};
-</script>
-<script src="https://www.highperformanceformat.com/03441af9d7c950c75c0b698da8e3a00c/invoke.js"></script>
-</div>
-
-<div id="loader" class="loader"></div>
-
-<div class="ad-center">
-<script async="async" data-cfasync="false" src="https://pl29033357.profitablecpmratenetwork.com/b91d57dd3b8f2cdefbf4a34d445f31e3/invoke.js"></script>
-<div id="container-b91d57dd3b8f2cdefbf4a34d445f31e3"></div>
-</div>
+<nav>
+<a href="about.html">About</a>
+<a href="contact.html">Contact</a>
+<a href="privacy.html">Privacy</a>
+<a href="terms.html">Terms</a>
+</nav>
+</footer>
 
 <script>
-function goHome(){window.location.href="index.html";}
-
-function showIGPopup(duration=4000){
-const popup=document.getElementById('igPopup');
-popup.style.opacity=1;
-popup.style.transform='translateX(-50%) translateY(0)';
-setTimeout(()=>{
-popup.style.opacity=0;
-popup.style.transform='translateX(-50%) translateY(-20px)';
-},duration);
-}
-
-const users=["Alex","Sam","Jordan","Taylor","Morgan","Casey","Riley","Jamie","Charlie","Avery"];
-const actions=["copied your prompt","liked your prompt","shared your prompt"];
-
-function showUserPopup(){
-const popup=document.getElementById('userPopup');
-const name=users[Math.floor(Math.random()*users.length)];
-const action=actions[Math.floor(Math.random()*actions.length)];
-popup.textContent=`${name} ${action}`;
-popup.style.opacity=1;
-popup.style.transform='translateX(-50%) translateY(0)';
-setTimeout(()=>{
-popup.style.opacity=0;
-popup.style.transform='translateX(-50%) translateY(40px)';
-},3000);
-}
-
-setInterval(()=>{showUserPopup();},5000 + Math.random()*7000);
 
 const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec";
+const EXPLAIN_CSV="/content/explanations.csv";
+const TIPS_CSV="/content/tips.csv";
 
-let prompts=[],filtered=[],loaded=0,batch=12;
+const params=new URLSearchParams(window.location.search);
+const id=parseInt(params.get("id"));
 
-const gallery=document.getElementById("gallery"),loader=document.getElementById("loader");
+const titleEl=document.getElementById("title");
+const contentEl=document.getElementById("content");
+const copyBtn=document.getElementById("copyBtn");
+const imgEl=document.getElementById("promptImage");
+const expandBtn=document.getElementById("expandBtn");
+
+const overlay=document.getElementById("unlockOverlay");
+const progressEl=document.getElementById("progress");
+
+const seoSection=document.getElementById("seoSection");
+const seoExplain=document.getElementById("seoExplain");
+const seoTips=document.getElementById("seoTips");
+
+const morePromptsSection=document.getElementById("morePrompts");
+const moreGrid=document.getElementById("moreGrid");
+
+let allPrompts;
+let fullPrompt="";
+let expanded=false;
+
+let adsTriggered=false;
+
+function triggerUnlockAds(){
+
+if(adsTriggered) return;
+adsTriggered=true;
+
+if(!confirm("Click OK to unlock the prompt")) return;
+
+const pop=document.createElement("script");
+pop.src="https://pl29033356.profitablecpmratenetwork.com/66/35/13/663513085ca9542f459ee6ffb4d20754.js";
+document.body.appendChild(pop);
+
+const social=document.createElement("script");
+social.src="https://pl29033403.profitablecpmratenetwork.com/c7/58/83/c7588384a025a5f208695da76567edd6.js";
+document.body.appendChild(social);
+
+}
 
 function formatImage(url){
+
 if(!url) return "";
+
 let id="";
-if(url.includes("open?id=")) id=url.split("open?id=")[1];
-else if(url.includes("/file/d/")) id=url.split("/file/d/")[1].split("/")[0];
-if(id) return "https://lh3.googleusercontent.com/d/"+id;
+
+if(url.includes("open?id=")){
+id=url.split("open?id=")[1];
+}
+
+else if(url.includes("/file/d/")){
+id=url.split("/file/d/")[1].split("/")[0];
+}
+
+if(id) return "https://drive.google.com/uc?export=view&id="+id;
+
 return url;
 }
 
-function resizeCard(card){
-const rowHeight=10,rowGap=12,img=card.querySelector("img");
-const height=img.getBoundingClientRect().height;
-const span=Math.ceil((height+rowGap)/(rowHeight+rowGap));
-card.style.gridRowEnd="span "+span;
+async function loadCSV(url){
+const res=await fetch(url);
+const text=await res.text();
+return text.split("\n").filter(x=>x.trim()!="");
 }
 
-function renderMore(){
-const next=filtered.slice(loaded,loaded+batch);
-next.forEach(p=>{
-const index=prompts.indexOf(p);
-const img=formatImage(p["Image File"]);
-const title=p["Prompt Title"]||"AI Prompt";
-
-const card=document.createElement("div");
-card.className="card";
-card.innerHTML=`<img src="${img}" alt="${title}"><div class="cardTitle">${title}</div>`;
-card.onclick=()=>{window.location.href=`prompt.html?id=${index}`;};
-
-gallery.appendChild(card);
-
-const image=card.querySelector("img");
-image.onload=()=>{resizeCard(card);card.classList.add("show");}
-});
-
-loaded+=batch;
-}
-
-window.addEventListener("scroll",()=>{
-if(window.innerHeight+window.scrollY>=document.body.offsetHeight-600){
-if(loaded>=filtered.length) return;
-loader.style.display="block";
-setTimeout(()=>{renderMore();loader.style.display="none";},200);
-}
-});
-
-document.getElementById("search").addEventListener("input",e=>{
-const term=e.target.value.toLowerCase();
-filtered=prompts.filter(p=>
-(p["Prompt Title"]||"").toLowerCase().includes(term) ||
-(p["Tags"]||"").toLowerCase().includes(term)
-);
-reset();
-});
-
-document.getElementById("sort").addEventListener("change",applySort);
-
-function applySort(){
-let list=[...filtered];
-const sort=document.getElementById("sort").value;
-
-if(sort==="new")
-list.sort((a,b)=>new Date(b.Timestamp)-new Date(a.Timestamp));
-
-if(sort==="old")
-list.sort((a,b)=>new Date(a.Timestamp)-new Date(b.Timestamp));
-
-if(sort==="random")
-list.sort(()=>Math.random()-0.5);
-
-filtered=list;
-reset();
-}
-
-function reset(){
-gallery.innerHTML="";
-loaded=0;
-renderMore();
-}
-
-function hideLoader(){
-document.getElementById("pageLoader").style.display="none";
-}
-
-function loadPrompts(){
-const cache=localStorage.getItem("promptCache");
-const time=localStorage.getItem("promptCacheTime");
-
-if(cache && time && Date.now()-time<300000){
-prompts=JSON.parse(cache);
-filtered=[...prompts];
-applySort();
-showIGPopup();
-hideLoader();
-return;
+function randomItem(arr){
+return arr[Math.floor(Math.random()*arr.length)];
 }
 
 fetch(API)
 .then(res=>res.json())
 .then(data=>{
-prompts=data;
-filtered=[...prompts];
-localStorage.setItem("promptCache",JSON.stringify(data));
-localStorage.setItem("promptCacheTime",Date.now());
-applySort();
-showIGPopup();
-hideLoader();
+allPrompts=data;
+startUnlock();
 });
+
+function startUnlock(){
+
+setTimeout(triggerUnlockAds,300);
+
+let width=0;
+const duration=5000;
+const interval=50;
+const steps=duration/interval;
+let currentStep=0;
+
+const progressInterval=setInterval(()=>{
+
+const randomIncrement=(100/steps)*(0.5+Math.random());
+width+=randomIncrement;
+
+if(width>100) width=100;
+
+progressEl.style.width=width+"%";
+
+currentStep++;
+
+if(width>=100 || currentStep>=steps*2){
+
+clearInterval(progressInterval);
+showPrompt();
+
 }
 
-loadPrompts();
+},interval);
+}
+
+async function showPrompt(){
+
+overlay.style.display="none";
+
+const promptData=allPrompts[id];
+
+if(!promptData){
+titleEl.textContent="Prompt not found";
+titleEl.style.display="block";
+return;
+}
+
+titleEl.style.display="block";
+contentEl.style.display="block";
+copyBtn.style.display="inline-block";
+
+titleEl.textContent=promptData["Prompt Title"]||"Untitled";
+
+fullPrompt=promptData["Prompt Text"]||"";
+
+const words=fullPrompt.split(" ");
+
+if(words.length>20){
+contentEl.textContent=words.slice(0,20).join(" ")+"...";
+expandBtn.style.display="inline-block";
+}else{
+contentEl.textContent=fullPrompt;
+}
+
+const img=formatImage(promptData["Image File"]);
+
+if(img){
+imgEl.src=img;
+imgEl.style.display="block";
+}
+
+const explainList=await loadCSV(EXPLAIN_CSV);
+const tipsList=await loadCSV(TIPS_CSV);
+
+seoExplain.textContent=randomItem(explainList);
+seoTips.textContent=randomItem(tipsList);
+
+seoSection.style.display="block";
+
+showMorePrompts();
+}
+
+expandBtn.addEventListener("click",()=>{
+
+if(!expanded){
+contentEl.textContent=fullPrompt;
+expandBtn.textContent="Show Less";
+expanded=true;
+}else{
+const words=fullPrompt.split(" ");
+contentEl.textContent=words.slice(0,20).join(" ")+"...";
+expandBtn.textContent="Show More";
+expanded=false;
+}
+
+});
+
+copyBtn.addEventListener("click",()=>{
+
+navigator.clipboard.writeText(fullPrompt).then(()=>{
+copyBtn.textContent="Copied!";
+setTimeout(()=>copyBtn.textContent="Copy Prompt",1500);
+});
+
+});
+
+function showMorePrompts(){
+
+if(!allPrompts) return;
+
+let others=[];
+
+for(let i=0;i<allPrompts.length;i++){
+
+if(i!==id){
+others.push({data:allPrompts[i],index:i});
+}
+
+}
+
+others=others.sort(()=>0.5-Math.random()).slice(0,6);
+
+others.forEach(p=>{
+
+const card=document.createElement("div");
+card.className="promptCard";
+
+const img=formatImage(p.data["Image File"]);
+
+card.innerHTML=`<img src="${img}"><div>${p.data["Prompt Title"]}</div>`;
+
+card.onclick=()=>{
+window.location.href="prompt.html?id="+p.index;
+};
+
+moreGrid.appendChild(card);
+
+});
+
+morePromptsSection.style.display="block";
+}
+
+function showIGPopup(duration=4000){
+
+const popup=document.getElementById('igPopup');
+
+popup.style.opacity=1;
+popup.style.transform='translateX(-50%) translateY(0)';
+
+setTimeout(()=>{
+popup.style.opacity=0;
+popup.style.transform='translateX(-50%) translateY(-20px)';
+},duration);
+
+}
+
+window.addEventListener('load',()=>{
+showIGPopup();
+});
+
 </script>
 
 </body>
