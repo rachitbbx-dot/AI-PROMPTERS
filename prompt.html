@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,11 +7,7 @@
 
 <style>
 *{box-sizing:border-box;}
-
-html,body{
-max-width:100%;
-overflow-x:hidden;
-}
+html,body{max-width:100%;overflow-x:hidden;}
 
 body{
 background:#0f0f0f;
@@ -69,7 +64,7 @@ color:white;
 font-weight:600;
 font-size:14px;
 opacity:0;
-transition:opacity .5s,transform .5s;
+transition:opacity .5s, transform .5s;
 z-index:1001;
 pointer-events:none;
 }
@@ -108,10 +103,7 @@ margin-bottom:15px;
 object-fit:cover;
 }
 
-h1{
-font-size:22px;
-margin-bottom:10px;
-}
+h1{font-size:22px;margin-bottom:10px;}
 
 #content{
 background:rgba(255,255,255,0.05);
@@ -128,12 +120,13 @@ border-radius:10px;
 background:#4f46e5;
 color:white;
 cursor:pointer;
+font-size:14px;
 margin-bottom:10px;
 }
 
-button:hover{
-background:#6366f1;
-}
+button:hover{background:#6366f1;}
+
+.loader{text-align:center;margin-top:50px;opacity:.6;}
 
 #seoSection{
 margin-top:30px;
@@ -144,9 +137,7 @@ line-height:1.6;
 font-size:14px;
 }
 
-#morePrompts{
-margin-top:40px;
-}
+#morePrompts{margin-top:40px;}
 
 #moreGrid{
 display:grid;
@@ -198,18 +189,23 @@ opacity:.8;
 </div>
 </div>
 
+<!-- Native Ad -->
 <div class="ad-center">
 <script async data-cfasync="false" src="https://pl29033357.profitablecpmratenetwork.com/b91d57dd3b8f2cdefbf4a34d445f31e3/invoke.js"></script>
 <div id="container-b91d57dd3b8f2cdefbf4a34d445f31e3"></div>
 </div>
 
-<img id="promptImage" src="" style="display:none;">
+<img id="promptImage" src="" alt="Prompt Image" style="display:none;">
+
 <h1 id="title" style="display:none;"></h1>
 
 <button id="copyBtn" style="display:none;">Copy Prompt</button>
 
 <div id="content" style="display:none;"></div>
+
 <button id="expandBtn" style="display:none;">Show More</button>
+
+<div class="loader" id="loader" style="display:none;">Loading...</div>
 
 <div id="seoSection" style="display:none;">
 <h2>About This AI Prompt</h2>
@@ -230,8 +226,9 @@ opacity:.8;
 </footer>
 
 <script>
-
 const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec";
+const EXPLAIN_CSV="/content/explanations.csv";
+const TIPS_CSV="/content/tips.csv";
 
 const params=new URLSearchParams(window.location.search);
 const id=parseInt(params.get("id"));
@@ -257,32 +254,38 @@ let fullPrompt="";
 let expanded=false;
 let adsTriggered=false;
 
+/* POPUNDER + SOCIAL BAR */
 function triggerUnlockAds(){
 if(adsTriggered) return;
 adsTriggered=true;
 
 const pop=document.createElement("script");
 pop.src="https://pl29033356.profitablecpmratenetwork.com/66/35/13/663513085ca9542f459ee6ffb4d20754.js";
+pop.id="popAd";
 document.body.appendChild(pop);
 
 const social=document.createElement("script");
 social.src="https://pl29033403.profitablecpmratenetwork.com/c7/58/83/c7588384a025a5f208695da76567edd6.js";
+social.id="socialAd";
 document.body.appendChild(social);
 
-document.addEventListener("click",disableAds,{once:true});
+document.addEventListener("click",disableUnlockAds,{once:true});
 }
 
-function disableAds(){
-const scripts=document.querySelectorAll("script[src*='profitablecpmratenetwork']");
-scripts.forEach(s=>s.remove());
+function disableUnlockAds(){
+const pop=document.getElementById("popAd");
+const social=document.getElementById("socialAd");
+if(pop) pop.remove();
+if(social) social.remove();
 }
 
+/* IMAGE FIX */
 function formatImage(url){
 if(!url) return "";
 let id="";
-if(url.includes("open?id=")){id=url.split("open?id=")[1];}
-else if(url.includes("/file/d/")){id=url.split("/file/d/")[1].split("/")[0];}
-if(id)return "https://lh3.googleusercontent.com/d/"+id;
+if(url.includes("open?id=")){ id=url.split("open?id=")[1]; }
+else if(url.includes("/file/d/")){ id=url.split("/file/d/")[1].split("/")[0]; }
+if(id) return "https://lh3.googleusercontent.com/d/"+id;
 return url;
 }
 
@@ -295,35 +298,50 @@ imgEl.style.display="block";
 img.src=src;
 }
 
+async function loadCSV(url){
+const res=await fetch(url);
+const text=await res.text();
+return text.split("\n").filter(x=>x.trim()!="");
+}
+
+function randomItem(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
 fetch(API)
 .then(res=>res.json())
 .then(data=>{
 allPrompts=data;
 startUnlock();
+})
+.catch(err=>{
+overlay.innerHTML="Error loading prompt";
+console.error(err);
 });
 
 function startUnlock(){
-
 setTimeout(triggerUnlockAds,300);
 
 let width=0;
+const duration=5000;
+const interval=50;
+const steps=duration/interval;
+let currentStep=0;
 
 const progressInterval=setInterval(()=>{
-width+=Math.random()*5;
+const randomIncrement=(100/steps)*(0.5+Math.random());
+width+=randomIncrement;
 if(width>100) width=100;
 
 progressEl.style.width=width+"%";
+currentStep++;
 
-if(width>=100){
+if(width>=100 || currentStep>=steps*2){
 clearInterval(progressInterval);
 showPrompt();
 }
-
-},50);
+},interval);
 }
 
-function showPrompt(){
-
+async function showPrompt(){
 overlay.style.display="none";
 
 const promptData=allPrompts[id];
@@ -339,7 +357,6 @@ contentEl.style.display="block";
 copyBtn.style.display="inline-block";
 
 titleEl.textContent=promptData["Prompt Title"]||"Untitled";
-
 fullPrompt=promptData["Prompt Text"]||"";
 
 const words=fullPrompt.split(" ");
@@ -352,14 +369,20 @@ contentEl.textContent=fullPrompt;
 }
 
 const img=formatImage(promptData["Image File"]);
+if(img){ preloadImage(img); }
 
-if(img){
-preloadImage(img);
+const explainList=await loadCSV(EXPLAIN_CSV);
+const tipsList=await loadCSV(TIPS_CSV);
+
+seoExplain.textContent=randomItem(explainList);
+seoTips.textContent=randomItem(tipsList);
+
+seoSection.style.display="block";
+
+showMorePrompts();
 }
 
-}
-
-expandBtn.onclick=()=>{
+expandBtn.addEventListener("click",()=>{
 if(!expanded){
 contentEl.textContent=fullPrompt;
 expandBtn.textContent="Show Less";
@@ -370,16 +393,61 @@ contentEl.textContent=words.slice(0,20).join(" ")+"...";
 expandBtn.textContent="Show More";
 expanded=false;
 }
-};
+});
 
-copyBtn.onclick=()=>{
-navigator.clipboard.writeText(fullPrompt);
+copyBtn.addEventListener("click",()=>{
+navigator.clipboard.writeText(fullPrompt).then(()=>{
 copyBtn.textContent="Copied!";
 setTimeout(()=>copyBtn.textContent="Copy Prompt",1500);
+});
+});
+
+function showMorePrompts(){
+if(!allPrompts) return;
+
+let others=[];
+
+for(let i=0;i<allPrompts.length;i++){
+if(i!==id){
+others.push({data:allPrompts[i],index:i});
+}
+}
+
+others=others.sort(()=>0.5-Math.random()).slice(0,6);
+
+others.forEach(p=>{
+const card=document.createElement("div");
+card.className="promptCard";
+
+const img=formatImage(p.data["Image File"]);
+
+card.innerHTML=`<img src="${img}"><div>${p.data["Prompt Title"]}</div>`;
+
+card.onclick=()=>{
+window.location.href="prompt.html?id="+p.index;
 };
 
+moreGrid.appendChild(card);
+});
+
+morePromptsSection.style.display="block";
+}
+
+function showIGPopup(duration=4000){
+const popup=document.getElementById('igPopup');
+popup.style.opacity=1;
+popup.style.transform='translateX(-50%) translateY(0)';
+setTimeout(()=>{
+popup.style.opacity=0;
+popup.style.transform='translateX(-50%) translateY(-20px)';
+},duration);
+}
+
+window.addEventListener('load',()=>{
+showIGPopup();
+});
 </script>
 
 </body>
 </html>
-```
+
