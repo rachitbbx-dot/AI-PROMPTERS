@@ -45,13 +45,14 @@ overflow:hidden;
 width:100%;
 display:flex;
 justify-content:center;
+margin-bottom:20px;
 }
 
 @media (max-width:768px){
 .ad-728{display:none;}
-.ad-320{display:flex;} /* Show mobile banner */
+.ad-320{display:flex; position:fixed; bottom:0; left:50%; transform:translateX(-50%); margin:0; z-index:9999;}
 }
-.ad-320{display:none;} /* Hide by default on desktop */
+.ad-320{display:none;}
 
 #igPopup{
 position:fixed;
@@ -202,13 +203,7 @@ Please return to this page after it opens to claim your prompt.
 </div>
 </div>
 
-<!-- NATIVE BANNER -->
-<div class="ad-center">
-<script async="async" data-cfasync="false" src="https://pl29033357.profitablecpmratenetwork.com/b91d57dd3b8f2cdefbf4a34d445f31e3/invoke.js"></script>
-<div id="container-b91d57dd3b8f2cdefbf4a34d445f31e3"></div>
-</div>
-
-<!-- 728x90 DESKTOP BANNER -->
+<!-- DESKTOP 728x90 BANNER -->
 <div class="ad-728">
 <script>
   atOptions = {
@@ -220,6 +215,12 @@ Please return to this page after it opens to claim your prompt.
   };
 </script>
 <script src="https://www.highperformanceformat.com/d5788142542f13a7fb0f557272aef17b/invoke.js"></script>
+</div>
+
+<!-- NATIVE BANNER -->
+<div class="ad-center">
+<script async="async" data-cfasync="false" src="https://pl29033357.profitablecpmratenetwork.com/b91d57dd3b8f2cdefbf4a34d445f31e3/invoke.js"></script>
+<div id="container-b91d57dd3b8f2cdefbf4a34d445f31e3"></div>
 </div>
 
 <!-- 300x250 BANNER -->
@@ -330,7 +331,6 @@ const progressInterval=setInterval(()=>{
 const randomIncrement=(100/steps)*(0.5+Math.random());
 width+=randomIncrement;
 if(width>100) width=100;
-progressEl.style.width=width+"%";
 currentStep++;
 if(width>=100 || currentStep>=steps*2){
 clearInterval(progressInterval);
