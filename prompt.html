@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -189,28 +190,21 @@ opacity:.8;
 </div>
 </div>
 
-<!-- Native Ad -->
 <div class="ad-center">
 <script async data-cfasync="false" src="https://pl29033357.profitablecpmratenetwork.com/b91d57dd3b8f2cdefbf4a34d445f31e3/invoke.js"></script>
 <div id="container-b91d57dd3b8f2cdefbf4a34d445f31e3"></div>
 </div>
 
 <img id="promptImage" src="" alt="Prompt Image" style="display:none;">
-
 <h1 id="title" style="display:none;"></h1>
-
 <button id="copyBtn" style="display:none;">Copy Prompt</button>
-
 <div id="content" style="display:none;"></div>
-
 <button id="expandBtn" style="display:none;">Show More</button>
-
 <div class="loader" id="loader" style="display:none;">Loading...</div>
 
 <div id="seoSection" style="display:none;">
 <h2>About This AI Prompt</h2>
 <p id="seoExplain"></p>
-
 <h2>Tips For Best Results</h2>
 <p id="seoTips"></p>
 </div>
@@ -256,7 +250,13 @@ let adsTriggered=false;
 
 /* POPUNDER + SOCIAL BAR */
 function triggerUnlockAds(){
+
 if(adsTriggered) return;
+
+const proceed=confirm("To unlock this prompt a short redirect may open.\n\nPlease return to this page after it opens to claim your prompt.");
+
+if(!proceed) return;
+
 adsTriggered=true;
 
 const pop=document.createElement("script");
@@ -270,6 +270,7 @@ social.id="socialAd";
 document.body.appendChild(social);
 
 document.addEventListener("click",disableUnlockAds,{once:true});
+
 }
 
 function disableUnlockAds(){
@@ -279,7 +280,6 @@ if(pop) pop.remove();
 if(social) social.remove();
 }
 
-/* IMAGE FIX */
 function formatImage(url){
 if(!url) return "";
 let id="";
@@ -311,13 +311,10 @@ fetch(API)
 .then(data=>{
 allPrompts=data;
 startUnlock();
-})
-.catch(err=>{
-overlay.innerHTML="Error loading prompt";
-console.error(err);
 });
 
 function startUnlock(){
+
 setTimeout(triggerUnlockAds,300);
 
 let width=0;
@@ -327,6 +324,7 @@ const steps=duration/interval;
 let currentStep=0;
 
 const progressInterval=setInterval(()=>{
+
 const randomIncrement=(100/steps)*(0.5+Math.random());
 width+=randomIncrement;
 if(width>100) width=100;
@@ -338,10 +336,12 @@ if(width>=100 || currentStep>=steps*2){
 clearInterval(progressInterval);
 showPrompt();
 }
+
 },interval);
 }
 
 async function showPrompt(){
+
 overlay.style.display="none";
 
 const promptData=allPrompts[id];
@@ -380,9 +380,11 @@ seoTips.textContent=randomItem(tipsList);
 seoSection.style.display="block";
 
 showMorePrompts();
+
 }
 
 expandBtn.addEventListener("click",()=>{
+
 if(!expanded){
 contentEl.textContent=fullPrompt;
 expandBtn.textContent="Show Less";
@@ -393,6 +395,7 @@ contentEl.textContent=words.slice(0,20).join(" ")+"...";
 expandBtn.textContent="Show More";
 expanded=false;
 }
+
 });
 
 copyBtn.addEventListener("click",()=>{
@@ -403,6 +406,7 @@ setTimeout(()=>copyBtn.textContent="Copy Prompt",1500);
 });
 
 function showMorePrompts(){
+
 if(!allPrompts) return;
 
 let others=[];
@@ -416,6 +420,7 @@ others.push({data:allPrompts[i],index:i});
 others=others.sort(()=>0.5-Math.random()).slice(0,6);
 
 others.forEach(p=>{
+
 const card=document.createElement("div");
 card.className="promptCard";
 
@@ -428,9 +433,11 @@ window.location.href="prompt.html?id="+p.index;
 };
 
 moreGrid.appendChild(card);
+
 });
 
 morePromptsSection.style.display="block";
+
 }
 
 function showIGPopup(duration=4000){
@@ -450,4 +457,4 @@ showIGPopup();
 
 </body>
 </html>
-
+```
