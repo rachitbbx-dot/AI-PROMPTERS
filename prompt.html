@@ -7,7 +7,6 @@
 
 <style>
 *{box-sizing:border-box;}
-
 html,body{max-width:100%;overflow-x:hidden;}
 
 body{
@@ -65,15 +64,12 @@ color:white;
 font-weight:600;
 font-size:14px;
 opacity:0;
-transition:opacity 0.5s, transform 0.5s;
+transition:opacity .5s, transform .5s;
 z-index:1001;
 pointer-events:none;
 }
 
-#igPopup a{
-color:#4f46e5;
-text-decoration:none;
-}
+#igPopup a{color:#4f46e5;text-decoration:none;}
 
 #unlockOverlay{
 position:fixed;
@@ -111,10 +107,7 @@ margin-bottom:15px;
 object-fit:cover;
 }
 
-h1{
-font-size:22px;
-margin-bottom:10px;
-}
+h1{font-size:22px;margin-bottom:10px;}
 
 #content{
 background:rgba(255,255,255,0.05);
@@ -146,11 +139,7 @@ margin-bottom:10px;
 
 button:hover{background:#6366f1;}
 
-.loader{
-text-align:center;
-margin-top:50px;
-opacity:.6;
-}
+.loader{text-align:center;margin-top:50px;opacity:.6;}
 
 #seoSection{
 margin-top:30px;
@@ -161,10 +150,7 @@ line-height:1.6;
 font-size:14px;
 }
 
-#seoSection h2{
-font-size:18px;
-margin-bottom:10px;
-}
+#seoSection h2{font-size:18px;margin-bottom:10px;}
 
 #morePrompts{margin-top:40px;}
 
@@ -194,10 +180,7 @@ margin-bottom:6px;
 object-fit:cover;
 }
 
-.promptCard div{
-font-size:13px;
-opacity:.9;
-}
+.promptCard div{font-size:13px;opacity:.9;}
 
 footer{
 margin-top:60px;
@@ -228,24 +211,45 @@ footer a:hover{color:white;}
 
 <div id="unlockOverlay">
 <div>Unlocking prompt...</div>
-<div id="progressContainer">
-<div id="progress"></div>
+<div id="progressContainer"><div id="progress"></div></div>
 </div>
-</div>
-
-<!-- POPUNDER -->
-<script src="https://pl29033356.profitablecpmratenetwork.com/66/35/13/663513085ca9542f459ee6ffb4d20754.js"></script>
-
-<!-- SOCIAL BAR -->
-<script src="https://pl29033403.profitablecpmratenetwork.com/c7/58/83/c7588384a025a5f208695da76567edd6.js"></script>
 
 <img id="promptImage" src="" alt="Prompt Image" style="display:none;">
 <h1 id="title" style="display:none;">Loading...</h1>
+
 <button id="copyBtn" style="display:none;">Copy Prompt</button>
 <div id="content" style="display:none;"></div>
 <button id="expandBtn" style="display:none;">Show More</button>
 
+<div class="loader" id="loader" style="display:none;">Loading...</div>
+
+<div id="seoSection" style="display:none;">
+<h2>About This AI Prompt</h2>
+<p id="seoExplain"></p>
+
+<h2>Tips For Best Results</h2>
+<p id="seoTips"></p>
+</div>
+
+<div id="morePrompts" style="display:none;">
+<h2>More Prompts</h2>
+<div id="moreGrid"></div>
+</div>
+
+<footer>
+<div>New prompts added daily.</div>
+<div>by RCHT & Manav</div>
+
+<nav>
+<a href="about.html">About</a>
+<a href="contact.html">Contact</a>
+<a href="privacy.html">Privacy</a>
+<a href="terms.html">Terms</a>
+</nav>
+</footer>
+
 <script>
+
 const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec";
 const EXPLAIN_CSV="/content/explanations.csv";
 const TIPS_CSV="/content/tips.csv";
@@ -262,9 +266,17 @@ const expandBtn=document.getElementById("expandBtn");
 const overlay=document.getElementById("unlockOverlay");
 const progressEl=document.getElementById("progress");
 
+const seoSection=document.getElementById("seoSection");
+const seoExplain=document.getElementById("seoExplain");
+const seoTips=document.getElementById("seoTips");
+
+const morePromptsSection=document.getElementById("morePrompts");
+const moreGrid=document.getElementById("moreGrid");
+
 let allPrompts;
 let fullPrompt="";
 let expanded=false;
+
 let adsTriggered=false;
 
 function triggerUnlockAds(){
@@ -272,22 +284,45 @@ function triggerUnlockAds(){
 if(adsTriggered) return;
 adsTriggered=true;
 
-const userConfirm=confirm(
-"To unlock this prompt an ad will open in another window.\n\nReturn to this page afterwards to claim your free prompt."
-);
+if(!confirm("Click OK to unlock the prompt")) return;
 
-if(userConfirm){
+const pop=document.createElement("script");
+pop.src="https://pl29033356.profitablecpmratenetwork.com/66/35/13/663513085ca9542f459ee6ffb4d20754.js";
+document.body.appendChild(pop);
 
-let s=document.createElement("script");
-s.src="https://pl29033403.profitablecpmratenetwork.com/c7/58/83/c7588384a025a5f208695da76567edd6.js";
-document.body.appendChild(s);
-
-let p=document.createElement("script");
-p.src="https://pl29033356.profitablecpmratenetwork.com/66/35/13/663513085ca9542f459ee6ffb4d20754.js";
-document.body.appendChild(p);
+const social=document.createElement("script");
+social.src="https://pl29033403.profitablecpmratenetwork.com/c7/58/83/c7588384a025a5f208695da76567edd6.js";
+document.body.appendChild(social);
 
 }
 
+function formatImage(url){
+
+if(!url) return "";
+
+let id="";
+
+if(url.includes("open?id=")){
+id=url.split("open?id=")[1];
+}
+
+else if(url.includes("/file/d/")){
+id=url.split("/file/d/")[1].split("/")[0];
+}
+
+if(id) return "https://drive.google.com/uc?export=view&id="+id;
+
+return url;
+}
+
+async function loadCSV(url){
+const res=await fetch(url);
+const text=await res.text();
+return text.split("\n").filter(x=>x.trim()!="");
+}
+
+function randomItem(arr){
+return arr[Math.floor(Math.random()*arr.length)];
 }
 
 fetch(API)
@@ -299,7 +334,7 @@ startUnlock();
 
 function startUnlock(){
 
-triggerUnlockAds();
+setTimeout(triggerUnlockAds,300);
 
 let width=0;
 const duration=5000;
@@ -308,45 +343,151 @@ const steps=duration/interval;
 let currentStep=0;
 
 const progressInterval=setInterval(()=>{
+
 const randomIncrement=(100/steps)*(0.5+Math.random());
 width+=randomIncrement;
+
 if(width>100) width=100;
 
 progressEl.style.width=width+"%";
+
 currentStep++;
 
-if(width>=100){
+if(width>=100 || currentStep>=steps*2){
+
 clearInterval(progressInterval);
 showPrompt();
+
 }
 
 },interval);
-
 }
 
-function showPrompt(){
+async function showPrompt(){
 
 overlay.style.display="none";
 
 const promptData=allPrompts[id];
-if(!promptData) return;
+
+if(!promptData){
+titleEl.textContent="Prompt not found";
+titleEl.style.display="block";
+return;
+}
 
 titleEl.style.display="block";
 contentEl.style.display="block";
 copyBtn.style.display="inline-block";
 
 titleEl.textContent=promptData["Prompt Title"]||"Untitled";
+
 fullPrompt=promptData["Prompt Text"]||"";
 
-contentEl.textContent=fullPrompt;
+const words=fullPrompt.split(" ");
 
+if(words.length>20){
+contentEl.textContent=words.slice(0,20).join(" ")+"...";
+expandBtn.style.display="inline-block";
+}else{
+contentEl.textContent=fullPrompt;
 }
 
+const img=formatImage(promptData["Image File"]);
+
+if(img){
+imgEl.src=img;
+imgEl.style.display="block";
+}
+
+const explainList=await loadCSV(EXPLAIN_CSV);
+const tipsList=await loadCSV(TIPS_CSV);
+
+seoExplain.textContent=randomItem(explainList);
+seoTips.textContent=randomItem(tipsList);
+
+seoSection.style.display="block";
+
+showMorePrompts();
+}
+
+expandBtn.addEventListener("click",()=>{
+
+if(!expanded){
+contentEl.textContent=fullPrompt;
+expandBtn.textContent="Show Less";
+expanded=true;
+}else{
+const words=fullPrompt.split(" ");
+contentEl.textContent=words.slice(0,20).join(" ")+"...";
+expandBtn.textContent="Show More";
+expanded=false;
+}
+
+});
+
 copyBtn.addEventListener("click",()=>{
-navigator.clipboard.writeText(fullPrompt);
+
+navigator.clipboard.writeText(fullPrompt).then(()=>{
 copyBtn.textContent="Copied!";
 setTimeout(()=>copyBtn.textContent="Copy Prompt",1500);
 });
+
+});
+
+function showMorePrompts(){
+
+if(!allPrompts) return;
+
+let others=[];
+
+for(let i=0;i<allPrompts.length;i++){
+
+if(i!==id){
+others.push({data:allPrompts[i],index:i});
+}
+
+}
+
+others=others.sort(()=>0.5-Math.random()).slice(0,6);
+
+others.forEach(p=>{
+
+const card=document.createElement("div");
+card.className="promptCard";
+
+const img=formatImage(p.data["Image File"]);
+
+card.innerHTML=`<img src="${img}"><div>${p.data["Prompt Title"]}</div>`;
+
+card.onclick=()=>{
+window.location.href="prompt.html?id="+p.index;
+};
+
+moreGrid.appendChild(card);
+
+});
+
+morePromptsSection.style.display="block";
+}
+
+function showIGPopup(duration=4000){
+
+const popup=document.getElementById('igPopup');
+
+popup.style.opacity=1;
+popup.style.transform='translateX(-50%) translateY(0)';
+
+setTimeout(()=>{
+popup.style.opacity=0;
+popup.style.transform='translateX(-50%) translateY(-20px)';
+},duration);
+
+}
+
+window.addEventListener('load',()=>{
+showIGPopup();
+});
+
 </script>
 
 </body>
