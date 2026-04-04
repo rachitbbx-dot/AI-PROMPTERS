@@ -94,6 +94,40 @@ margin-bottom:10px;
 text-align:center;
 }
 
+.unlockAdWrap{
+position:relative;
+width:300px;
+height:250px;
+margin-top:15px;
+}
+
+.unlockAd{
+position:absolute;
+inset:0;
+z-index:1;
+}
+
+#unlockBtn{
+position:absolute;
+inset:0;
+z-index:2;
+background:rgba(0,0,0,0.001);
+border:0;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:600;
+color:white;
+font-size:16px;
+}
+
+#unlockBtn span{
+background:rgba(0,0,0,0.6);
+padding:8px 16px;
+border-radius:10px;
+}
+
 #progressContainer{
 width:300px;
 height:20px;
@@ -196,16 +230,37 @@ opacity:.8;
 </div>
 
 <div id="unlockOverlay">
+
 <div id="unlockMessage">
-Please tap one of the banner ads to unlock your awesome prompt.<br>
-After the ad opens, return to this page and claim your free prompt.
+Tap the unlock button to open a short sponsor page.<br>
+After redirect, return here to claim your free prompt.
 </div>
+
+<div class="unlockAdWrap">
+
+<button id="unlockBtn"><span>Unlock Prompt</span></button>
+
+<div class="unlockAd">
+<script>
+atOptions = {
+'key' : '03441af9d7c950c75c0b698da8e3a00c',
+'format' : 'iframe',
+'height' : 250,
+'width' : 300,
+'params' : {}
+};
+</script>
+<script src="https://www.highperformanceformat.com/03441af9d7c950c75c0b698da8e3a00c/invoke.js"></script>
+</div>
+
+</div>
+
 <div id="progressContainer">
 <div id="progress"></div>
 </div>
+
 </div>
 
-<!-- DESKTOP 728x90 BANNER -->
 <div class="ad-728 bannerAd">
 <script>
 atOptions = {
@@ -219,24 +274,9 @@ atOptions = {
 <script src="https://www.highperformanceformat.com/d5788142542f13a7fb0f557272aef17b/invoke.js"></script>
 </div>
 
-<!-- NATIVE BANNER -->
 <div class="ad-center bannerAd">
 <script async="async" data-cfasync="false" src="https://pl29033357.profitablecpmratenetwork.com/b91d57dd3b8f2cdefbf4a34d445f31e3/invoke.js"></script>
 <div id="container-b91d57dd3b8f2cdefbf4a34d445f31e3"></div>
-</div>
-
-<!-- 300x250 BANNER -->
-<div class="ad-center bannerAd">
-<script>
-atOptions = {
-'key' : '03441af9d7c950c75c0b698da8e3a00c',
-'format' : 'iframe',
-'height' : 250,
-'width' : 300,
-'params' : {}
-};
-</script>
-<script src="https://www.highperformanceformat.com/03441af9d7c950c75c0b698da8e3a00c/invoke.js"></script>
 </div>
 
 <img id="promptImage" src="" alt="Prompt Image" style="display:none;">
@@ -249,7 +289,6 @@ atOptions = {
 <div id="seoSection" style="display:none;">
 <h2>About This AI Prompt</h2>
 <p id="seoExplain"></p>
-
 <h2>Tips For Best Results</h2>
 <p id="seoTips"></p>
 </div>
@@ -288,17 +327,14 @@ const seoTips=document.getElementById("seoTips");
 const morePromptsSection=document.getElementById("morePrompts");
 const moreGrid=document.getElementById("moreGrid");
 
+const unlockBtn=document.getElementById("unlockBtn");
+
 let allPrompts;
 let fullPrompt="";
 let expanded=false;
 
-let adClicked=false;
-
-document.querySelectorAll(".bannerAd").forEach(ad=>{
-ad.addEventListener("click",()=>{
-adClicked=true;
+unlockBtn.addEventListener("click",()=>{
 localStorage.setItem("ad_clicked","1");
-});
 });
 
 function checkUnlock(){
@@ -310,6 +346,9 @@ startUnlock();
 
 window.addEventListener("pageshow",checkUnlock);
 window.addEventListener("focus",checkUnlock);
+document.addEventListener("visibilitychange",()=>{
+if(!document.hidden){checkUnlock();}
+});
 
 function formatImage(url){
 if(!url) return "";
@@ -468,7 +507,6 @@ checkUnlock();
 
 <script src="https://mistletoeframesethel.com/66/35/13/663513085ca9542f459ee6ffb4d20754.js"></script>
 
-<!-- 320x50 MOBILE BANNER -->
 <div class="ad-center ad-320 bannerAd">
 <script>
 atOptions = {
