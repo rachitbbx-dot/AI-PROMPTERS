@@ -53,33 +53,38 @@ pointer-events:none;
 #loaderOverlay{
 position:fixed;
 inset:0;
-background:rgba(0,0,0,0.75);
+background:rgba(0,0,0,0.8);
 display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
 z-index:1000;
-backdrop-filter:blur(4px);
+backdrop-filter:blur(6px);
 }
 
-#loaderText{
-font-size:16px;
-opacity:.9;
+.shimmerBox{
+width:320px;
+height:22px;
+border-radius:8px;
+margin:8px 0;
+background:linear-gradient(90deg,#1a1a1a 25%,#2a2a2a 37%,#1a1a1a 63%);
+background-size:400% 100%;
+animation:shimmer 1.4s infinite;
+}
+
+.shimmerImg{
+width:100%;
+height:220px;
+border-radius:20px;
 margin-bottom:15px;
+background:linear-gradient(90deg,#1a1a1a 25%,#2a2a2a 37%,#1a1a1a 63%);
+background-size:400% 100%;
+animation:shimmer 1.4s infinite;
 }
 
-#progressContainer{
-width:300px;
-height:20px;
-background:rgba(255,255,255,0.1);
-border-radius:15px;
-overflow:hidden;
-}
-
-#progress{
-width:0%;
-height:100%;
-background:linear-gradient(90deg,#fffa,#4f46e5);
+@keyframes shimmer{
+0%{background-position:100% 0;}
+100%{background-position:-100% 0;}
 }
 
 img#promptImage{
@@ -111,8 +116,6 @@ margin-bottom:10px;
 }
 
 button:hover{background:#6366f1;}
-
-.loader{text-align:center;margin-top:50px;opacity:.6;}
 
 #seoSection{
 margin-top:30px;
@@ -169,10 +172,10 @@ opacity:.8;
 </div>
 
 <div id="loaderOverlay">
-<div id="loaderText">Loading Prompt...</div>
-<div id="progressContainer">
-<div id="progress"></div>
-</div>
+<div class="shimmerImg"></div>
+<div class="shimmerBox"></div>
+<div class="shimmerBox"></div>
+<div class="shimmerBox"></div>
 </div>
 
 <img id="promptImage" src="" alt="Prompt Image" style="display:none;">
@@ -213,7 +216,6 @@ const imgEl=document.getElementById("promptImage");
 const expandBtn=document.getElementById("expandBtn");
 
 const loaderOverlay=document.getElementById("loaderOverlay");
-const progressEl=document.getElementById("progress");
 
 const seoSection=document.getElementById("seoSection");
 const seoExplain=document.getElementById("seoExplain");
@@ -222,7 +224,7 @@ const seoTips=document.getElementById("seoTips");
 const morePromptsSection=document.getElementById("morePrompts");
 const moreGrid=document.getElementById("moreGrid");
 
-let allPrompts;
+let allPrompts=null;
 let fullPrompt="";
 let expanded=false;
 
@@ -250,36 +252,32 @@ const text=await res.text();
 return text.split("\n").filter(x=>x.trim()!="");
 }
 
-function randomItem(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-
-fetch(API)
-.then(res=>res.json())
-.then(data=>{ allPrompts=data; })
-.catch(err=>{ loaderOverlay.innerHTML="Error loading prompt"; console.error(err); });
-
-function startLoader(){
-let width=0;
-const duration=5000;
-const interval=50;
-const steps=duration/interval;
-let currentStep=0;
-
-const progressInterval=setInterval(()=>{
-const randomIncrement=(100/steps)*(0.5+Math.random());
-width+=randomIncrement;
-if(width>100) width=100;
-currentStep++;
-
-progressEl.style.width=width+"%";
-
-if(width>=100 || currentStep>=steps*2){
-clearInterval(progressInterval);
-showPrompt();
+function randomItem(arr){
+return arr[Math.floor(Math.random()*arr.length)];
 }
-},interval);
+
+async function loadAPI(){
+try{
+const res=await fetch(API);
+allPrompts=await res.json();
+
+setTimeout(()=>{
+showPrompt();
+},5000);
+
+}catch(err){
+loaderOverlay.innerHTML="Error loading prompt";
+console.error(err);
+}
 }
 
 async function showPrompt(){
+
+if(!allPrompts){
+loaderOverlay.innerHTML="Prompt data missing";
+return;
+}
+
 loaderOverlay.style.display="none";
 
 const promptData=allPrompts[id];
@@ -298,6 +296,7 @@ titleEl.textContent=promptData["Prompt Title"]||"Untitled";
 fullPrompt=promptData["Prompt Text"]||"";
 
 const words=fullPrompt.split(" ");
+
 if(words.length>20){
 contentEl.textContent=words.slice(0,20).join(" ")+"...";
 expandBtn.style.display="inline-block";
@@ -306,7 +305,7 @@ contentEl.textContent=fullPrompt;
 }
 
 const img=formatImage(promptData["Image File"]);
-if(img){ preloadImage(img); }
+if(img) preloadImage(img);
 
 const explainList=await loadCSV(EXPLAIN_CSV);
 const tipsList=await loadCSV(TIPS_CSV);
@@ -340,32 +339,43 @@ setTimeout(()=>copyBtn.textContent="Copy Prompt",1500);
 });
 
 function showMorePrompts(){
+
 if(!allPrompts) return;
 
 let others=[];
+
 for(let i=0;i<allPrompts.length;i++){
-if(i!==id){ others.push({data:allPrompts[i],index:i}); }
+if(i!==id){
+others.push({data:allPrompts[i],index:i});
+}
 }
 
 others=others.sort(()=>0.5-Math.random()).slice(0,6);
 
 others.forEach(p=>{
+
 const card=document.createElement("div");
 card.className="promptCard";
 
 const img=formatImage(p.data["Image File"]);
 
 card.innerHTML=`<img src="${img}"><div>${p.data["Prompt Title"]}</div>`;
-card.onclick=()=>{ window.location.href="prompt.html?id="+p.index; };
+
+card.onclick=()=>{
+window.location.href="prompt.html?id="+p.index;
+};
 
 moreGrid.appendChild(card);
+
 });
 
 morePromptsSection.style.display="block";
 }
 
 function showIGPopup(duration=4000){
+
 const popup=document.getElementById('igPopup');
+
 popup.style.opacity=1;
 popup.style.transform='translateX(-50%) translateY(0)';
 
@@ -373,11 +383,12 @@ setTimeout(()=>{
 popup.style.opacity=0;
 popup.style.transform='translateX(-50%) translateY(-20px)';
 },duration);
+
 }
 
 window.addEventListener('load',()=>{
 showIGPopup();
-startLoader();
+loadAPI();
 });
 </script>
 
