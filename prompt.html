@@ -32,30 +32,6 @@ opacity:.9;
 z-index:-1;
 }
 
-.ad-center{
-display:flex;
-justify-content:center;
-align-items:center;
-margin:20px 0;
-max-width:100%;
-overflow:hidden;
-}
-
-.ad-728{
-width:100%;
-display:flex;
-justify-content:center;
-margin-bottom:20px;
-}
-
-@media (max-width:768px){
-.ad-728{display:none;}
-.ad-320{display:flex; position:fixed; bottom:0; left:50%; transform:translateX(-50%); margin:0; z-index:9999;}
-}
-.ad-320{display:none;}
-
-.bannerAd{cursor:pointer;}
-
 #igPopup{
 position:fixed;
 top:20px;
@@ -74,7 +50,7 @@ z-index:1001;
 pointer-events:none;
 }
 
-#unlockOverlay{
+#loaderOverlay{
 position:fixed;
 inset:0;
 background:rgba(0,0,0,0.75);
@@ -86,46 +62,10 @@ z-index:1000;
 backdrop-filter:blur(4px);
 }
 
-#unlockMessage{
-color:white;
-font-size:14px;
-font-weight:500;
-margin-bottom:10px;
-text-align:center;
-}
-
-.unlockAdWrap{
-position:relative;
-width:300px;
-height:250px;
-margin-top:15px;
-}
-
-.unlockAd{
-position:absolute;
-inset:0;
-z-index:1;
-}
-
-#unlockBtn{
-position:absolute;
-inset:0;
-z-index:2;
-background:rgba(0,0,0,0.001);
-border:0;
-cursor:pointer;
-display:flex;
-align-items:center;
-justify-content:center;
-font-weight:600;
-color:white;
+#loaderText{
 font-size:16px;
-}
-
-#unlockBtn span{
-background:rgba(0,0,0,0.6);
-padding:8px 16px;
-border-radius:10px;
+opacity:.9;
+margin-bottom:15px;
 }
 
 #progressContainer{
@@ -134,7 +74,6 @@ height:20px;
 background:rgba(255,255,255,0.1);
 border-radius:15px;
 overflow:hidden;
-margin-top:10px;
 }
 
 #progress{
@@ -229,56 +168,11 @@ opacity:.8;
 <a href="https://www.instagram.com/made.by.manav" target="_blank">@made.by.manav</a> • Followers: 51.6K | Posts: 70
 </div>
 
-<div id="unlockOverlay">
-
-<div id="unlockMessage">
-Tap the unlock button to open a short sponsor page.<br>
-After redirect, return here to claim your free prompt. <br>
-PLEASE WAIT A FEW SECONDS AFTER RETURNING FOR THE PROMPT TO UNLOCK !! <br>
-  (❁´◡`❁)
-</div>
-
-<div class="unlockAdWrap">
-
-<button id="unlockBtn"><span>Unlock Prompt</span></button>
-
-<div class="unlockAd">
-<script>
-atOptions = {
-'key' : '03441af9d7c950c75c0b698da8e3a00c',
-'format' : 'iframe',
-'height' : 250,
-'width' : 300,
-'params' : {}
-};
-</script>
-<script src="https://www.highperformanceformat.com/03441af9d7c950c75c0b698da8e3a00c/invoke.js"></script>
-</div>
-
-</div>
-
+<div id="loaderOverlay">
+<div id="loaderText">Loading Prompt...</div>
 <div id="progressContainer">
 <div id="progress"></div>
 </div>
-
-</div>
-
-<div class="ad-728 bannerAd">
-<script>
-atOptions = {
-'key' : 'd5788142542f13a7fb0f557272aef17b',
-'format' : 'iframe',
-'height' : 90,
-'width' : 728,
-'params' : {}
-};
-</script>
-<script src="https://www.highperformanceformat.com/d5788142542f13a7fb0f557272aef17b/invoke.js"></script>
-</div>
-
-<div class="ad-center bannerAd">
-<script async="async" data-cfasync="false" src="https://pl29033357.profitablecpmratenetwork.com/b91d57dd3b8f2cdefbf4a34d445f31e3/invoke.js"></script>
-<div id="container-b91d57dd3b8f2cdefbf4a34d445f31e3"></div>
 </div>
 
 <img id="promptImage" src="" alt="Prompt Image" style="display:none;">
@@ -286,7 +180,6 @@ atOptions = {
 <button id="copyBtn" style="display:none;">Copy Prompt</button>
 <div id="content" style="display:none;"></div>
 <button id="expandBtn" style="display:none;">Show More</button>
-<div class="loader" id="loader" style="display:none;">Loading...</div>
 
 <div id="seoSection" style="display:none;">
 <h2>About This AI Prompt</h2>
@@ -319,7 +212,7 @@ const copyBtn=document.getElementById("copyBtn");
 const imgEl=document.getElementById("promptImage");
 const expandBtn=document.getElementById("expandBtn");
 
-const overlay=document.getElementById("unlockOverlay");
+const loaderOverlay=document.getElementById("loaderOverlay");
 const progressEl=document.getElementById("progress");
 
 const seoSection=document.getElementById("seoSection");
@@ -329,28 +222,9 @@ const seoTips=document.getElementById("seoTips");
 const morePromptsSection=document.getElementById("morePrompts");
 const moreGrid=document.getElementById("moreGrid");
 
-const unlockBtn=document.getElementById("unlockBtn");
-
 let allPrompts;
 let fullPrompt="";
 let expanded=false;
-
-unlockBtn.addEventListener("click",()=>{
-localStorage.setItem("ad_clicked","1");
-});
-
-function checkUnlock(){
-if(localStorage.getItem("ad_clicked")==="1"){
-localStorage.removeItem("ad_clicked");
-startUnlock();
-}
-}
-
-window.addEventListener("pageshow",checkUnlock);
-window.addEventListener("focus",checkUnlock);
-document.addEventListener("visibilitychange",()=>{
-if(!document.hidden){checkUnlock();}
-});
 
 function formatImage(url){
 if(!url) return "";
@@ -381,11 +255,11 @@ function randomItem(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 fetch(API)
 .then(res=>res.json())
 .then(data=>{ allPrompts=data; })
-.catch(err=>{ overlay.innerHTML="Error loading prompt"; console.error(err); });
+.catch(err=>{ loaderOverlay.innerHTML="Error loading prompt"; console.error(err); });
 
-function startUnlock(){
+function startLoader(){
 let width=0;
-const duration=3000;
+const duration=5000;
 const interval=50;
 const steps=duration/interval;
 let currentStep=0;
@@ -406,7 +280,7 @@ showPrompt();
 }
 
 async function showPrompt(){
-overlay.style.display="none";
+loaderOverlay.style.display="none";
 
 const promptData=allPrompts[id];
 
@@ -503,24 +377,9 @@ popup.style.transform='translateX(-50%) translateY(-20px)';
 
 window.addEventListener('load',()=>{
 showIGPopup();
-checkUnlock();
+startLoader();
 });
 </script>
 
-<script src="https://mistletoeframesethel.com/66/35/13/663513085ca9542f459ee6ffb4d20754.js"></script>
-
-<div class="ad-center ad-320 bannerAd">
-<script>
-atOptions = {
-'key' : '3d0fb5aa8652375effd50a084eef0409',
-'format' : 'iframe',
-'height' : 50,
-'width' : 320,
-'params' : {}
-};
-</script>
-<script src="https://www.highperformanceformat.com/3d0fb5aa8652375effd50a084eef0409/invoke.js"></script>
-</div>
-
 </body>
-</html> 
+</html>
