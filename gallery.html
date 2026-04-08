@@ -5,11 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Prompt Gallery</title>
 
+<!-- Monetag Multitag - global monetization -->
+<script src="https://quge5.com/88/tag.min.js" data-zone="227649" async data-cfasync="false"></script>
+
 <style>
+/* ===================== GLOBAL RESET ===================== */
 *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui;}
 html,body{max-width:100%;overflow-x:hidden;}
 body{background:#0f0f0f;color:white;padding:16px;}
 
+/* BACKGROUND EFFECT */
 body::before{
 content:"";
 position:fixed;
@@ -23,6 +28,7 @@ opacity:.9;
 z-index:-1;
 }
 
+/* AD CONTAINER STYLES (currently empty - Monetag will reuse these) */
 .ad-center{
 display:flex;
 justify-content:center;
@@ -31,17 +37,14 @@ margin:20px 0;
 max-width:100%;
 overflow:hidden;
 }
-
 .ad-728{
 width:100%;
 display:flex;
 justify-content:center;
 }
+@media(max-width:768px){.ad-728{display:none;}}
 
-@media(max-width:768px){
-.ad-728{display:none;}
-}
-
+/* PAGE LOADER */
 #pageLoader{
 position:fixed;
 inset:0;
@@ -53,7 +56,6 @@ z-index:2000;
 flex-direction:column;
 gap:14px;
 }
-
 .loaderSpin{
 width:42px;
 height:42px;
@@ -62,12 +64,12 @@ border-top:4px solid #4f46e5;
 border-radius:50%;
 animation:spin 1s linear infinite;
 }
-
 .loaderText{
 font-size:14px;
 opacity:.8;
 }
 
+/* IG POPUP */
 #igPopup{
 position:fixed;
 top:20px;
@@ -85,9 +87,9 @@ transition:opacity 0.5s, transform 0.5s;
 z-index:1001;
 pointer-events:none;
 }
-
 #igPopup a{color:#4f46e5;text-decoration:none;}
 
+/* USER ACTION POPUP */
 #userPopup{
 position:fixed;
 bottom:30px;
@@ -104,6 +106,7 @@ transition:opacity 0.4s, transform 0.4s;
 z-index:1001;
 }
 
+/* HEADER + SEARCH + CONTROLS */
 .header{
 max-width:1100px;
 margin:auto;
@@ -115,9 +118,7 @@ border-radius:18px;
 padding:16px;
 box-shadow:0 20px 50px rgba(0,0,0,.6);
 }
-
 .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
-
 .backBtn{
 background:rgba(255,255,255,.08);
 border:1px solid rgba(255,255,255,.2);
@@ -126,9 +127,7 @@ padding:8px 14px;
 font-size:13px;
 cursor:pointer;
 }
-
 .searchWrap{position:relative;margin-bottom:12px;}
-
 .search{
 width:100%;
 padding:14px 42px 14px 16px;
@@ -138,9 +137,7 @@ background:rgba(255,255,255,.08);
 color:white;
 font-size:14px;
 }
-
 .search::placeholder{color:rgba(255,255,255,.5);}
-
 .searchIcon{
 position:absolute;
 right:14px;
@@ -148,9 +145,7 @@ top:50%;
 transform:translateY(-50%);
 opacity:.6;
 }
-
 .controls{display:flex;gap:8px;flex-wrap:wrap;}
-
 select{
 padding:10px 14px;
 border-radius:20px;
@@ -161,6 +156,7 @@ font-size:13px;
 cursor:pointer;
 }
 
+/* GALLERY CARDS */
 .gallery{
 max-width:1100px;
 margin:auto;
@@ -169,7 +165,6 @@ grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
 grid-auto-rows:10px;
 gap:12px;
 }
-
 .card{
 background:rgba(255,255,255,.05);
 border-radius:14px;
@@ -180,11 +175,9 @@ opacity:0;
 transform:translateY(10px);
 transition:.35s;
 }
-
 .card.show{opacity:1;transform:translateY(0);}
 .card:hover{transform:scale(1.03);}
 .card img{width:100%;display:block;}
-
 .cardTitle{
 padding:8px;
 font-size:13px;
@@ -195,6 +188,7 @@ line-height:1.3;
 background:rgba(0,0,0,.25);
 }
 
+/* LAZY LOADER */
 .loader{
 width:36px;
 height:36px;
@@ -212,17 +206,21 @@ display:none;
 
 <body>
 
+<!-- PAGE LOADER -->
 <div id="pageLoader">
 <div class="loaderSpin"></div>
 <div class="loaderText">Loading prompts...</div>
 </div>
 
+<!-- IG POPUP -->
 <div id="igPopup">
 <a href="https://www.instagram.com/made.by.manav" target="_blank">@made.by.manav</a> • Followers: 51.6K | Posts: 70
 </div>
 
+<!-- USER ACTION POPUP -->
 <div id="userPopup"></div>
 
+<!-- HEADER + SEARCH + CONTROLS -->
 <div class="header">
 <div class="topbar">
 <button class="backBtn" onclick="goHome()">← Home</button>
@@ -242,32 +240,18 @@ display:none;
 </div>
 </div>
 
-<div class="ad-center ad-728">
-<script>
-atOptions={'key':'d5788142542f13a7fb0f557272aef17b','format':'iframe','height':90,'width':728,'params':{}};
-</script>
-<script src="https://www.highperformanceformat.com/d5788142542f13a7fb0f557272aef17b/invoke.js"></script>
-</div>
-
+<!-- GALLERY GRID -->
 <div id="gallery" class="gallery"></div>
 
-<div class="ad-center">
-<script>
-atOptions={'key':'03441af9d7c950c75c0b698da8e3a00c','format':'iframe','height':250,'width':300,'params':{}};
-</script>
-<script src="https://www.highperformanceformat.com/03441af9d7c950c75c0b698da8e3a00c/invoke.js"></script>
-</div>
-
+<!-- LAZY LOADER -->
 <div id="loader" class="loader"></div>
 
-<div class="ad-center">
-<script async="async" data-cfasync="false" src="https://pl29033357.profitablecpmratenetwork.com/b91d57dd3b8f2cdefbf4a34d445f31e3/invoke.js"></script>
-<div id="container-b91d57dd3b8f2cdefbf4a34d445f31e3"></div>
-</div>
-
+<!-- ===================== SCRIPTS ===================== -->
 <script>
+/* NAVIGATION */
 function goHome(){window.location.href="index.html";}
 
+/* IG POPUP SHOW/HIDE */
 function showIGPopup(duration=4000){
 const popup=document.getElementById('igPopup');
 popup.style.opacity=1;
@@ -278,9 +262,9 @@ popup.style.transform='translateX(-50%) translateY(-20px)';
 },duration);
 }
 
+/* USER ACTION POPUP (random names + actions) */
 const users=["Alex","Sam","Jordan","Taylor","Morgan","Casey","Riley","Jamie","Charlie","Avery"];
 const actions=["copied your prompt","liked your prompt","shared your prompt"];
-
 function showUserPopup(){
 const popup=document.getElementById('userPopup');
 const name=users[Math.floor(Math.random()*users.length)];
@@ -293,15 +277,14 @@ popup.style.opacity=0;
 popup.style.transform='translateX(-50%) translateY(40px)';
 },3000);
 }
-
 setInterval(()=>{showUserPopup();},5000 + Math.random()*7000);
 
+/* API & PROMPT FETCHING */
 const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec";
-
 let prompts=[],filtered=[],loaded=0,batch=12;
-
 const gallery=document.getElementById("gallery"),loader=document.getElementById("loader");
 
+/* FORMAT GOOGLE DRIVE IMAGE LINKS */
 function formatImage(url){
 if(!url) return "";
 let id="";
@@ -311,6 +294,7 @@ if(id) return "https://lh3.googleusercontent.com/d/"+id;
 return url;
 }
 
+/* RESIZE CARDS TO GRID */
 function resizeCard(card){
 const rowHeight=10,rowGap=12,img=card.querySelector("img");
 const height=img.getBoundingClientRect().height;
@@ -318,6 +302,7 @@ const span=Math.ceil((height+rowGap)/(rowHeight+rowGap));
 card.style.gridRowEnd="span "+span;
 }
 
+/* RENDER BATCH OF PROMPTS */
 function renderMore(){
 const next=filtered.slice(loaded,loaded+batch);
 next.forEach(p=>{
@@ -335,10 +320,10 @@ gallery.appendChild(card);
 const image=card.querySelector("img");
 image.onload=()=>{resizeCard(card);card.classList.add("show");}
 });
-
 loaded+=batch;
 }
 
+/* INFINITE SCROLL */
 window.addEventListener("scroll",()=>{
 if(window.innerHeight+window.scrollY>=document.body.offsetHeight-600){
 if(loaded>=filtered.length) return;
@@ -347,6 +332,7 @@ setTimeout(()=>{renderMore();loader.style.display="none";},200);
 }
 });
 
+/* SEARCH FUNCTIONALITY */
 document.getElementById("search").addEventListener("input",e=>{
 const term=e.target.value.toLowerCase();
 filtered=prompts.filter(p=>
@@ -356,35 +342,25 @@ filtered=prompts.filter(p=>
 reset();
 });
 
+/* SORT FUNCTIONALITY */
 document.getElementById("sort").addEventListener("change",applySort);
-
 function applySort(){
 let list=[...filtered];
 const sort=document.getElementById("sort").value;
-
-if(sort==="new")
-list.sort((a,b)=>new Date(b.Timestamp)-new Date(a.Timestamp));
-
-if(sort==="old")
-list.sort((a,b)=>new Date(a.Timestamp)-new Date(b.Timestamp));
-
-if(sort==="random")
-list.sort(()=>Math.random()-0.5);
-
+if(sort==="new") list.sort((a,b)=>new Date(b.Timestamp)-new Date(a.Timestamp));
+if(sort==="old") list.sort((a,b)=>new Date(a.Timestamp)-new Date(b.Timestamp));
+if(sort==="random") list.sort(()=>Math.random()-0.5);
 filtered=list;
 reset();
 }
 
-function reset(){
-gallery.innerHTML="";
-loaded=0;
-renderMore();
-}
+/* RESET AND LOAD CARDS */
+function reset(){gallery.innerHTML="";loaded=0;renderMore();}
 
-function hideLoader(){
-document.getElementById("pageLoader").style.display="none";
-}
+/* HIDE LOADER */
+function hideLoader(){document.getElementById("pageLoader").style.display="none";}
 
+/* FETCH PROMPTS WITH LOCAL CACHE */
 function loadPrompts(){
 const cache=localStorage.getItem("promptCache");
 const time=localStorage.getItem("promptCacheTime");
