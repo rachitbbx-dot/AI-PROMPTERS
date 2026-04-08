@@ -1,14 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+<!-- =========================
+META + PAGE SETUP
+========================= -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Prompt Hub is a curated collection of powerful AI prompts for ChatGPT, Midjourney and other AI tools.">
-<meta name="google-adsense-account" content="ca-pub-4850710373893560">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4850710373893560" crossorigin="anonymous"></script>
+
 <title>Prompt Hub</title>
 
+<!-- =========================
+GOOGLE ADSENSE
+========================= -->
+<meta name="google-adsense-account" content="ca-pub-4850710373893560">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4850710373893560" crossorigin="anonymous"></script>
+
+<!-- =========================
+MONETAG GLOBAL SCRIPT
+Handles automatic monetization
+========================= -->
+<script src="https://quge5.com/88/tag.min.js" data-zone="227649" async data-cfasync="false"></script>
+
 <style>
+
+/* =========================
+GLOBAL RESET
+========================= */
+
 *{
 margin:0;
 padding:0;
@@ -16,11 +36,15 @@ box-sizing:border-box;
 font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
 }
 
-/* FIX horizontal scrolling */
+/* prevent horizontal scroll */
 html,body{
 max-width:100%;
 overflow-x:hidden;
 }
+
+/* =========================
+PAGE BACKGROUND
+========================= */
 
 body{
 background:#0b0b0b;
@@ -40,34 +64,19 @@ opacity:.6;
 z-index:-1;
 }
 
+/* =========================
+MAIN CONTENT CONTAINER
+========================= */
+
 .container{
 max-width:720px;
 margin:auto;
 padding:20px 16px 50px;
 }
 
-/* ad containers */
-
-.ad-center{
-display:flex;
-justify-content:center;
-align-items:center;
-margin:20px 0;
-max-width:100%;
-overflow:hidden;
-}
-
-.ad-728{
-width:100%;
-display:flex;
-justify-content:center;
-}
-
-@media (max-width:768px){
-.ad-728{
-display:none;
-}
-}
+/* =========================
+HERO SECTION
+========================= */
 
 .hero{
 text-align:center;
@@ -105,6 +114,10 @@ opacity:.75;
 font-size:14px;
 }
 
+/* =========================
+MAIN BUTTONS
+========================= */
+
 .buttons{
 margin-top:18px;
 display:flex;
@@ -129,6 +142,10 @@ backdrop-filter:blur(12px);
 background:rgba(255,255,255,.15);
 }
 
+/* =========================
+CONTENT SECTIONS
+========================= */
+
 .section{
 margin-top:36px;
 }
@@ -143,6 +160,10 @@ opacity:.85;
 margin-bottom:12px;
 font-size:14px;
 }
+
+/* =========================
+PROMPT GRID
+========================= */
 
 .grid{
 display:grid;
@@ -166,7 +187,6 @@ transform:scale(1.05);
 
 .card img{
 width:100%;
-height:auto;
 aspect-ratio:1/1;
 object-fit:cover;
 border-radius:12px;
@@ -178,6 +198,10 @@ margin-top:4px;
 opacity:.9;
 text-align:center;
 }
+
+/* =========================
+FOOTER
+========================= */
 
 footer{
 margin-top:46px;
@@ -204,6 +228,10 @@ font-size:13px;
 footer a:hover{
 opacity:1;
 }
+
+/* =========================
+COOKIE BANNER
+========================= */
 
 #cookieBanner{
 position:fixed;
@@ -232,10 +260,9 @@ font-size:12px;
 cursor:pointer;
 }
 
-@media(max-width:400px){
-.hero h1{font-size:24px;}
-.btn{font-size:14px;padding:12px;}
-}
+/* =========================
+INSTAGRAM FOLLOW POPUP
+========================= */
 
 #igPopup{
 position:fixed;
@@ -269,14 +296,22 @@ color:white;
 font-size:12px;
 cursor:pointer;
 }
+
 </style>
 </head>
 
 <body>
 
+<!-- =========================
+MAIN SITE CONTAINER
+========================= -->
+
 <div class="container">
 
+<!-- HERO / TOP SECTION -->
+
 <div class="hero">
+
 <div class="logo">
 <img src="manav.png" id="secretAdmin">
 </div>
@@ -289,15 +324,10 @@ cursor:pointer;
 <button class="btn" onclick="openTools()">Best AI Tools</button>
 <button class="btn" onclick="openSponsors()">Sponsors</button>
 </div>
+
 </div>
 
-<!-- 728x90 DESKTOP ONLY -->
-<div class="ad-center ad-728">
-<script>
-atOptions={'key':'d5788142542f13a7fb0f557272aef17b','format':'iframe','height':90,'width':728,'params':{}};
-</script>
-<script src="https://www.highperformanceformat.com/d5788142542f13a7fb0f557272aef17b/invoke.js"></script>
-</div>
+<!-- ABOUT SECTION -->
 
 <div class="section">
 <h2>What Is Prompt Hub?</h2>
@@ -305,41 +335,37 @@ atOptions={'key':'d5788142542f13a7fb0f557272aef17b','format':'iframe','height':9
 <p>Instead of guessing how to talk to AI, these prompts guide models to generate clearer, more useful, and more powerful outputs.</p>
 </div>
 
-<!-- 300x250 -->
-<div class="ad-center">
-<script>
-atOptions={'key':'03441af9d7c950c75c0b698da8e3a00c','format':'iframe','height':250,'width':300,'params':{}};
-</script>
-<script src="https://www.highperformanceformat.com/03441af9d7c950c75c0b698da8e3a00c/invoke.js"></script>
-</div>
+<!-- FEATURED PROMPTS -->
 
 <div class="section">
 <h2>Featured Prompts</h2>
 <div class="grid" id="featureGrid"></div>
 </div>
 
-<!-- Native banner -->
-<div class="ad-center">
-<script async="async" data-cfasync="false" src="https://pl29033357.profitablecpmratenetwork.com/b91d57dd3b8f2cdefbf4a34d445f31e3/invoke.js"></script>
-<div id="container-b91d57dd3b8f2cdefbf4a34d445f31e3"></div>
-</div>
+<!-- FOOTER -->
 
 <footer>
 New prompts added daily.<br>by RCHT & Manav
+
 <nav>
 <a href="about.html">About</a>
 <a href="contact.html">Contact</a>
 <a href="privacy.html">Privacy</a>
 <a href="terms.html">Terms</a>
 </nav>
+
 </footer>
 
 </div>
+
+<!-- COOKIE BANNER -->
 
 <div id="cookieBanner">
 This site uses cookies and may display ads.<br>
 <button onclick="acceptCookies()">OK</button>
 </div>
+
+<!-- INSTAGRAM FOLLOW POPUP -->
 
 <div id="igPopup">
 <span id="igName">@made.by.manav</span><br>
@@ -348,9 +374,14 @@ This site uses cookies and may display ads.<br>
 </div>
 
 <script>
+
+/* NAVIGATION BUTTONS */
+
 function openGallery(){window.location.href="gallery.html"}
 function openTools(){window.location.href="tools.html"}
 function openSponsors(){window.location.href="sponsors.html"}
+
+/* COOKIE SYSTEM */
 
 function acceptCookies(){
 localStorage.setItem("cookiesAccepted","yes")
@@ -360,6 +391,8 @@ document.getElementById("cookieBanner").style.display="none"
 if(localStorage.getItem("cookiesAccepted")==="yes"){
 document.getElementById("cookieBanner").style.display="none"
 }
+
+/* SECRET ADMIN PANEL (tap logo 5 times) */
 
 let tapCount=0
 const secretImage=document.getElementById("secretAdmin")
@@ -372,6 +405,8 @@ window.location.href="admin.html"
 }
 })
 
+/* IMAGE LINK FIXER */
+
 function formatImage(url){
 if(!url) return ""
 let id=""
@@ -381,21 +416,26 @@ if(id) return "https://lh3.googleusercontent.com/d/"+id
 return url
 }
 
+/* PROMPT API */
+
 const API="https://script.google.com/macros/s/AKfycbx4XOgMkg1KE5b0xEfNzx9RF2hQa2GZ-O9S3I95w_UFSjYC8RhGKIT5AMeUPvRFBBmx/exec"
 
 fetch(API)
 .then(res=>res.json())
 .then(data=>{
+
 const grid=document.getElementById("featureGrid")
 
 let picks=[...data].sort(()=>0.5-Math.random()).slice(0,6)
 
 picks.forEach(p=>{
+
 const img=formatImage(p["Image File"])
 const index=data.indexOf(p)
 
 let card=document.createElement("div")
 card.className="card"
+
 card.innerHTML=`<img src="${img}"><div>${p["Prompt Title"]}</div>`
 
 card.onclick=()=>{
@@ -403,8 +443,12 @@ window.location.href="prompt.html?id="+index
 }
 
 grid.appendChild(card)
+
 })
+
 })
+
+/* INSTAGRAM POPUP */
 
 const igPopup=document.getElementById("igPopup")
 
@@ -412,6 +456,7 @@ function showIG(){igPopup.classList.add("show")}
 function closeIG(){igPopup.classList.remove("show")}
 
 setTimeout(showIG,2000)
+
 </script>
 
 </body>
